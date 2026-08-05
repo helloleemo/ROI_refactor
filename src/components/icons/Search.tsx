@@ -1,0 +1,12 @@
+
+const SearchIcon = () =>{
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+    <circle cx="14.158" cy="13.2571" r="5.7" transform="rotate(-35.835 14.158 13.2571)" stroke="#979797" stroke-width="1.6"/>
+    <rect x="17" y="18.1709" width="2" height="9" transform="rotate(-35.835 17 18.1709)" fill="#979797"/>
+        </svg>
+    )
+}
+
+
+export default SearchIcon;
