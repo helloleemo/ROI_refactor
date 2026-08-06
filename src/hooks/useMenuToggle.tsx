@@ -17,12 +17,17 @@ const useMenuToggle = () => {
         setOpen(prev => ({ ...prev, [key]: false }));
     };
 
+    const handleOpen = (key: string) => {
+        setOpen(prev => ({ ...prev, [key]: true }));
+    };
+
     return {
         anchorEl,
         setAnchorEl,
         open,
         handleClick,
         handleClose,
+        handleOpen,
     }
 }
 export default useMenuToggle

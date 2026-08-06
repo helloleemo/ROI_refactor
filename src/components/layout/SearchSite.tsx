@@ -74,8 +74,9 @@ const SearchSite = ({
     };
 
     return (
-        <Box sx={{ ...sx, 
-        position: "relative" ,
+        <Box sx={{
+            ...sx,
+            position: "relative",
         }}>
             <TextField
                 size="small"
@@ -138,7 +139,7 @@ const SearchSite = ({
                                     py: 1.1,
                                     cursor: "pointer",
                                     "&:hover": {
-                                        bgcolor: "grey.100",
+                                        bgcolor: "semantic.surfaceSubtle",
                                     },
                                 }}
                             >

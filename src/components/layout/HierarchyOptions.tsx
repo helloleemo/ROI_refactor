@@ -102,7 +102,7 @@ const OptionsRender = ({ title, options, value, onChange, showArrow = true }: Op
                                 bgcolor: selected ? "#EAF4FF" : "transparent",
                                 transition: "background-color 0.15s ease, color 0.15s ease",
                                 "&:hover": {
-                                    bgcolor: !selected ? "grey.100" : undefined,
+                                    bgcolor: !selected ? "semantic.surfaceSubtle" : undefined,
                                 },
                             }}
                         >
@@ -192,7 +192,7 @@ const HierarchyOptions = ({ selectedSite, onSiteChange }: HierarchyOptionsProps)
                     py: 1.1,
                     borderRadius: 1,
                     "&:hover": {
-                        bgcolor: "grey.100",
+                        bgcolor: "semantic.surfaceSubtle",
                     },
                     color: "text.primary",
                     fontSize: "1rem",

@@ -92,7 +92,7 @@ const getComponentOverrides = (mode: "light" | "dark"): ThemeOptions["components
         MuiBackdrop: {
             styleOverrides: {
                 root: {
-                    backgroundColor: token.dialogBackdrop,
+                    // backgroundColor: token.dialogBackdrop,
                 },
             },
         },
@@ -163,18 +163,6 @@ const lightTheme = createTheme({
             disabled: "#CCCCCC",
             disabledBackground: "#EFEEEE",
         },
-        grey: {
-            50: "#F9F9F9",
-            100: "#EFEEEE",
-            200: "#DCDCDC",
-            300: "#CCCCCC",
-            400: "#979797",
-            500: "#666666",
-            600: "#515151",
-            700: "#3C3C3C",
-            800: "#333333",
-            900: "#262626",
-        },
     },
 })
 
@@ -221,18 +209,6 @@ const darkTheme = createTheme({
             selected: "#0087DC",
             disabled: "#666666",
             disabledBackground: "#515151",
-        },
-        grey: {
-            50: "#F9F9F9",
-            100: "#EFEEEE",
-            200: "#DCDCDC",
-            300: "#CCCCCC",
-            400: "#979797",
-            500: "#666666",
-            600: "#515151",
-            700: "#3C3C3C",
-            800: "#333333",
-            900: "#262626",
         },
     },
 })

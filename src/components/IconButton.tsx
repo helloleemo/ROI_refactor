@@ -3,6 +3,7 @@ import type { SxProps, Theme } from "@mui/material/styles"
 import type { ReactNode } from "react"
 
 type SharedIconButtonProps = {
+    id?: string
     icon: ReactNode
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
     active?: boolean
@@ -12,6 +13,7 @@ type SharedIconButtonProps = {
 }
 
 const SharedIconButton = ({
+    id,
     icon,
     onClick,
     active = false,
@@ -21,6 +23,7 @@ const SharedIconButton = ({
 }: SharedIconButtonProps) => {
     return (
         <MuiIconButton
+            id={id}
             onClick={onClick}
             aria-label={ariaLabel}
             sx={{

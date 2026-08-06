@@ -1,0 +1,4 @@
+export const FIRST_COLLAPSED_WIDTH = 64;
+export const FIRST_EXPANDED_WIDTH = 250;
+export const SECOND_COLLAPSED_WIDTH = 0;
+export const SECOND_EXPANDED_WIDTH = 240;
