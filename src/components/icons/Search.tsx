@@ -1,12 +1,19 @@
+import type { IconProps } from "./types";
+import ThemedAssetIcon from "./ThemedAssetIcon";
+import darkIcon from "./icon_dark_2/30x30/Options/Search.svg";
+import lightIcon from "./icon_light_2/30x30/Options/Search.svg";
 
-const SearchIcon = () =>{
+const SearchIcon = (props: IconProps) => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
-    <circle cx="14.158" cy="13.2571" r="5.7" transform="rotate(-35.835 14.158 13.2571)" stroke="#979797" stroke-width="1.6"/>
-    <rect x="17" y="18.1709" width="2" height="9" transform="rotate(-35.835 17 18.1709)" fill="#979797"/>
-        </svg>
-    )
-}
-
+        <ThemedAssetIcon
+            {...props}
+            alt="Search"
+            lightSrc={lightIcon}
+            darkSrc={darkIcon}
+            defaultWidth={30}
+            defaultHeight={30}
+        />
+    );
+};
 
 export default SearchIcon;
