@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import { Dark230x30OptionsComment as Comment } from "@/components/icons";
+import { N30x30OptionsComment as Comment } from "@/components/icons";
 import type { IconProps } from "@/components/icons/types";
 
 export interface ProfileMenuItem {

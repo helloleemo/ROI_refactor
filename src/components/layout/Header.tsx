@@ -7,12 +7,12 @@ import { useMemo, useState } from "react";
 import useMenuToggle from "@/hooks/useMenuToggle";
 import SharedIconButton from "../IconButton";
 import {
-    Dark136x36Language as Language,
-    Dark1Help as Reason,
-    Dark136x36Account as User,
-    Dark136x36Notification as Notification,
-    Dark136x36Currency as Currency,
-} from "../icons";
+    N36x36Language as Language,
+    Help as Reason,
+    N36x36Account as User,
+    N36x36Notification as Notification,
+    N36x36Currency as Currency,
+} from "@/components/icons";
 import DateNow from "./DateNow";
 import HierarchyOptions from "./HierarchyOptions";
 import SearchSite from "./SearchSite";

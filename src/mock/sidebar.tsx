@@ -1,9 +1,9 @@
 import { type ReactNode } from "react";
 import {
-    Dark136x36WidgetsCustomLine as CustomLine,
-    Dark136x362ndMenuDocManagement as DocManagement,
-    Dark136x361stMeunOverview as Overview,
-    Dark136x361stMeunSiteManagement as SiteManagement,
+    N36x36WidgetsCustomLine as CustomLine,
+    N36x36SecondMenuDocManagement as DocManagement,
+    N36x36FirstMeunOverview as Overview,
+    N36x36FirstMeunSiteManagement as SiteManagement,
 } from "../components/icons";
 
 export type FirstLevelItem = {
