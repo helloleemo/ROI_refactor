@@ -8,6 +8,7 @@ import { RouterProvider } from "react-router-dom"
 import { router } from './routes/routes'
 import { darkTheme, lightTheme } from './settings/theme'
 import { ThemeModeProvider } from "./settings/themeMode"
+import "./settings/main.css"
 
 const THEME_MODE_STORAGE_KEY = "theme-mode"
 

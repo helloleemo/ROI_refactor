@@ -79,7 +79,8 @@ function ResponsiveAppBar() {
                     bgcolor: "background.paper",
                     "& .MuiToolbar-root": {
                         height: 58,
-                    }
+                    },
+                    zIndex: (theme) => theme.zIndex.drawer + 3,
                 }}
             >
                 <Container
@@ -109,7 +110,7 @@ function ResponsiveAppBar() {
                             }} />
                             <Typography
                                 sx={{
-                                    color: (theme) => theme.palette.text.primary,
+                                    color: "semantic.brandAdaptive",
                                     fontSize: "1.2rem",
                                     fontWeight: 600,
                                     display: { xs: "none", md: "block" }
@@ -123,7 +124,16 @@ function ResponsiveAppBar() {
                             />
                             <SearchSite
                                 value={searchValue}
-                                sx={{ width: { xs: 220, md: 420 } }}
+                                sx={{
+                                    width: { xs: 200, md: 320 },
+                                    display: {
+                                        xs: "none",
+                                        sm: "none",
+                                        md: "none",
+                                        lg: "none",
+                                        xl: "block",
+                                    },
+                                }}
                                 suggestions={siteSuggestions}
                                 onChange={handleSearchChange}
                                 onSelectSuggestion={handleSearchSuggestionSelect}
@@ -151,7 +161,13 @@ function ResponsiveAppBar() {
                         }}>
                             <Typography sx={{
                                 color: "text.secondary",
-                                display: { xs: "none", md: "block" }
+                                display: {
+                                    xs: "none",
+                                    sm: "none",
+                                    md: "none",
+                                    lg: "block",
+                                    xl: "block",
+                                }
                             }}>
                                 <DateNow />
                             </Typography>
@@ -191,7 +207,7 @@ function ResponsiveAppBar() {
                             {/* Languages */}
                             <SharedIconButton
                                 onClick={(e) => handleClick(e, "languages")}
-                                icon={<Language width={30} height={30} />}
+                                icon={<Language width={36} height={36} />}
                                 ariaLabel="Open language menu"
                             />
                             <Menu
@@ -219,7 +235,7 @@ function ResponsiveAppBar() {
                             {/* Notifications */}
                             <SharedIconButton
                                 onClick={(e) => handleClick(e, "notifications")}
-                                icon={<Notification width={40} height={40} />}
+                                icon={<Notification width={36} height={36} />}
                                 ariaLabel="Open notifications menu"
                                 sx={{
                                     p: 0.5,
@@ -279,7 +295,7 @@ function ResponsiveAppBar() {
                             {/* Help & Support */}
                             <SharedIconButton
                                 onClick={(e) => handleClick(e, "helpAndSupport")}
-                                icon={<Reason width={40} height={40} />}
+                                icon={<Reason width={38} height={38} />}
                                 ariaLabel="Open help and support menu"
                                 sx={{
                                     p: 0.5,
@@ -289,7 +305,7 @@ function ResponsiveAppBar() {
                             {/* User */}
                             <SharedIconButton
                                 onClick={(e) => handleClick(e, "user")}
-                                icon={<User width={30} height={30} />}
+                                icon={<User width={42} height={42} />}
                                 ariaLabel="Open user menu"
                             />
                             <Menu

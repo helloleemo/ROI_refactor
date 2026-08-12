@@ -9,9 +9,9 @@ const stateTokens = {
         disabledText: "#CCCCCC",
         disabledBg: "#EFEEEE",
         border: "#EFEEEE",
+        gridBackground: "#FFFFFF",
         dialogPaper: "#FFFFFF",
         dialogBackdrop: "rgba(249, 249, 249, 0.5)",
-        gridHeader: "#DCDCDC",
     },
     dark: {
         hover: "rgba(102, 102, 102, 0.5)",
@@ -20,9 +20,9 @@ const stateTokens = {
         disabledText: "#666666",
         disabledBg: "#515151",
         border: "#515151",
+        gridBackground: "#262626",
         dialogPaper: "#262626",
         dialogBackdrop: "rgba(51, 51, 51, 0.5)",
-        gridHeader: "#3C3C3C",
     },
 } as const
 
@@ -30,35 +30,65 @@ const semanticPaletteTokens = {
     light: {
         borderSubtle: "#EFEEEE",
         surfaceSubtle: "#F9F9F9",
+        headerSubtle: "#F5F5F5",
         textMuted: "#CCCCCC",
+        brandAdaptive: "#0087DC",
+        errorAdaptive: "#EA6259",
     },
     dark: {
         borderSubtle: "#515151",
         surfaceSubtle: "#333333",
+        headerSubtle: "#454545",
         textMuted: "#515151",
+        brandAdaptive: "#FFFFFF",
+        errorAdaptive: "#FF8A80",
     },
 } as const
 
 const getComponentOverrides = (mode: "light" | "dark"): ThemeOptions["components"] => {
     const token = stateTokens[mode]
+    const semanticToken = semanticPaletteTokens[mode]
 
     return {
         MuiDataGrid: {
             styleOverrides: {
                 root: {
-                    borderColor: token.border,
-                    "& .MuiDataGrid-columnHeaders": {
-                        backgroundColor: token.gridHeader,
+                    border: "none",
+                    boxShadow: "none",
+                    backgroundColor: token.gridBackground,
+                    "--DataGrid-rowBorderColor": token.border,
+                    "& .MuiDataGrid-columnHeaders, & .MuiDataGrid-columnHeaders .MuiDataGrid-scrollbarFiller": {
+                        backgroundColor: `${semanticToken.headerSubtle} !important`,
                         borderBottomColor: token.border,
                     },
+                    "& .MuiDataGrid-main, & .MuiDataGrid-mainContent, & .MuiDataGrid-virtualScroller, & .MuiDataGrid-virtualScrollerContent, & .MuiDataGrid-virtualScrollerRenderZone, & .MuiDataGrid-row, & .MuiDataGrid-contentFiller, & .MuiDataGrid-filler, & .MuiDataGrid-filler--pinnedLeft, & .MuiDataGrid-filler--pinnedRight, & .MuiDataGrid-overlayWrapper, & .MuiDataGrid-overlayWrapperInner, & .MuiDataGrid-noRowsOverlay, & .MuiDataGrid-footerContainer": {
+                        backgroundColor: token.gridBackground,
+                    },
                     "& .MuiDataGrid-cell": {
+                        backgroundColor: token.gridBackground,
                         borderBottomColor: token.border,
+                        fontSize: 14,
+                    },
+                    "& .MuiDataGrid-footerContainer": {
+                        borderTop: "none",
+                    },
+                    "& .MuiDataGrid-cell--withLeftBorder, & .MuiDataGrid-columnHeader--withLeftBorder": {
+                        borderLeftColor: token.border,
+                    },
+                    "& .MuiDataGrid-cell--withRightBorder, & .MuiDataGrid-columnHeader--withRightBorder": {
+                        borderRightColor: token.border,
                     },
                     "& .MuiDataGrid-row:hover": {
                         backgroundColor: token.hover,
                     },
                     "& .MuiDataGrid-row.Mui-selected:hover": {
                         filter: "brightness(0.96)",
+                    },
+                    "& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within": {
+                        outline: "none",
+                    },
+                    "& .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-columnHeader:focus-within": {
+                        outline: "none",
                     },
                     "& .MuiDataGrid-cell .MuiIconButton-root.Mui-disabled": {
                         color: token.disabledText,
@@ -151,6 +181,20 @@ const lightTheme = createTheme({
             default: "#EEF2F6",
             paper: "#FFFFFF",
         },
+        DataGrid: {
+            bg: "#FFFFFF",
+            headerBg: semanticPaletteTokens.light.headerSubtle,
+            pinnedBg: "#FFFFFF",
+        },
+        chart: {
+            seriesColors: ["#0087DC", "#64D7D7", "#0D964D", "#F0C020", "#EA6259", "#00BEA5"],
+            actualLine: "#0087DC",
+            predictLine: "#64D7D7",
+            scatterDot: "rgba(0, 135, 220, 0.45)",
+            perfectFitLine: "#EA6259",
+            testBandFill: "rgba(100, 215, 215, 0.12)",
+            testBandLabel: "#4C96C7",
+        },
         text: {
             primary: "#262626",
             secondary: "#979797",
@@ -198,11 +242,25 @@ const darkTheme = createTheme({
             default: "#000000",
             paper: "#262626",
         },
+        DataGrid: {
+            bg: "#262626",
+            headerBg: semanticPaletteTokens.dark.headerSubtle,
+            pinnedBg: "#262626",
+        },
+        chart: {
+            seriesColors: ["#4DD0E1", "#FFD54F", "#53BDFF", "#A5E2FA", "#4CAF50", "#FF8A80"],
+            actualLine: "#53BDFF",
+            predictLine: "#A5E2FA",
+            scatterDot: "rgba(83, 189, 255, 0.45)",
+            perfectFitLine: "#FF8A80",
+            testBandFill: "rgba(165, 226, 250, 0.12)",
+            testBandLabel: "#A5E2FA",
+        },
         text: {
             primary: "#FFFFFF",
             secondary: "#979797",
         },
-        divider: "#515151",
+        divider: "#3a3a3a",
         action: {
             active: "#FFFFFF",
             hover: "rgba(102, 102, 102, 0.5)",

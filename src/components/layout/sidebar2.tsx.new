@@ -1,0 +1,110 @@
+import { useState } from "react";
+import {
+    Box,
+    Drawer,
+    List,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Typography,
+} from "@mui/material";
+import { MenuItem, type MenuItemProps } from "@/mock/sidebar";
+
+const SIDEBAR_WIDTH = 240;
+
+const Sidebar2 = () => {
+    const [activeFirstLevel, setActiveFirstLevel] = useState<string | null>(null);
+    const [currentChildren, setCurrentChildren] = useState<MenuItemProps[]>([]);
+
+    const onFirstLevelClick = (key: string) => {
+        setActiveFirstLevel(key);
+        const nextChildren = findCurrentChildren(key);
+        setCurrentChildren(nextChildren);
+    };
+
+    const findCurrentChildren = (activeFirstLevel: string | null) => {
+        const activeFirstLevelItem = MenuItem.find((item) => item.key === activeFirstLevel);
+        return activeFirstLevelItem?.children ?? [];
+    };
+
+    return (
+        <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
+            <Drawer
+                variant="permanent"
+                sx={{
+                    width: SIDEBAR_WIDTH,
+                    flexShrink: 0,
+                    "& .MuiDrawer-paper": {
+                        width: SIDEBAR_WIDTH,
+                        height: "100vh",
+                        boxSizing: "border-box",
+                        borderRight: "1px solid",
+                        borderColor: "divider",
+                        bgcolor: "background.paper",
+                        p: 1,
+                        top: 0,
+                        position: "fixed",
+                    },
+                }}
+            >
+                <Box sx={{ px: 1, py: 2 }}>
+                    <Typography component="div" sx={{ fontSize: 14, fontWeight: 600 }}>
+                        Sidebar
+                    </Typography>
+                </Box>
+
+                <List>
+                    {MenuItem.map((item) => (
+                        <ListItemButton
+                            key={item.key}
+                            onClick={() => onFirstLevelClick(item.key)}
+                            sx={{ borderRadius: 1, mb: 0.5 }}
+                        >
+                            <ListItemIcon sx={{ minWidth: 36 }}>{item.icon}</ListItemIcon>
+                            <ListItemText primary={item.label} />
+                        </ListItemButton>
+                    ))}
+                </List>
+            </Drawer>
+
+            {currentChildren.length > 0 ? (
+                <Drawer
+                    variant="permanent"
+                    sx={{
+                        width: SIDEBAR_WIDTH,
+                        flexShrink: 0,
+                        "& .MuiDrawer-paper": {
+                            width: SIDEBAR_WIDTH,
+                            height: "100vh",
+                            boxSizing: "border-box",
+                            borderRight: "1px solid",
+                            borderColor: "divider",
+                            bgcolor: "background.paper",
+                            p: 1,
+                            top: 0,
+                            left: SIDEBAR_WIDTH,
+                            position: "fixed",
+                        },
+                    }}
+                >
+                    <Box sx={{ px: 1, py: 2 }}>
+                        <Typography component="div" sx={{ fontSize: 14, fontWeight: 600 }}>
+                            {MenuItem.find((item) => item.key === activeFirstLevel)?.label ?? "子選單"}
+                        </Typography>
+                    </Box>
+
+                    <List>
+                        {currentChildren.map((child) => (
+                            <ListItemButton key={child.key} sx={{ borderRadius: 1, mb: 0.5 }}>
+                                <ListItemIcon sx={{ minWidth: 32 }}>{child.icon}</ListItemIcon>
+                                <ListItemText primary={child.label} />
+                            </ListItemButton>
+                        ))}
+                    </List>
+                </Drawer>
+            ) : null}
+        </Box>
+    );
+};
+
+export default Sidebar2;

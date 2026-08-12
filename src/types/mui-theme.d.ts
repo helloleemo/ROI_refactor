@@ -5,7 +5,19 @@ declare module "@mui/material/styles" {
         semantic: {
             borderSubtle: string
             surfaceSubtle: string
+            headerSubtle: string
             textMuted: string
+            brandAdaptive: string
+            errorAdaptive: string
+        }
+        chart: {
+            seriesColors: string[]
+            actualLine: string
+            predictLine: string
+            scatterDot: string
+            perfectFitLine: string
+            testBandFill: string
+            testBandLabel: string
         }
     }
 
@@ -13,7 +25,19 @@ declare module "@mui/material/styles" {
         semantic?: {
             borderSubtle?: string
             surfaceSubtle?: string
+            headerSubtle?: string
             textMuted?: string
+            brandAdaptive?: string
+            errorAdaptive?: string
+        }
+        chart?: {
+            seriesColors?: string[]
+            actualLine?: string
+            predictLine?: string
+            scatterDot?: string
+            perfectFitLine?: string
+            testBandFill?: string
+            testBandLabel?: string
         }
     }
 }

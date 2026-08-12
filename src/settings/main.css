@@ -8,39 +8,43 @@ body,
 #root {
 	width: 100%;
 	height: 100%;
+	/* scrollbar-gutter: stable; */
+	scrollbar-gutter: auto;
 }
 
 * {
-	scrollbar-width: none;
-	scrollbar-color: #c7c7c7 transparent;
+	scrollbar-width: thin;
+	scrollbar-color: rgba(120, 120, 120, 0.45) transparent;
 	user-select: none;
 	-webkit-user-select: none;
 }
 
 *::-webkit-scrollbar {
-	width: 0;
-	height: 0;
+	width: 6px;
+	height: 6px;
 }
 
 *::-webkit-scrollbar-thumb {
-	background-color: #c7c7c7;
+	background-color: rgba(120, 120, 120, 0.45);
+	background-clip: padding-box;
+	border: 2px solid transparent;
 	border-radius: 999px;
+	transition: background-color 160ms ease;
 }
 
 *::-webkit-scrollbar-track {
-	background-color: transparent;
+	background: transparent;
 }
 
 *:hover {
-	scrollbar-width: thin;
-	scrollbar-color: #c7c7c7 transparent;
+	scrollbar-color: rgba(120, 120, 120, 0.7) transparent;
 }
 
-*:hover::-webkit-scrollbar {
-	width: 4px;
-	height: 4px;
+*:hover::-webkit-scrollbar-thumb {
+	background-color: rgba(120, 120, 120, 0.7);
 }
+
 p, h1, h2, h3, h4, h5, h6, span, div, table {
-    cursor:default;
+    cursor: default;
 }
 

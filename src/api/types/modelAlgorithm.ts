@@ -19,6 +19,7 @@ interface retrainingModelAlgorithmResponse {
 // algorithm list
 interface algorithmListResponse {
     id: CommonIdType;
+    upload_name: string;
     upload_id: CommonIdType;
     algorithm: algorithmList;
     x_tags: string[];

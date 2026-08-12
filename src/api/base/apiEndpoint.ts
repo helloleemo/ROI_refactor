@@ -29,7 +29,7 @@ export const API_ENDPOINTS = {
         RETRAIN: (algorithm_id: CommonIdType) => `algorithm/retraining/${algorithm_id}`,
         LIST: (model_id: CommonIdType) => `algorithm/list/${model_id}`,
         DELETE: (id: CommonIdType) => `algorithm/${id}`,
-        INFO: "algorithm/comparison-list"
+        PREDICT_COMPARISON: "algorithm/predict-comparison"
     },
 
     // Equipment

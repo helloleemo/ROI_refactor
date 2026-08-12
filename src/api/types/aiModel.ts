@@ -21,8 +21,8 @@ interface AiModel {
     active_algorithm: ActiveAlgorithm
 }
 interface ActiveAlgorithm {
-    algorithm?: string,
-    csv_name?: string
+    algorithm?: string | null,
+    csv_name?: string | null
 }
 
 

@@ -27,7 +27,7 @@ const modelAlgorithm = {
     },
     comparisonList: async (body: algorithmCompareListRequest) => {
         return POST<algorithmCompareListResponse>({
-            endpoint: API_ENDPOINTS.MODEL_ALGORITHM.INFO,
+            endpoint: API_ENDPOINTS.MODEL_ALGORITHM.PREDICT_COMPARISON,
             body: body
         });
     }

@@ -1,13 +1,13 @@
 
 const PATHS = {
     root: "/",
-    models: "/models",
-    optimization: "/optimization",
-    modelList: "/list",
-    addModel: "/addModel",
-    addCandidateModel: "/addCandidateModel",
-    csvList: "/csvList",
-    csvList2: "/csvList2",
+    overview: "overview",
+    model: "model",
+    optimization: "optimization",
+    modelList: "model-list",
+    addModel: "add-model",
+    addCandidateModel: "add-candidate-model",
+    csvList: "csv-list",
 }
 
 export default PATHS

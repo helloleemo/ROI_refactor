@@ -89,7 +89,7 @@ const OptionsRender = ({ title, options, value, onChange, showArrow = true }: Op
                         <Box
                             key={item.value}
                             onClick={() => onChange(item.value)}
-                            sx={{
+                            sx={(theme) => ({
                                 px: 2,
                                 py: 1.25,
                                 borderRadius: 1,
@@ -97,24 +97,27 @@ const OptionsRender = ({ title, options, value, onChange, showArrow = true }: Op
                                 alignItems: "center",
                                 justifyContent: "space-between",
                                 cursor: "pointer",
-                                color: selected ? "primary.main" : "text.primary",
-                                fontWeight: selected ? 900 : 300,
-                                bgcolor: selected ? "#EAF4FF" : "transparent",
+                                color: selected ? theme.palette.primary.contrastText : theme.palette.text.primary,
+                                bgcolor: selected
+                                    ? theme.palette.mode === "dark"
+                                        ? "rgba(83, 189, 255, 0.18)"
+                                        : "#EAF4FF"
+                                    : "transparent",
                                 transition: "background-color 0.15s ease, color 0.15s ease",
                                 "&:hover": {
-                                    bgcolor: !selected ? "semantic.surfaceSubtle" : undefined,
+                                    bgcolor: !selected ? theme.palette.semantic.surfaceSubtle : undefined,
                                 },
-                            }}
+                            })}
                         >
-                            <Typography sx={{ fontSize: 14, lineHeight: 1.35, color: "inherit" }}>
+                            <Typography sx={{ fontSize: 14, lineHeight: 1.35, color: "inherit", fontWeight: selected ? 700 : 300, }}>
                                 {item.label}
                             </Typography>
                             {showArrow && selected ? <KeyboardArrowRightIcon fontSize="small" sx={{ color: 'inherit' }} /> : null}
                         </Box>
                     );
                 })}
-            </Stack>
-        </Box>
+            </Stack >
+        </Box >
     );
 };
 
