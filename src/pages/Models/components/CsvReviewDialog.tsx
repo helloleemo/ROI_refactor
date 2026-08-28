@@ -199,7 +199,7 @@ const CsvReviewDialog = ({
                                                     backgroundColor:
                                                         theme.palette.mode === "dark"
                                                             ? alpha(theme.palette.common.white, 0.04)
-                                                            : "#fbfcfe",
+                                                            : theme.palette.semantic.surfaceSubtle,
                                                     height: "100%",
                                                     display: "flex",
                                                     flexDirection: "column",

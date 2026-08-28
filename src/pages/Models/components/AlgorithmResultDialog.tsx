@@ -46,7 +46,9 @@ const cardPaperSx = (theme: any) => ({
     py: 1,
     borderRadius: 1.2,
     borderColor: theme.palette.divider,
-    backgroundColor: theme.palette.mode === "dark" ? alpha(theme.palette.common.white, 0.04) : "#fbfcfe",
+    backgroundColor: theme.palette.mode === "dark"
+        ? alpha(theme.palette.common.white, 0.04)
+        : theme.palette.semantic.surfaceSubtle,
     height: "100%",
     display: "flex",
     flexDirection: "column",

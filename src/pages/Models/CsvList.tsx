@@ -1,5 +1,5 @@
 import { SearchBar, TitleText } from "@/components";
-import OneSectionStyled from "@/components/gridLayout/OneSection";
+import OneSectionStyled from "@/components/gridLayout/SectionLayout";
 import { Box, Button } from "@mui/material";
 import { fileListMock } from "@/mock/filesList";
 import importFileService from "@/api/services/importFile"
@@ -52,7 +52,7 @@ const CsvList = () => {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                mb: 2
+                mb: 1
             }}>
                 <TitleText title="CSV列表" />
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
@@ -71,7 +71,7 @@ const CsvList = () => {
                 </Box>
             </Box>
 
-            <Box sx={{ flex: 1, minHeight: 0 }}>
+            <Box sx={{ flex: 1, minHeight: 0, height: "100%", display: "flex", flexDirection: "column" }}>
                 <CsvDatagrid
                     rows={filteredCsvList}
                     onDeleted={getData}

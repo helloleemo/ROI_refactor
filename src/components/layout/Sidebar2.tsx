@@ -18,9 +18,9 @@ import { useNavigate } from "react-router-dom";
 import { MenuItem, type MenuItemProps } from "@/mock/sidebar";
 
 const FIRST_COLLAPSED_WIDTH = 72;
-const FIRST_EXPANDED_WIDTH = 240;
-const SECOND_WIDTH = 240;
-const HEADER_HEIGHT = 68;
+const FIRST_EXPANDED_WIDTH = 220;
+const SECOND_WIDTH = 220;
+const HEADER_HEIGHT = 70;
 
 const Sidebar2 = () => {
     const navigate = useNavigate();
@@ -38,7 +38,9 @@ const Sidebar2 = () => {
     const firstDrawerWidth = isFirstLevelHovered ? FIRST_EXPANDED_WIDTH : FIRST_COLLAPSED_WIDTH;
     const secondDrawerWidth = hasSecondLevelMenu && !isSecondLevelCollapsed ? SECOND_WIDTH : 0;
     const secondDrawerLeft = FIRST_COLLAPSED_WIDTH;
-    const toggleButtonLeft = secondDrawerLeft + secondDrawerWidth - 20;
+    const firstDrawerRightEdge = firstDrawerWidth;
+    const secondDrawerRightEdge = secondDrawerLeft + secondDrawerWidth;
+    const toggleButtonLeft = Math.max(firstDrawerRightEdge, secondDrawerRightEdge) - 20;
     const sidebarOccupiedWidth = FIRST_COLLAPSED_WIDTH + secondDrawerWidth;
 
     const handleFirstLevelClick = (activeItem: MenuItemProps) => {
@@ -90,67 +92,85 @@ const Sidebar2 = () => {
                 transition: "width 180ms ease",
             }}
         >
-            <Drawer
-                variant="permanent"
+            <Box
+                onMouseEnter={() => setIsFirstLevelHovered(true)}
+                onMouseLeave={() => setIsFirstLevelHovered(false)}
                 sx={{
+                    position: "relative",
                     width: firstDrawerWidth,
                     flexShrink: 0,
-                    "& .MuiDrawer-paper": {
-                        width: firstDrawerWidth,
-                        height: `calc(100vh - ${HEADER_HEIGHT}px)`,
-                        boxSizing: "border-box",
-                        borderRight: "1px solid",
-                        borderColor: "divider",
-                        bgcolor: "background.paper",
-                        p: 1,
-                        top: `${HEADER_HEIGHT}px`,
-                        position: "fixed",
-                        transition: "width 180ms ease",
-                        zIndex: 2,
-                    },
+                    transition: "width 180ms ease",
                 }}
             >
-                <List
-                    onMouseEnter={() => setIsFirstLevelHovered(true)}
-                    onMouseLeave={() => setIsFirstLevelHovered(false)}
+                <Drawer
+                    variant="permanent"
+                    sx={{
+                        width: firstDrawerWidth,
+                        flexShrink: 0,
+                        "& .MuiDrawer-paper": {
+                            width: firstDrawerWidth,
+                            height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+                            boxSizing: "border-box",
+                            borderRight: "1px solid",
+                            borderColor: "divider",
+                            bgcolor: "background.paper",
+                            p: 1,
+                            top: `${HEADER_HEIGHT}px`,
+                            position: "fixed",
+                            transition: "width 180ms ease",
+                            overflow: "hidden",
+                            zIndex: 2,
+                        },
+                    }}
                 >
-                    {MenuItem.map((item) => (
-                        <ListItemButton
-                            key={item.key}
-                            selected={item.key === activeFirstLevelKey}
-                            onClick={() => handleFirstLevelClick(item)}
-                            sx={{
-                                borderRadius: 1,
-                                mb: 0.5,
-                                justifyContent: isFirstLevelHovered ? "flex-start" : "center",
-                                minHeight: 48,
-                            }}
-                        >
-                            <ListItemIcon sx={{
-                                minWidth: isFirstLevelHovered ? 36 : 0,
-                                mr: isFirstLevelHovered ? 1 : 0,
-                                cursor: "pointer",
-                            }}>
-                                {item.icon}
-                            </ListItemIcon>
-                            <ListItemText
+                    <List>
+                        {MenuItem.map((item) => (
+                            <ListItemButton
+                                key={item.key}
+                                selected={item.key === activeFirstLevelKey}
+                                onClick={() => handleFirstLevelClick(item)}
                                 sx={{
-                                    display: isFirstLevelHovered ? "block" : "none",
-                                    cursor: "pointer",
-
+                                    borderRadius: 1,
+                                    mb: 0.5,
+                                    justifyContent: isFirstLevelHovered ? "flex-start" : "center",
+                                    minHeight: 48,
+                                    overflow: "hidden",
+                                    transition: "justify-content 180ms ease",
                                 }}
-                                primary={
-                                    <Typography sx={{
-                                        fontSize: 14,
+                            >
+                                <ListItemIcon sx={{
+                                    minWidth: isFirstLevelHovered ? 36 : 0,
+                                    mr: isFirstLevelHovered ? 1 : 0,
+                                    cursor: "pointer",
+                                    transition: "all 180ms ease",
+                                }}>
+                                    {item.icon}
+                                </ListItemIcon>
+                                <ListItemText
+                                    sx={{
+                                        flex: 1,
+                                        minWidth: 0,
+                                        opacity: isFirstLevelHovered ? 1 : 0,
+                                        width: isFirstLevelHovered ? "auto" : 0,
+                                        maxWidth: isFirstLevelHovered ? 140 : 0,
+                                        overflow: "hidden",
+                                        whiteSpace: "nowrap",
                                         cursor: "pointer",
-
-                                    }}>{item.label}</Typography>
-                                }
-                            />
-                        </ListItemButton>
-                    ))}
-                </List>
-            </Drawer>
+                                        transition: "opacity 180ms ease, width 180ms ease, max-width 180ms ease",
+                                    }}
+                                    primary={
+                                        <Typography sx={{
+                                            fontSize: 14,
+                                            cursor: "pointer",
+                                            whiteSpace: "nowrap",
+                                        }}>{item.label}</Typography>
+                                    }
+                                />
+                            </ListItemButton>
+                        ))}
+                    </List>
+                </Drawer>
+            </Box>
 
             {/* Second Level Drawer */}
             {hasSecondLevelMenu ? (
@@ -178,17 +198,12 @@ const Sidebar2 = () => {
                             },
                         }}
                     >
-                        <Box sx={{ height: "100%", display: "flex", flexDirection: "column", position: "relative", pb: 0 }}>
+                        <Box sx={{ height: "100%", display: "flex", flexDirection: "column", position: "relative" }}>
                             {!isSecondLevelCollapsed ? (
-                                <Box sx={{ flex: 1, minHeight: 0, overflow: "hidden" }}>
-                                    <Box sx={{ px: 1, py: 2 }}>
-                                        <Typography component="div" sx={{
-                                            fontSize: 16,
-                                            fontWeight: 600,
+                                <Box sx={{ height: "100%", display: "flex", flexDirection: "column", position: "relative" }}>
 
-                                        }}>
-                                            {activeFirstLevelLabel}
-                                        </Typography>
+                                    <Box sx={{ px: 2, py: 1.5, borderBottom: "1px solid", borderColor: "divider" }}>
+                                        <Typography sx={{ fontSize: 15, fontWeight: 700 }}>{activeFirstLevelLabel}</Typography>
                                     </Box>
 
                                     <List sx={{ flex: 1, overflowY: "auto" }}>
@@ -203,8 +218,9 @@ const Sidebar2 = () => {
                                                         selected={menu.key === activeSecondLevelKey}
                                                         onClick={() => handleSecondLevelClick(menu)}
                                                         sx={{
-                                                            borderRadius: 1,
+                                                            // borderRadius: 1,
                                                             mb: 0.5,
+                                                            // mx: 1,
                                                             cursor: "pointer",
                                                         }}
                                                     >
@@ -232,7 +248,7 @@ const Sidebar2 = () => {
                                                     <ListItemButton
                                                         selected={menu.key === activeSecondLevelKey || Boolean(activeThirdLevelKey && menu.children?.some((child) => child.key === activeThirdLevelKey))}
                                                         onClick={() => handleSecondGroupToggle(menu.key)}
-                                                        sx={{ borderRadius: 1, mb: 0.5, cursor: "pointer" }}
+                                                        sx={{ mb: 0.5, cursor: "pointer" }}
                                                     >
 
 
@@ -250,7 +266,7 @@ const Sidebar2 = () => {
                                                                     key={child.key}
                                                                     selected={child.key === activeThirdLevelKey}
                                                                     onClick={() => handleThirdLevelClick(menu, child)}
-                                                                    sx={{ borderRadius: 0, mb: 0., cursor: "pointer" }}
+                                                                    sx={{ mb: 0.5, cursor: "pointer" }}
                                                                 >
                                                                     <ListItemIcon sx={{ minWidth: 28, cursor: "pointer" }}>{child.icon}</ListItemIcon>
                                                                     <ListItemText
@@ -292,7 +308,7 @@ const Sidebar2 = () => {
                     </Box>
                 </>
             ) : null}
-        </Box>
+        </Box >
     );
 };
 

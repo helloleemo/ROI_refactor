@@ -89,7 +89,12 @@ const YChart = ({ actual, predict, y_tag }: Y_XTimeChartProps) => {
     );
 
     return (
-        <Box sx={{ width: "100%", height: "100%", minHeight: 0, overflow: "auto" }}>
+        <Box sx={{
+            width: "100%",
+            height: "100%",
+            minHeight: 0,
+            // overflow: "auto"
+        }}>
             <Chart
                 options={options}
                 containerProps={{ style: { width: "100%", minHeight: "100%" } }}

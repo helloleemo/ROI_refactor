@@ -10,6 +10,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import useMenuToggle from "@/hooks/useMenuToggle";
 import { hierarchyData } from "./hierarchyData";
+import { useThemeMode } from "@/hooks/useThemeMode";
 
 type OptionItem = {
     value: string;
@@ -97,11 +98,15 @@ const OptionsRender = ({ title, options, value, onChange, showArrow = true }: Op
                                 alignItems: "center",
                                 justifyContent: "space-between",
                                 cursor: "pointer",
-                                color: selected ? theme.palette.primary.contrastText : theme.palette.text.primary,
-                                bgcolor: selected
+                                color: selected
                                     ? theme.palette.mode === "dark"
-                                        ? "rgba(83, 189, 255, 0.18)"
-                                        : "#EAF4FF"
+                                        ? theme.palette.primary.light
+                                        : theme.palette.primary.main
+                                    : theme.palette.mode === "dark"
+                                        ? theme.palette.semantic.brandAdaptive
+                                        : theme.palette.text.primary,
+                                bgcolor: selected
+                                    ? theme.palette.primary.main + "1A"
                                     : "transparent",
                                 transition: "background-color 0.15s ease, color 0.15s ease",
                                 "&:hover": {
@@ -122,6 +127,8 @@ const OptionsRender = ({ title, options, value, onChange, showArrow = true }: Op
 };
 
 const HierarchyOptions = ({ selectedSite, onSiteChange }: HierarchyOptionsProps) => {
+    const { mode } = useThemeMode();
+    const isDark = mode === "dark";
     const { anchorEl, open, handleClick, handleClose } = useMenuToggle();
     const initialSelection = getDefaultSelection();
     const [companyId, setCompanyId] = useState(initialSelection.companyId);

@@ -147,6 +147,7 @@ const Y_XTimeChart = ({ times, actual, predict, y_tag, dataset }: Y_XTimeChartPr
                 minHeight: 0,
                 display: "flex",
                 flexDirection: "column",
+                bgcolor: theme.palette.background.paper,
             }}
         >
             {dataset && (
@@ -159,13 +160,16 @@ const Y_XTimeChart = ({ times, actual, predict, y_tag, dataset }: Y_XTimeChartPr
                         />
                     }
                     label="顯示測試集範圍"
-                    sx={{ alignSelf: "flex-end", mb: 0.5 }}
+                    sx={{
+                        alignSelf: "flex-end",
+                        mb: 0.5
+                    }}
                 />
             )}
             <Box sx={{
                 flex: 1,
                 minHeight: 0,
-                overflow: "auto",
+                // overflow: "auto",
                 "& > div": {
                     width: "100%",
                     minHeight: "100%",

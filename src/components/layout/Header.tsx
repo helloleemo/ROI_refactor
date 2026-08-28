@@ -23,7 +23,7 @@ import { currency } from "@/settings/currency";
 import { languages } from "@/settings/languages";
 import { profile } from "@/settings/profile";
 import { notifications } from "@/mock/notifications";
-import { useThemeMode } from "@/settings/themeMode";
+import { useThemeMode } from "@/hooks/useThemeMode";
 
 const getDefaultSite = () => {
     const firstCompany = hierarchyData[0];
@@ -176,7 +176,7 @@ function ResponsiveAppBar() {
                             <SharedIconButton
                                 id={"currencyButton"}
                                 onClick={(e) => handleClick(e, "currency")}
-                                icon={<Currency width={40} height={40} />}
+                                icon={<Currency width={32} height={32} />}
                                 ariaLabel="Open currency menu"
                                 sx={{
                                     p: 0.5,
@@ -207,7 +207,7 @@ function ResponsiveAppBar() {
                             {/* Languages */}
                             <SharedIconButton
                                 onClick={(e) => handleClick(e, "languages")}
-                                icon={<Language width={36} height={36} />}
+                                icon={<Language width={32} height={32} />}
                                 ariaLabel="Open language menu"
                             />
                             <Menu
@@ -235,7 +235,7 @@ function ResponsiveAppBar() {
                             {/* Notifications */}
                             <SharedIconButton
                                 onClick={(e) => handleClick(e, "notifications")}
-                                icon={<Notification width={36} height={36} />}
+                                icon={<Notification width={32} height={32} />}
                                 ariaLabel="Open notifications menu"
                                 sx={{
                                     p: 0.5,
@@ -295,7 +295,7 @@ function ResponsiveAppBar() {
                             {/* Help & Support */}
                             <SharedIconButton
                                 onClick={(e) => handleClick(e, "helpAndSupport")}
-                                icon={<Reason width={38} height={38} />}
+                                icon={<Reason width={32} height={32} />}
                                 ariaLabel="Open help and support menu"
                                 sx={{
                                     p: 0.5,
@@ -305,7 +305,7 @@ function ResponsiveAppBar() {
                             {/* User */}
                             <SharedIconButton
                                 onClick={(e) => handleClick(e, "user")}
-                                icon={<User width={42} height={42} />}
+                                icon={<User width={32} height={32} />}
                                 ariaLabel="Open user menu"
                             />
                             <Menu

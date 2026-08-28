@@ -2,7 +2,7 @@ import { SearchBar, TitleText } from "@/components";
 import { useState, useEffect } from "react"
 import { Box, Button } from "@mui/material";
 
-import OneSectionStyled from "@/components/gridLayout/OneSection";
+import SectionLayout from "@/components/gridLayout/SectionLayout.tsx";
 import aiModelService from "@/api/services/aiModel";
 import type { AiModel } from "@/api/types/aiModel";
 import type { algorithmListResponse } from "@/api/types/modelAlgorithm";
@@ -74,7 +74,7 @@ const ModelManagement = () => {
 
     return (
         <>
-            <OneSectionStyled sx={{ height: "100%", display: "flex", flexDirection: "column", minHeight: 0 }}>
+            <SectionLayout sx={{ height: "100%", display: "flex", flexDirection: "column", minHeight: 0 }}>
                 <Box sx={{
                     display: "flex",
                     justifyContent: "space-between",
@@ -116,7 +116,7 @@ const ModelManagement = () => {
                     onUpdated={getData}
                 />
 
-            </OneSectionStyled>
+            </SectionLayout>
 
 
 
