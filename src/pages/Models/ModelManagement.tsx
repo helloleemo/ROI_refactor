@@ -11,6 +11,8 @@ import useSearchFilter from "@/hooks/useSearchFilter";
 import modelAlgorithmService from "@/api/services/modelAlgorithm";
 import AiModelDatagrid from "./components/AiModelDatagrid.tsx";
 import AiModelReviewDialog from "./components/AiModelReviewDialog";
+import { useOpenDialog } from "@/hooks/index.ts";
+import AddModelDialog from "./components/AddModelDialog.tsx";
 
 
 const ModelManagement = () => {
@@ -20,28 +22,35 @@ const ModelManagement = () => {
     const [algorithmList, setAlgorithmList] = useState<algorithmListResponse[]>([]);
     const [isLoadingAlgorithms, setIsLoadingAlgorithms] = useState(false);
     const [reviewErrorMessage, setReviewErrorMessage] = useState("");
+    const { open, setOpen, openDialog, closeDialog, handleOpen, handleClose, } = useOpenDialog({
+        create: false,
+    });
 
     const { searchValue, handleSearchChange, filteredItems: filteredModelList } = useSearchFilter({
         items: modelList,
-        fields: ["model_name", "id"],
+        fields: ["model_name"],
     });
 
-    const handleReview = async (row: AiModel) => {
-        setSelectedRow(row);
-        setIsReviewOpen(true);
+    const fetchAlgorithms = async (modelId: string | number) => {
         setIsLoadingAlgorithms(true);
         setReviewErrorMessage("");
 
         try {
-            const data = await modelAlgorithmService.getList(row.id);
+            const data = await modelAlgorithmService.getList(modelId);
             setAlgorithmList(data);
-            console.log("Fetched algorithm list for model ID", row.id, ":", data);
+            console.log("Fetched algorithm list for model ID", modelId, ":", data);
         } catch (error: any) {
             setAlgorithmList([]);
             setReviewErrorMessage(`取得演算法列表失敗：${error?.message ?? "請稍後再試"}`);
         } finally {
             setIsLoadingAlgorithms(false);
         }
+    };
+
+    const handleReview = async (row: AiModel) => {
+        setSelectedRow(row);
+        setIsReviewOpen(true);
+        await fetchAlgorithms(row.id);
     };
 
     const handleReviewOpenChange = (open: boolean) => {
@@ -54,6 +63,9 @@ const ModelManagement = () => {
         }
     };
 
+    const handleAddDialog = (dialog: string) => {
+        openDialog(dialog);
+    }
 
     const getData = async () => {
         try {
@@ -86,13 +98,12 @@ const ModelManagement = () => {
                         <SearchBar
                             value={searchValue}
                             onChange={handleSearchChange}
-                            placeholder="搜尋模型名稱、ID"
+                            placeholder="搜尋模型名稱"
                             sx={{ width: 280 }}
                         />
                         <Button
                             variant="outlined"
-                            // onClick={() => setIsUploadOpen(true)}
-                            onClick={() => { }}
+                            onClick={() => handleAddDialog("create")}
                         >
                             + 新增
                         </Button>
@@ -113,9 +124,21 @@ const ModelManagement = () => {
                     algorithms={algorithmList}
                     isLoading={isLoadingAlgorithms}
                     errorMessage={reviewErrorMessage}
-                    onUpdated={getData}
+                    onUpdated={() => {
+                        if (selectedRow) {
+                            return fetchAlgorithms(selectedRow.id);
+                        }
+                    }}
                 />
 
+                <AddModelDialog
+                    open={open.create}
+                    onConfirm={() => {
+                        getData();
+                    }}
+                    setOpen={() => openDialog("create")}
+                    onClose={() => closeDialog("create")}
+                />
             </SectionLayout>
 
 

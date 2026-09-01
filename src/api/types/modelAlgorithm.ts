@@ -2,12 +2,50 @@
 import type { CommonIdType, ModelStatusTypes, StatusTypes, algorithmList } from './shared';
 
 // create
+type featureConfig = {
+    name: string;
+    formula: string;
+    description: string;
+};
 interface createModelAlgorithm {
     model_id: CommonIdType;
     upload_id: CommonIdType;
     algorithm: algorithmList;
     x_tags: string[];
     y_tag: string;
+
+    // ------------ optional --------------
+    // feature_config: featureConfig[],
+    // physics_config: Record<string, string>,
+    // pipeline_config: {
+    //     resample: {
+    //         enabled: true,
+    //         freq: "10s"
+    //     },
+    //     missing: {
+    //         enabled: true,
+    //         max_gap: 5
+    //     },
+    //     outlier: {
+    //         enabled: true,
+    //         sigma: 3,
+    //         bounds: {
+    //             [key: string]: number[];
+    //         }
+    //     },
+    //     physics: {
+    //         enabled: false
+    //     },
+    //     feature_eng: {
+    //         enabled: true,
+    //         lags: [
+    //             0
+    //         ],
+    //         rolling_windows: [
+    //             0
+    //         ]
+    //     }
+    // }
 }
 
 // retraining

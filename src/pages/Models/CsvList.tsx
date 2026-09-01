@@ -26,12 +26,12 @@ const CsvList = () => {
     const getData = async () => {
         try {
             const data = await importFileService.getList()
-            const tagData = await tagDataService.getTagList("1")
-            const tagValue = await tagDataService.getTagValues({ upload_id: 1, page: 1, page_size: 10 })
+            // const tagData = await tagDataService.getTagList("1")
+            // const tagValue = await tagDataService.getTagValues({ upload_id: 1, page: 1, page_size: 10 })
 
-            console.log("tagData", tagData);
-            console.log("tagValue", tagValue);
-            console.log("data", data);
+            // console.log("tagData", tagData);
+            // console.log("tagValue", tagValue);
+            // console.log("data", data);
             setCsvList(data);
         } catch (error) {
             console.error(error);
@@ -59,7 +59,7 @@ const CsvList = () => {
                     <SearchBar
                         value={searchValue}
                         onChange={handleSearchChange}
-                        placeholder="搜尋 CSV 檔名、欄位或行數"
+                        placeholder="搜尋 CSV 檔名"
                         sx={{ width: 280 }}
                     />
                     <Button

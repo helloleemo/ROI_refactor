@@ -62,5 +62,9 @@ const OptimizerNum = {
 type OptimizerList = keyof typeof OptimizerNum;
 
 
-export type { StatusTypes, CommonIdType, algorithmList, ModelStatusTypes, OptimizerList };
+type TranslationResponse = {
+    [key: string]: string;
+};
+
+export type { StatusTypes, CommonIdType, algorithmList, ModelStatusTypes, OptimizerList, TranslationResponse };
 

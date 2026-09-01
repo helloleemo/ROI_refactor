@@ -1,4 +1,4 @@
-import { N30x30OptionsEdit, N30x30OptionsEyesopen, N30x30OptionsList } from "@/components";
+import { N30x30OptionsDelete, N30x30OptionsEdit, N30x30OptionsEyesopen, N30x30OptionsList } from "@/components";
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import type { GridColDef } from "@mui/x-data-grid";
 import type { AlgorithmPreviewRow } from "../AlgorithmPreviewRow.types";
@@ -7,12 +7,16 @@ type CreateAlgorithmPreviewColumnsArgs = {
     onOpenXTagsDialog: (row: AlgorithmPreviewRow) => void;
     onOpenEnableConfirm: (row: AlgorithmPreviewRow) => void;
     onOpenDetailDialog: (row: AlgorithmPreviewRow) => void;
+    onOpenEditForm: (row: AlgorithmPreviewRow) => void;
+    onOpenDeleteConfirm: (row: AlgorithmPreviewRow) => void;
 };
 
 export const createAlgorithmPreviewColumns = ({
     onOpenXTagsDialog,
     onOpenEnableConfirm,
     onOpenDetailDialog,
+    onOpenEditForm,
+    onOpenDeleteConfirm,
 }: CreateAlgorithmPreviewColumnsArgs): GridColDef<AlgorithmPreviewRow>[] => {
     return [
         { field: "upload_name", headerName: "檔案名稱", width: 120 },
@@ -73,28 +77,53 @@ export const createAlgorithmPreviewColumns = ({
         {
             field: "action",
             headerName: "操作",
-            minWidth: 220,
+            minWidth: 260,
             filterable: false,
             sortable: false,
-            renderCell: ({ row }) => (
-                <Box sx={{ display: "flex", alignItems: "center", width: "100%", height: "100%", gap: 0.5 }}>
-                    <Button
-                        size="small"
-                        variant={row.enabled ? "contained" : "outlined"}
-                        color="primary"
-                        sx={{ minWidth: 78, lineHeight: 1 }}
-                        onClick={() => onOpenEnableConfirm(row)}
-                    >
-                        {row.enabled ? "已啟用" : "未啟用"}
-                    </Button>
-                    <IconButton size="small" sx={{ p: 0.5 }} onClick={() => onOpenDetailDialog(row)} aria-label="view details">
-                        <N30x30OptionsEyesopen />
-                    </IconButton>
-                    <IconButton size="small" sx={{ p: 0.5 }}>
-                        <N30x30OptionsEdit accentColor="primary.main" />
-                    </IconButton>
-                </Box>
-            ),
+            renderCell: ({ row }) => {
+                const actionDisabled = row.statusCode !== 4;
+
+                return (
+                    <Box sx={{ display: "flex", alignItems: "center", width: "100%", height: "100%", gap: 0.5 }}>
+                        <Button
+                            size="small"
+                            variant={row.enabled ? "contained" : "outlined"}
+                            color="primary"
+                            sx={{ minWidth: 78, lineHeight: 2 }}
+                            disabled={actionDisabled}
+                            onClick={() => onOpenEnableConfirm(row)}
+                        >
+                            {row.enabled ? "已啟用" : "未啟用"}
+                        </Button>
+                        <IconButton
+                            size="small"
+                            sx={{ p: 0.5 }}
+                            disabled={actionDisabled}
+                            onClick={() => onOpenDetailDialog(row)}
+                            aria-label="view details"
+                        >
+                            <N30x30OptionsEyesopen />
+                        </IconButton>
+                        <IconButton
+                            size="small"
+                            sx={{ p: 0.5 }}
+                            disabled={actionDisabled}
+                            onClick={() => onOpenEditForm(row)}
+                        >
+                            <N30x30OptionsEdit accentColor="primary.main" />
+                        </IconButton>
+                        <IconButton
+                            size="small"
+                            sx={{ p: 0.5 }}
+                            disabled={actionDisabled}
+                            onClick={() => onOpenDeleteConfirm(row)}
+                            aria-label="delete algorithm"
+                        >
+                            <N30x30OptionsDelete accentColor="semantic.errorAdaptive" />
+                        </IconButton>
+                    </Box>
+                );
+            },
         },
     ];
 };

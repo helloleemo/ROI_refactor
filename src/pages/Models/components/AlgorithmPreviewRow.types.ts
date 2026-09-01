@@ -17,6 +17,7 @@ export type AlgorithmPreviewRow = {
     mape: string;
     metricsTrain: AlgorithmMetricPair;
     metricsTest: AlgorithmMetricPair;
+    statusCode: number;
     status: string;
     enabled: boolean;
 };

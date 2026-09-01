@@ -1,16 +1,46 @@
-import { useEffect, useMemo, useState } from "react";
-import { useTheme } from "@mui/material/styles";
+import { useTheme, type Theme } from "@mui/material/styles";
 import type { IconProps } from "./types";
 
 type ThemedAssetIconProps = IconProps & {
     lightSrc: string;
     darkSrc: string;
+    // 單色線稿圖示才需要提供，才能在套用主題色時改色
+    lightRaw?: string;
+    darkRaw?: string;
     alt: string;
     defaultWidth: number;
     defaultHeight: number;
+    forceMode?: "light" | "dark";
 };
 
-const svgTextCache = new Map<string, string>();
+const resolveAccentColor = (theme: Theme, accentColor?: string) => {
+    if (!accentColor) {
+        return undefined;
+    }
+
+    return accentColor.split(".").reduce<unknown>((currentValue, key) => {
+        if (currentValue && typeof currentValue === "object" && key in currentValue) {
+            return (currentValue as Record<string, unknown>)[key];
+        }
+
+        return undefined;
+    }, theme.palette as unknown) as string | undefined;
+};
+
+
+const recolorSvgMarkup = (markup: string, color: string) => {
+    return markup
+        .replace(/<svg\b([^>]*)>/, (_match, attributes: string) => {
+            const sanitizedAttributes = attributes
+                .replace(/\swidth="[^"]*"/i, "")
+                .replace(/\sheight="[^"]*"/i, "");
+
+            return `<svg${sanitizedAttributes} width="100%" height="100%" preserveAspectRatio="xMidYMid meet">`;
+        })
+        .replace(/(fill|stroke)="(#[0-9a-fA-F]{3,8}|currentColor)"/g, `$1="${color}"`);
+};
+
+const toSvgDataUri = (markup: string) => `data:image/svg+xml;utf8,${encodeURIComponent(markup)}`;
 
 const ThemedAssetIcon = ({
     width,
@@ -18,91 +48,31 @@ const ThemedAssetIcon = ({
     accentColor,
     lightSrc,
     darkSrc,
+    lightRaw,
+    darkRaw,
     alt,
     defaultWidth,
     defaultHeight,
+    forceMode,
 }: ThemedAssetIconProps) => {
     const theme = useTheme();
-    const src = theme.palette.mode === "dark" ? darkSrc : lightSrc;
-    const [svgText, setSvgText] = useState<string | null>(null);
-    const resolvedAccentColor = accentColor
-        ? accentColor.split(".").reduce<unknown>((currentValue, key) => {
-            if (currentValue && typeof currentValue === "object" && key in currentValue) {
-                return (currentValue as Record<string, unknown>)[key];
-            }
+    const effectiveMode = forceMode ?? (theme.palette.mode === "dark" ? "dark" : "light");
+    const src = effectiveMode === "dark" ? darkSrc : lightSrc;
+    const rawMarkup = effectiveMode === "dark" ? darkRaw : lightRaw;
+    const resolvedAccentColor = resolveAccentColor(theme, accentColor);
+    const finalWidth = width ?? defaultWidth;
+    const finalHeight = height ?? defaultHeight;
 
-            return undefined;
-        }, theme.palette as unknown)
-        : undefined;
-
-    useEffect(() => {
-        if (typeof resolvedAccentColor !== "string") {
-            return;
-        }
-
-        const cachedSvgText = svgTextCache.get(src);
-        if (cachedSvgText) {
-            setSvgText(cachedSvgText);
-            return;
-        }
-
-        let isActive = true;
-
-        fetch(src)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Failed to load svg asset");
-                }
-
-                return response.text();
-            })
-            .then((text) => {
-                svgTextCache.set(src, text);
-                if (isActive) {
-                    setSvgText(text);
-                }
-            })
-            .catch(() => {
-                if (isActive) {
-                    setSvgText(null);
-                }
-            });
-
-        return () => {
-            isActive = false;
-        };
-    }, [resolvedAccentColor, src]);
-
-    const coloredSvgMarkup = useMemo(() => {
-        if (typeof resolvedAccentColor !== "string" || !svgText) {
-            return null;
-        }
-
-        return svgText.replace(/currentColor/g, resolvedAccentColor);
-    }, [resolvedAccentColor, svgText]);
-
-    if (typeof resolvedAccentColor === "string" && coloredSvgMarkup) {
-        return (
-            <span
-                aria-label={alt}
-                role="img"
-                style={{
-                    display: "block",
-                    width: width ?? defaultWidth,
-                    height: height ?? defaultHeight,
-                    lineHeight: 0,
-                }}
-                dangerouslySetInnerHTML={{ __html: coloredSvgMarkup }}
-            />
-        );
-    }
+    const finalSrc = resolvedAccentColor && rawMarkup
+        ? toSvgDataUri(recolorSvgMarkup(rawMarkup, resolvedAccentColor))
+        : src;
 
     return (
         <img
-            src={src}
+            src={finalSrc}
             alt={alt}
-            width={width ?? defaultWidth}
-            height={height ?? defaultHeight}
+            width={finalWidth}
+            height={finalHeight}
             style={{ display: "block" }}
         />
     );
