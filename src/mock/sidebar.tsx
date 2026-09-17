@@ -16,7 +16,6 @@ export type MenuItemProps = {
     children?: MenuItemProps[];
 };
 
-
 export const MenuItem: MenuItemProps[] = [
     {
         key: "overview",
@@ -27,9 +26,70 @@ export const MenuItem: MenuItemProps[] = [
                 key: "overview-kpi",
                 label: "KPI總覽",
                 icon: <CustomLine width={20} height={20} />,
-                route: `${PATHS.overview}`,
+                route: `${PATHS.overview}/${PATHS.kpiOverview}`,
+            },
+            {
+                key: "project-settings",
+                label: "專案設定",
+                icon: <CustomLine width={20} height={20} />,
+                route: `${PATHS.overview}/${PATHS.projectSettings}`,
             }
-        ]
+        ],
+    },
+    {
+        key: "equipment-management",
+        label: "設備管理",
+        icon: <CustomLine width={30} height={30} />,
+        children: [
+            {
+                key: "equipment-list",
+                label: "設備列表",
+                icon: <CustomLine width={20} height={20} />,
+                route: `${PATHS.equipmentManagement}/${PATHS.equipmentList}`,
+            },
+            {
+                key: "water-system-diagram",
+                label: "水路系統圖",
+                icon: <CustomLine width={20} height={20} />,
+                route: `${PATHS.equipmentManagement}/${PATHS.mapping}`,
+            }
+        ],
+    },
+    {
+        key: "energy-simulation",
+        label: "節能模擬",
+        icon: <CustomLine width={30} height={30} />,
+        children: [
+            {
+                key: "overview-data-cleaning",
+                label: "總攬",
+                icon: <CustomLine width={20} height={20} />,
+                route: PATHS.energySavingOverview,
+            },
+            {
+                key: "csv-project",
+                label: "專案CSV",
+                icon: <CustomLine width={20} height={20} />,
+                route: `${PATHS.energySavingOverview}/${PATHS.projectCsv}`,
+            },
+            {
+                key: "energy-simulation-settings",
+                label: "數據清洗",
+                icon: <CustomLine width={20} height={20} />,
+                route: `${PATHS.energySavingOverview}/${PATHS.dataCleaning}`,
+            },
+            {
+                key: "energy-simulation-results",
+                label: "M&V基準線",
+                icon: <CustomLine width={20} height={20} />,
+                route: `${PATHS.energySavingOverview}/${PATHS.mAndVBaseline}`,
+            }, {
+                key: "energy-simulation-report",
+                label: "模擬報告",
+                icon: <CustomLine width={20} height={20} />,
+                route: `${PATHS.energySavingOverview}/${PATHS.simulationResultReport}`,
+            }
+        ],
     },
     {
         key: "modelManagement",
@@ -37,24 +97,17 @@ export const MenuItem: MenuItemProps[] = [
         icon: <SiteManagement width={30} height={30} />,
         children: [
             {
-                key: "model",
-                label: "模型",
-                icon: <CustomLine width={20} height={20} />,
-                children: [
-                    {
-                        key: "model-list",
-                        label: "模型列表",
-                        route: `${PATHS.model}/${PATHS.modelList}`,
-                        icon: <CustomLine width={20} height={20} />,
-                    }
-                ]
-            },
-            {
                 key: "csv-list",
                 label: "CSV列表",
                 route: `${PATHS.model}/${PATHS.csvList}`,
                 icon: <CustomLine width={20} height={20} />,
             },
+            {
+                key: "model-list",
+                label: "模型列表",
+                route: `${PATHS.model}/${PATHS.modelList}`,
+                icon: <CustomLine width={20} height={20} />,
+            }
         ],
     },
     {
@@ -63,15 +116,15 @@ export const MenuItem: MenuItemProps[] = [
         icon: <DocManagement width={26} height={26} />,
         children: [
             {
-                key: "optimization-strategies",
-                label: "策略清單",
-                route: `${PATHS.model}/${PATHS.csvList}`,
+                key: "optimization-strategies-list",
+                label: "最佳化策略列表",
+                route: `${PATHS.optimization}/${PATHS.optimizationStrategiesList}`,
                 icon: <CustomLine width={20} height={20} />,
             },
             {
-                key: "optimization-simulator",
-                label: "模擬器",
-                route: `${PATHS.model}/${PATHS.csvList}`,
+                key: "add-optimization-strategies",
+                label: "新增最佳化策略",
+                route: `${PATHS.optimization}/${PATHS.addOptimizationStrategies}`,
                 icon: <CustomLine width={20} height={20} />,
             },
         ],

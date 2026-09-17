@@ -29,12 +29,20 @@ export const API_ENDPOINTS = {
         RETRAIN: (algorithm_id: CommonIdType) => `algorithm/retraining/${algorithm_id}`,
         LIST: (model_id: CommonIdType) => `algorithm/list/${model_id}`,
         DELETE: (id: CommonIdType) => `algorithm/${id}`,
-        PREDICT_COMPARISON: "algorithm/predict-comparison"
+        PREDICT_COMPARISON: "algorithm/predict-comparison",
+        UPDATE: "algorithm",
+        PREDICT_COMPARISON_FILE: "algorithm/predict-comparison/file",
+        POST_PREDICT: "algorithm/predict",
+        MULTI_PREDICT: "algorithm/multi-predict",
+        POST_FORECAST: "algorithm/forecast"
     },
 
     // Equipment
     EQUIPMENT: {
-        CREATE: "equipment/create"
+        CREATE: "equipment/create",
+        LIST: "equipment/list",
+        UPDATE: "equipment/",
+        DELETE: (id: CommonIdType) => `equipment/${id}`
     },
 
     // Optimization
@@ -59,6 +67,32 @@ export const API_ENDPOINTS = {
         GET: (project_id: CommonIdType) => `optimization-variable/${project_id}`,
         SAVE: (project_id: CommonIdType) => `optimization-variable/${project_id}`
     },
+
+    // UI Texts
+    UI_TEXTS: {
+        LIST: "ui-texts/list",
+        NESTED: "ui-texts/nested",
+        UPDATE: "ui-texts/",
+        EXPORT: "ui-texts/export-csv",
+        IMPORT: "ui-texts/import-csv"
+    },
+
+    // System Settings
+    SYSTEM_SETTINGS: {
+        INFO: "system-settings/",
+        UPDATE: "system-settings/",
+        GET_SUPPORTED_LOCALES: "system-settings/supported-locales"
+    },
+
+    // project
+    PROJECT: {
+        CREATE: "project/create",
+        LIST: "project/list",
+        UPDATE: "project/",
+        INFO: (id: CommonIdType) => `project/${id}`,
+    },
+
+
 
 
 }

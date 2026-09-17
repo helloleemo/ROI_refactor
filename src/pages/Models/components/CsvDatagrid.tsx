@@ -5,6 +5,7 @@ import { Box, IconButton } from "@mui/material";
 // import CsvReviewDialog from "./CsvReviewDialog";
 import importFileService from "@/api/services/importFile";
 import type { ImportFile } from "@/api/types/index.ts";
+import { DatasetTypeText } from "@/api/types/shared";
 
 
 
@@ -15,7 +16,10 @@ type CsvDataGridProps = {
     onReview?: (row: ImportFile) => void;
 }
 
-
+const renderUploadType = (value: ImportFile["upload_type"] | null | undefined) => {
+    const renderedText = value == null ? "" : DatasetTypeText[value];
+    return <span>{`${renderedText}`}</span>;
+};
 
 
 const CsvDataGrid = ({
@@ -80,6 +84,12 @@ const CsvDataGrid = ({
         { field: "id", headerName: "ID", width: 90 },
         // { field: "name", headerName: "名稱", width: 90 },
         { field: "file_name", headerName: "CSV檔名", width: 300 },
+        {
+            field: "upload_type", headerName: "上傳類型", width: 150,
+            renderCell: ({ value }) => {
+                return renderUploadType(value as ImportFile["upload_type"]);
+            }
+        },
 
         {
             field: "tags", headerName: "欄位數", width: 120, renderCell: ({ value }) => {

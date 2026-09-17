@@ -10,7 +10,8 @@ export const fileListMock: ImportFile[] = [
         "row_count": 8502,
         "status": 2,
         "remarks": "",
-        "created_at": "2026-07-28 02:59:19"
+        "created_at": "2026-07-28 02:59:19",
+        "upload_type": 1
     },
     {
         "id": 17,
@@ -21,7 +22,9 @@ export const fileListMock: ImportFile[] = [
         "row_count": 3476,
         "status": 2,
         "remarks": "",
-        "created_at": "2026-07-27 02:30:34"
+        "created_at": "2026-07-27 02:30:34",
+        "upload_type": 1
+
     },
     {
         "id": 10,
@@ -32,7 +35,9 @@ export const fileListMock: ImportFile[] = [
         "row_count": 10785,
         "status": 2,
         "remarks": "",
-        "created_at": "2026-07-24 05:24:38"
+        "created_at": "2026-07-24 05:24:38",
+        "upload_type": 1
+
     },
     {
         "id": 9,
@@ -43,7 +48,9 @@ export const fileListMock: ImportFile[] = [
         "row_count": 951,
         "status": 2,
         "remarks": "",
-        "created_at": "2026-07-24 05:24:32"
+        "created_at": "2026-07-24 05:24:32",
+        "upload_type": 1
+
     },
     {
         "id": 8,
@@ -54,7 +61,9 @@ export const fileListMock: ImportFile[] = [
         "row_count": 7555,
         "status": 2,
         "remarks": "",
-        "created_at": "2026-07-24 05:24:23"
+        "created_at": "2026-07-24 05:24:23",
+        "upload_type": 1
+
     },
     {
         "id": 7,
@@ -65,7 +74,9 @@ export const fileListMock: ImportFile[] = [
         "row_count": 3972,
         "status": 2,
         "remarks": "",
-        "created_at": "2026-07-24 05:24:18"
+        "created_at": "2026-07-24 05:24:18",
+        "upload_type": 1
+
     },
     {
         "id": 6,
@@ -76,7 +87,9 @@ export const fileListMock: ImportFile[] = [
         "row_count": 8186,
         "status": 2,
         "remarks": "",
-        "created_at": "2026-07-24 05:24:05"
+        "created_at": "2026-07-24 05:24:05",
+        "upload_type": 1
+
     },
     {
         "id": 5,
@@ -87,7 +100,9 @@ export const fileListMock: ImportFile[] = [
         "row_count": 6002,
         "status": 2,
         "remarks": "",
-        "created_at": "2026-07-24 05:23:57"
+        "created_at": "2026-07-24 05:23:57",
+        "upload_type": 1
+
     },
     {
         "id": 4,
@@ -98,7 +113,9 @@ export const fileListMock: ImportFile[] = [
         "row_count": 4096,
         "status": 2,
         "remarks": "",
-        "created_at": "2026-07-24 05:23:52"
+        "created_at": "2026-07-24 05:23:52",
+        "upload_type": 1
+
     },
     {
         "id": 3,
@@ -109,7 +126,9 @@ export const fileListMock: ImportFile[] = [
         "row_count": 5802,
         "status": 2,
         "remarks": "",
-        "created_at": "2026-07-24 05:23:46"
+        "created_at": "2026-07-24 05:23:46",
+        "upload_type": 1
+
     },
     {
         "id": 2,
@@ -120,7 +139,9 @@ export const fileListMock: ImportFile[] = [
         "row_count": 3568,
         "status": 2,
         "remarks": "",
-        "created_at": "2026-07-24 05:23:38"
+        "created_at": "2026-07-24 05:23:38",
+        "upload_type": 1
+
     },
     {
         "id": 1,
@@ -131,6 +152,8 @@ export const fileListMock: ImportFile[] = [
         "row_count": 94,
         "status": 2,
         "remarks": "",
-        "created_at": "2026-07-24 05:23:30"
+        "created_at": "2026-07-24 05:23:30",
+        "upload_type": 1
+
     }
 ]

@@ -4,14 +4,25 @@ const getBearerToken = () => {
     return localStorage.getItem("accessToken") || "";
 }
 
+const getCurrentProjectId = () => {
+    return sessionStorage.getItem("projectId") || "";
+}
+
 const buildApiUrl = (endpoint: string, query?: Record<string, any>) => {
     const baseUrl = API_URLS.BASE_URL;
     let url = `${baseUrl}${endpoint}`;
     if (query) {
         Object.entries(query).forEach(([key, value]) => {
-            if (value !== undefined && value !== null) {
-                url += (url.includes('?') ? '&' : '?') + `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`
+            if (value === undefined || value === null) {
+                return;
             }
+
+            const values = Array.isArray(value) ? value : [value];
+            values.forEach((item) => {
+                if (item !== undefined && item !== null) {
+                    url += (url.includes('?') ? '&' : '?') + `${encodeURIComponent(key)}=${encodeURIComponent(String(item))}`;
+                }
+            });
         })
     }
 
@@ -20,4 +31,6 @@ const buildApiUrl = (endpoint: string, query?: Record<string, any>) => {
 }
 
 
-export { buildApiUrl, getBearerToken }
+
+
+export { buildApiUrl, getBearerToken, getCurrentProjectId }

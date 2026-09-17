@@ -23,7 +23,7 @@ interface OptimizationGetModelsResponse {
     model_name: string;
     equipment_id: CommonIdType;
     equipment_name: string;
-}[]
+}
 
 
 export type {

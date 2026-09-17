@@ -1,0 +1,26 @@
+{
+    "sidebar": {
+        "overview": {
+            "label": "ภาพรวม",
+            "overviewKpi": "ภาพรวม KPI"
+        },
+        "modelManagement": {
+            "label": "การจัดการโมเดล",
+            "modelList": "รายการโมเดล",
+            "csvList": "รายการ CSV"
+        },
+        "optimization": {
+            "label": "กลยุทธ์การปรับให้เหมาะสม",
+            "optimizationStrategiesList": "รายการกลยุทธ์",
+            "addOptimizationStrategies": "เพิ่มกลยุทธ์",
+            "deviceList": "รายการอุปกรณ์",
+            "addDevice": "เพิ่ม/แก้ไขอุปกรณ์"
+        }
+    },
+    "overview": {
+        "KPIoverview": {
+            "title": "ภาพรวม KPI",
+            "description": "KPI......"
+        }
+    }
+}

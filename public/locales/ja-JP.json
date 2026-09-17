@@ -1,0 +1,26 @@
+{
+    "sidebar": {
+        "overview": {
+            "label": "概要",
+            "overviewKpi": "KPI概要"
+        },
+        "modelManagement": {
+            "label": "モデル管理",
+            "modelList": "モデル一覧",
+            "csvList": "CSV一覧"
+        },
+        "optimization": {
+            "label": "最適化戦略",
+            "optimizationStrategiesList": "戦略一覧",
+            "addOptimizationStrategies": "戦略を追加",
+            "deviceList": "設備一覧",
+            "addDevice": "設備を追加/編集"
+        }
+    },
+    "overview": {
+        "KPIoverview": {
+            "title": "KPI概要",
+            "description": "KPI......"
+        }
+    }
+}

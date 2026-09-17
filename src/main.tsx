@@ -9,12 +9,20 @@ import { router } from './routes/routes'
 import { darkTheme, lightTheme } from './settings/theme'
 import { ThemeModeProvider } from "@/hooks/useThemeMode"
 import "./settings/main.css"
+import "./settings/highchartsSetup"
+import './settings/i18n'
+import { LanguageProvider } from "@/contexts/LanguageContext"
+import { ProjectProvider } from "./contexts/ProjectContext"
+
 
 const THEME_MODE_STORAGE_KEY = "theme-mode"
 
 function AppRoot() {
+  // theme mode
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)")
   const [mode, setMode] = useState<PaletteMode>("light")
+
+
 
   useEffect(() => {
     const storedMode = window.localStorage.getItem(THEME_MODE_STORAGE_KEY)
@@ -38,12 +46,16 @@ function AppRoot() {
   const theme = mode === "dark" ? darkTheme : lightTheme
 
   return (
-    <ThemeModeProvider mode={mode} setMode={setMode} toggleTheme={toggleTheme}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <RouterProvider router={router} />
-      </ThemeProvider>
-    </ThemeModeProvider>
+    <LanguageProvider>
+      <ProjectProvider>
+        <ThemeModeProvider mode={mode} setMode={setMode} toggleTheme={toggleTheme}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <RouterProvider router={router} />
+          </ThemeProvider>
+        </ThemeModeProvider>
+      </ProjectProvider>
+    </LanguageProvider>
   )
 }
 

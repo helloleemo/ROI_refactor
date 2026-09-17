@@ -10,7 +10,6 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import useMenuToggle from "@/hooks/useMenuToggle";
 import { hierarchyData } from "./hierarchyData";
-import { useThemeMode } from "@/hooks/useThemeMode";
 
 type OptionItem = {
     value: string;
@@ -127,8 +126,6 @@ const OptionsRender = ({ title, options, value, onChange, showArrow = true }: Op
 };
 
 const HierarchyOptions = ({ selectedSite, onSiteChange }: HierarchyOptionsProps) => {
-    const { mode } = useThemeMode();
-    const isDark = mode === "dark";
     const { anchorEl, open, handleClick, handleClose } = useMenuToggle();
     const initialSelection = getDefaultSelection();
     const [companyId, setCompanyId] = useState(initialSelection.companyId);
@@ -187,6 +184,12 @@ const HierarchyOptions = ({ selectedSite, onSiteChange }: HierarchyOptionsProps)
     };
 
     const isOpen = Boolean(open.hierarchy);
+    const anchorPosition = anchorEl
+        ? {
+            top: Math.round(anchorEl.getBoundingClientRect().bottom + window.scrollY),
+            left: 0,
+        }
+        : undefined;
 
     return (
         <>
@@ -212,20 +215,20 @@ const HierarchyOptions = ({ selectedSite, onSiteChange }: HierarchyOptionsProps)
             >
                 {site}
             </Button>
-
             <Popover
                 open={isOpen}
-                anchorEl={anchorEl}
+                anchorReference="anchorPosition"
+                anchorPosition={anchorPosition}
+                marginThreshold={0}
                 onClose={handleMenuClose}
                 hideBackdrop
-                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
                 transformOrigin={{ vertical: "top", horizontal: "left" }}
                 slotProps={{
                     paper: {
                         sx: {
                             mt: 1,
                             width: 850,
-                            borderRadius: 2,
+                            borderRadius: 1,
                             boxShadow: "0 12px 32px rgba(15, 23, 42, 0.14)",
                         },
                     },
@@ -262,8 +265,7 @@ const HierarchyOptions = ({ selectedSite, onSiteChange }: HierarchyOptionsProps)
                         </Box>
                     </Box>
                 </ClickAwayListener>
-            </Popover>
-        </>
+            </Popover></>
     );
 };
 

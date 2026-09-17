@@ -1,0 +1,26 @@
+{
+    "sidebar": {
+        "overview": {
+            "label": "Tổng quan",
+            "overviewKpi": "Tổng quan KPI"
+        },
+        "modelManagement": {
+            "label": "Quản lý mô hình",
+            "modelList": "Danh sách mô hình",
+            "csvList": "Danh sách CSV"
+        },
+        "optimization": {
+            "label": "Chiến lược tối ưu hóa",
+            "optimizationStrategiesList": "Danh sách chiến lược",
+            "addOptimizationStrategies": "Thêm chiến lược",
+            "deviceList": "Danh sách thiết bị",
+            "addDevice": "Thêm/Sửa thiết bị"
+        }
+    },
+    "overview": {
+        "KPIoverview": {
+            "title": "Tổng quan KPI",
+            "description": "KPI......"
+        }
+    }
+}

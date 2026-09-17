@@ -1,4 +1,4 @@
-import type { CommonIdType } from "./shared";
+import type { CommonIdType, StatusEnabledTypes } from "./shared";
 
 interface EquipementRequest {
     equipment_type: CommonIdType;
@@ -6,5 +6,19 @@ interface EquipementRequest {
     remarks: string;
 }
 
+interface EquipementResponse extends EquipementRequest {
+    id: CommonIdType;
+    status: StatusEnabledTypes;
+}
 
-export type { EquipementRequest };
+interface EquipmentUpdateRequest {
+    id: CommonIdType;
+    equipment_name?: string;
+    equipment_type?: CommonIdType;
+    status?: StatusEnabledTypes;
+    remarks?: string;
+}
+
+
+
+export type { EquipementRequest, EquipementResponse, EquipmentUpdateRequest };

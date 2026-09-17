@@ -1,7 +1,74 @@
 
-import { getBearerToken, buildApiUrl } from "./helpers";
+import { getBearerToken, buildApiUrl, getCurrentProjectId } from "./helpers";
 import type { GetParams, PostParams, PutParams, DeleteParams, ApiResponse } from "./types";
 
+const formatApiError = (payload: any): string => {
+    if (!payload) return "An error occurred";
+
+    if (typeof payload === "string") {
+        return payload;
+    }
+
+    const detail = payload.detail;
+
+    const formatDetailItem = (item: any): string => {
+        if (typeof item === "string") {
+            return item;
+        }
+
+        if (!item || typeof item !== "object") {
+            return "";
+        }
+
+        const parts = [] as string[];
+
+        if (item.type) {
+            parts.push(`type: ${item.type}`);
+        }
+
+        if (Array.isArray(item.loc) && item.loc.length > 0) {
+            parts.push(`loc: ${item.loc.join(" > ")}`);
+        }
+
+        if (item.msg) {
+            parts.push(`msg: ${item.msg}`);
+        }
+
+        if (item.input !== undefined) {
+            parts.push(`input: ${item.input}`);
+        }
+
+        return parts.join("；");
+    };
+
+    if (typeof detail === "string" && detail.trim() !== "") {
+        return detail;
+    }
+
+    if (Array.isArray(detail)) {
+        const messages = detail.map(formatDetailItem).filter(Boolean);
+        if (messages.length > 0) {
+            return messages.join("；");
+        }
+    }
+
+    if (detail && typeof detail === "object") {
+        const formatted = formatDetailItem(detail);
+        if (formatted) {
+            return formatted;
+        }
+
+        if (typeof detail.msg === "string") {
+            return detail.msg;
+        }
+    }
+
+    if (typeof payload.message === "string" && payload.message.trim() !== "") {
+        return payload.message;
+    }
+
+    return "An error occurred";
+};
 
 // HEADERS
 const createHeaders = (includeJsonContentType = true) => {
@@ -14,6 +81,11 @@ const createHeaders = (includeJsonContentType = true) => {
     const bearer = getBearerToken();
     if (bearer && bearer !== "") {
         headers.append("Authorization", `Bearer ${bearer}`);
+    }
+
+    const projectId = getCurrentProjectId();
+    if (projectId) {
+        headers.append("X-Project-Id", projectId);
     }
 
     return headers;
@@ -30,8 +102,8 @@ const handleResponse = async<T>(res: Response) => {
 
         return response.data;
     } else {
-        const error = await res.json();
-        throw new Error(error.message || "An error occurred");
+        const errorPayload = await res.json().catch(() => null);
+        throw new Error(formatApiError(errorPayload));
     }
 }
 
@@ -45,6 +117,33 @@ const GET = async<T>({ endpoint, query }: GetParams) => {
     });
 
     return handleResponse<T>(response);
+}
+
+const GET_FILE = async ({ endpoint, query, fallbackFileName = "download" }: GetParams & { fallbackFileName?: string }) => {
+    const url = buildApiUrl(endpoint, query);
+    const headers = createHeaders(false);
+    const response = await fetch(url, {
+        method: "GET",
+        headers,
+    });
+
+    if (!response.ok) {
+        const errorPayload = await response.json().catch(() => null);
+        throw new Error(formatApiError(errorPayload));
+    }
+
+    const contentDisposition = response.headers.get("content-disposition");
+    const encodedFileName = contentDisposition?.match(/filename\*=UTF-8''([^;]+)/i)?.[1];
+    const fileName = contentDisposition?.match(/filename="?([^";]+)"?/i)?.[1];
+
+    console.log("Content-Disposition:", response.headers.get("content-disposition"));
+
+    return {
+        blob: await response.blob(),
+        fileName: encodedFileName
+            ? decodeURIComponent(encodedFileName)
+            : fileName || fallbackFileName,
+    };
 }
 
 // POST
@@ -90,4 +189,4 @@ const DELETE = async<T>({ endpoint, query }: DeleteParams) => {
     return handleResponse<T>(response);
 }
 
-export { GET, POST, PUT, DELETE }
+export { GET, GET_FILE, POST, PUT, DELETE }

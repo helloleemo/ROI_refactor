@@ -5,7 +5,6 @@ import { fileListMock } from "@/mock/filesList";
 import importFileService from "@/api/services/importFile"
 import type { ImportFile } from "@/api/types";
 import { useState, useEffect } from "react"
-import tagDataService from "@/api/services/tagData"
 import { useSearchFilter } from "@/hooks";
 import CsvDatagrid from './components/CsvDatagrid';
 import CsvReviewDialog from "./components/CsvReviewDialog";
@@ -18,6 +17,8 @@ const CsvList = () => {
     const [isReviewOpen, setIsReviewOpen] = useState(false);
     const [selectedRow, setSelectedRow] = useState<ImportFile | undefined>(undefined);
 
+
+
     const { searchValue, handleSearchChange, filteredItems: filteredCsvList } = useSearchFilter({
         items: csvList,
         fields: ["file_name", "id", "row_count", "tags"],
@@ -25,7 +26,7 @@ const CsvList = () => {
 
     const getData = async () => {
         try {
-            const data = await importFileService.getList()
+            const data = await importFileService.getList({ upload_type: null })
             // const tagData = await tagDataService.getTagList("1")
             // const tagValue = await tagDataService.getTagValues({ upload_id: 1, page: 1, page_size: 10 })
 

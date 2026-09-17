@@ -4,6 +4,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useMenuToggle from "@/hooks/useMenuToggle";
 import SharedIconButton from "../IconButton";
 import {
@@ -24,6 +25,7 @@ import { languages } from "@/settings/languages";
 import { profile } from "@/settings/profile";
 import { notifications } from "@/mock/notifications";
 import { useThemeMode } from "@/hooks/useThemeMode";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const getDefaultSite = () => {
     const firstCompany = hierarchyData[0];
@@ -34,6 +36,7 @@ const getDefaultSite = () => {
 };
 
 function ResponsiveAppBar() {
+    const navigate = useNavigate();
     const { anchorEl,
         open,
         handleClick,
@@ -42,7 +45,7 @@ function ResponsiveAppBar() {
     const { toggleTheme } = useThemeMode();
     const [searchValue, setSearchValue] = useState("");
     const [selectedSite, setSelectedSite] = useState(getDefaultSite);
-
+    const { locale, changeLocale } = useLanguage();
 
     const siteSuggestions = useMemo(
         () =>
@@ -67,6 +70,16 @@ function ResponsiveAppBar() {
     const handleSearchSuggestionSelect = (value: string) => {
         setSelectedSite(value);
         setSearchValue("");
+    };
+
+    const handleLanguageChange = async (language: string) => {
+        await changeLocale(language);
+        handleClose("languages");
+    };
+
+    const handleProfileMenuItemClick = (value: string, route: string) => {
+        handleClose(value);
+        navigate(route)
     };
 
 
@@ -118,10 +131,17 @@ function ResponsiveAppBar() {
                             >
                                 ROI TOOL
                             </Typography>
-                            <HierarchyOptions
-                                selectedSite={selectedSite}
-                                onSiteChange={handleHierarchySiteChange}
-                            />
+                            <Box
+                                sx={{
+                                    position: "relative",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 1.5
+                                }}>
+                                <HierarchyOptions
+                                    selectedSite={selectedSite}
+                                    onSiteChange={handleHierarchySiteChange}
+                                /></Box>
                             <SearchSite
                                 value={searchValue}
                                 sx={{
@@ -225,7 +245,11 @@ function ResponsiveAppBar() {
                             >
                                 {
                                     languages.map((language) => (
-                                        <MenuItem key={language.label} onClick={() => handleClose("languages")}>
+                                        <MenuItem
+                                            key={language.value}
+                                            selected={language.value === locale}
+                                            onClick={() => handleLanguageChange(language.value)}
+                                        >
                                             {language.label}
                                         </MenuItem>
                                     ))
@@ -296,7 +320,7 @@ function ResponsiveAppBar() {
                             <SharedIconButton
                                 onClick={(e) => handleClick(e, "helpAndSupport")}
                                 icon={<Reason width={32} height={32} />}
-                                ariaLabel="Open help and support menu"
+                                ariaLabel="Open help menu"
                                 sx={{
                                     p: 0.5,
                                 }}
@@ -348,8 +372,7 @@ function ResponsiveAppBar() {
                                             );
                                         } else {
                                             return (
-
-                                                <MenuItem key={item.label} onClick={() => handleClose("user")} sx={{ gap: 1 }}>
+                                                <MenuItem key={item.label} onClick={() => handleProfileMenuItemClick("user", item.route)}>
                                                     <ItemIcon width={20} height={20} />
                                                     {item.label}
                                                 </MenuItem>
@@ -391,7 +414,7 @@ function ResponsiveAppBar() {
                 open={open["helpAndSupport"]}
                 onClose={() => handleClose("helpAndSupport")}
                 title="Help & Support"
-                contentText="Please visit .... to access user manual instructions. And provide your feedback or request assistance through the ....."
+                contentText="If you need support, please contact the administrator."
                 buttonText="Close"
             />
 
@@ -400,7 +423,7 @@ function ResponsiveAppBar() {
                 open={open["aboutApplication"]}
                 onClose={() => handleClose("aboutApplication")}
                 title="About Application"
-                contentText="This application is designed to ...."
+                contentText="ROI TOOL"
                 buttonText="Close"
             />
         </>

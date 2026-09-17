@@ -25,13 +25,13 @@ const HEADER_HEIGHT = 70;
 const Sidebar2 = () => {
     const navigate = useNavigate();
     const [activeFirstLevelKey, setActiveFirstLevelKey] = useState<string | null>(null);
-    const [activeFirstLevelItem, setActiveFirstLevelItem] = useState<MenuItemProps | null>(null);
     const [activeSecondLevelKey, setActiveSecondLevelKey] = useState<string | null>(null);
     const [activeThirdLevelKey, setActiveThirdLevelKey] = useState<string | null>(null);
     const [openSecondGroups, setOpenSecondGroups] = useState<Record<string, boolean>>({});
     const [isFirstLevelHovered, setIsFirstLevelHovered] = useState(false);
     const [isSecondLevelCollapsed, setIsSecondLevelCollapsed] = useState(false);
 
+    const activeFirstLevelItem = MenuItem.find((item) => item.key === activeFirstLevelKey) ?? null;
     const secondMenus = activeFirstLevelItem?.children ?? [];
     const activeFirstLevelLabel = activeFirstLevelItem?.label ?? "";
     const hasSecondLevelMenu = Boolean(activeFirstLevelItem);
@@ -45,7 +45,6 @@ const Sidebar2 = () => {
 
     const handleFirstLevelClick = (activeItem: MenuItemProps) => {
         setActiveFirstLevelKey(activeItem.key);
-        setActiveFirstLevelItem(activeItem);
         setActiveSecondLevelKey(null);
         setActiveThirdLevelKey(null);
         setIsSecondLevelCollapsed(false);

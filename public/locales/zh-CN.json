@@ -1,0 +1,26 @@
+{
+    "sidebar": {
+        "overview": {
+            "label": "總攬",
+            "overviewKpi": "KPI總覽"
+        },
+        "modelManagement": {
+            "label": "模型管理",
+            "modelList": "模型列表",
+            "csvList": "CSV列表"
+        },
+        "optimization": {
+            "label": "最佳化策略",
+            "optimizationStrategiesList": "最佳化策略列表",
+            "addOptimizationStrategies": "新增最佳化策略",
+            "deviceList": "設備列表",
+            "addDevice": "新增編輯設備"
+        }
+    },
+    "overview": {
+        "KPIoverview": {
+            "title": "KPI總覽",
+            "description": "KPI......"
+        }
+    }
+}

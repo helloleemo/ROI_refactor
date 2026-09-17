@@ -23,14 +23,8 @@ const useOpenDialog = (initialState: Record<string, boolean> = DEFAULT_DIALOG_ST
         closeDialog();
     };
 
-
     return {
-        open,
-        setOpen,
-        openDialog,
-        closeDialog,
-        handleOpen,
-        handleClose,
+        open, setOpen, openDialog, closeDialog, handleOpen, handleClose,
     }
 
 }

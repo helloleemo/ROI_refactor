@@ -20,6 +20,7 @@ import {
 import type { TransitionProps } from "@mui/material/transitions";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import type { ImportFile } from "@/api/types/index.ts";
+import { DatasetTypeText } from "@/api/types/shared";
 
 const getCsvStatusLabel = (status?: number) => {
     if (status === 1) return "UPLOADING";
@@ -34,6 +35,13 @@ const getCsvStatusColor = (status?: number): "default" | "success" | "error" | "
     if (status === 3) return "error";
     return "default";
 };
+
+const renderUploadType = (value: ImportFile["upload_type"] | null | undefined) => {
+    const renderedText = value == null ? "" : DatasetTypeText[value];
+    return <span>{`${renderedText}`}</span>;
+};
+
+
 
 const Transition = forwardRef(function Transition(
     props: TransitionProps & {
@@ -61,6 +69,8 @@ const CsvReviewDialog = ({
     setOpen,
     selectedRow,
 }: CsvReviewDialogProps) => {
+
+    // console.log(selectedRow);
     const [isInfoOpen, setIsInfoOpen] = useState(true);
 
     const tagCount = useMemo(() => {
@@ -98,6 +108,7 @@ const CsvReviewDialog = ({
             { label: "欄位數", value: `${tagCount} 欄` },
             { label: "行數", value: `${selectedRow?.row_count} 筆` },
             { label: "狀態", value: selectedRow?.status, isStatus: true },
+            { label: "檔案類型", value: renderUploadType(selectedRow?.upload_type) },
         ],
         [selectedRow?.file_name, tagCount, previewRows.length],
     );
@@ -188,7 +199,7 @@ const CsvReviewDialog = ({
                             <Box sx={{ p: 1.5 }}>
                                 <Grid container spacing={1.5}>
                                     {summaryCards.map((card) => (
-                                        <Grid size={{ xs: 12, sm: 6, md: 3 }} key={card.label}>
+                                        <Grid size={{ xs: 12, sm: 2, md: 2 }} key={card.label}>
                                             <Paper
                                                 variant="outlined"
                                                 sx={(theme) => ({

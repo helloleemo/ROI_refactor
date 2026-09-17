@@ -34,7 +34,7 @@ const optimizationService = {
         });
     },
     getModels: async (optimization_id: CommonIdType) => {
-        return GET<OptimizationGetModelsResponse>({
+        return GET<OptimizationGetModelsResponse[]>({
             endpoint: API_ENDPOINTS.OPTIMIZATION.GET_MODELS(optimization_id),
         });
     },

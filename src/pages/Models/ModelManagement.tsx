@@ -81,7 +81,7 @@ const ModelManagement = () => {
     }
 
     useEffect(() => {
-        getData();
+        void getData();
     }, []);
 
     return (
@@ -140,9 +140,6 @@ const ModelManagement = () => {
                     onClose={() => closeDialog("create")}
                 />
             </SectionLayout>
-
-
-
 
         </>
     )

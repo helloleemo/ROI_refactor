@@ -1,21 +1,24 @@
-import { type ChangeEvent, forwardRef, useMemo, useState, type ReactElement, type Ref } from "react";
+import { type ChangeEvent, forwardRef, useState, type ReactElement, type Ref } from "react";
 import { TitleText } from "@/components";
 import CloseIcon from "@mui/icons-material/Close";
-import UploadFileRoundedIcon from "@mui/icons-material/UploadFileRounded";
 import {
     Alert,
-    Box,
     Button,
     CircularProgress,
     Dialog,
-    Divider,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Box,
     IconButton,
-    Paper,
+    MenuItem,
     Slide,
+    TextField,
     Typography,
 } from "@mui/material";
 import type { TransitionProps } from "@mui/material/transitions";
 import importFileService from "@/api/services/importFile";
+import { DatasetTypeText, type DatasetType } from "@/api/types/shared";
 
 const Transition = forwardRef(function Transition(
     props: TransitionProps & {
@@ -32,31 +35,20 @@ type UploadCsvDialogProps = {
     onUploaded?: () => Promise<void> | void;
 };
 
-const formatFileSize = (bytes: number) => {
-    if (!Number.isFinite(bytes) || bytes <= 0) return "0 KB";
-    const sizeInKb = bytes / 1024;
-    if (sizeInKb < 1024) return `${sizeInKb.toFixed(1)} KB`;
-    return `${(sizeInKb / 1024).toFixed(2)} MB`;
-};
-
-const constructFormData = (file: File): FormData => {
-    const formData = new FormData();
-    formData.append("file", file);
-    return formData;
-}
+const datasetTypeOptions = Object.entries(DatasetTypeText).map(([value, label]) => ({
+    value: Number(value) as DatasetType,
+    label,
+}));
 
 const UploadCsvDialog = ({ open, setOpen, onUploaded }: UploadCsvDialogProps) => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [selectedUploadType, setSelectedUploadType] = useState<DatasetType | "">("");
     const [errorMessage, setErrorMessage] = useState("");
     const [isUploading, setIsUploading] = useState(false);
 
-    const selectedFileLabel = useMemo(() => {
-        if (!selectedFile) return "尚未選擇檔案";
-        return `${selectedFile.name} (${formatFileSize(selectedFile.size)})`;
-    }, [selectedFile]);
-
     const resetDialog = () => {
         setSelectedFile(null);
+        setSelectedUploadType("");
         setErrorMessage("");
         setIsUploading(false);
     };
@@ -85,6 +77,11 @@ const UploadCsvDialog = ({ open, setOpen, onUploaded }: UploadCsvDialogProps) =>
         setSelectedFile(file);
     };
 
+    const handleUploadTypeChange = (value: string) => {
+        setErrorMessage("");
+        setSelectedUploadType(value === "" ? "" : Number(value) as DatasetType);
+    };
+
 
     const handleUpload = async () => {
 
@@ -93,12 +90,16 @@ const UploadCsvDialog = ({ open, setOpen, onUploaded }: UploadCsvDialogProps) =>
                 setErrorMessage("請先選擇要上傳的 CSV 檔案");
                 return;
             }
+
+            if (selectedUploadType === "") {
+                setErrorMessage("請先選擇上傳類型");
+                return;
+            }
+
             setIsUploading(true);
-            const formData = constructFormData(selectedFile);
-            await importFileService.uploadFile(formData);
+            await importFileService.uploadFile(selectedFile, selectedUploadType);
             await onUploaded?.();
-            setSelectedFile(null);
-            setErrorMessage("");
+            resetDialog();
             setOpen(false);
         } catch (error: any) {
             setErrorMessage(`上傳失敗：請檢查名稱是否重複、並稍後再試 (${error.message})`);
@@ -109,87 +110,65 @@ const UploadCsvDialog = ({ open, setOpen, onUploaded }: UploadCsvDialogProps) =>
 
     return (
         <Dialog
-            fullScreen
+            maxWidth="sm"
+            fullWidth
             open={open}
             onClose={handleClose}
             slots={{ transition: Transition }}
-            slotProps={{
-                paper: {
-                    sx: (theme) => ({
-                        backgroundColor: theme.palette.background.default,
-                    }),
-                },
-            }}
         >
-            <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-                <Box
-                    sx={(theme) => ({
-                        px: 2,
-                        py: 1,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        borderBottom: `1px solid ${theme.palette.divider}`,
-                        backgroundColor: theme.palette.background.paper,
-                    })}
-                >
-                    <Box>
-                        <TitleText
-                            title="新增 CSV"
-                        />
-                        <Typography sx={{ fontSize: 12, color: "text.secondary" }}>
+            <DialogTitle sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <Box>
+                    <TitleText title="新增 CSV" />
+                    <Typography sx={{ fontSize: 12, color: "text.secondary", mt: 0.5 }}>
+                        僅支援 .csv 格式檔案
+                    </Typography>
+                </Box>
+                <IconButton onClick={handleClose} aria-label="close" size="small" disabled={isUploading}>
+                    <CloseIcon fontSize="small" />
+                </IconButton>
+            </DialogTitle>
+
+            <DialogContent sx={{ pt: 2 }}>
+                <Box sx={{ display: "grid", gap: 2, mt: 1 }}>
+                    <TextField
+                        select
+                        label="上傳類型"
+                        fullWidth
+                        value={selectedUploadType}
+                        onChange={(event) => handleUploadTypeChange(event.target.value)}
+                        disabled={isUploading}
+                        required
+                    >
+                        <MenuItem value="">請選擇類型</MenuItem>
+                        {datasetTypeOptions.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+
+                    <Box sx={{ display: "grid", gap: 1 }}>
+                        <Typography variant="body2" color="text.secondary">
+                            選擇檔案
+                        </Typography>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                            <Button
+                                variant="outlined"
+                                onClick={() => {
+                                    const fileInput = document.getElementById("csv-upload-input");
+                                    fileInput?.click();
+                                }}
+                                disabled={isUploading}
+                            >
+                                選擇檔案
+                            </Button>
+                            <Typography variant="body2" color={selectedFile ? "text.primary" : "text.secondary"}>
+                                {selectedFile ? selectedFile.name : "尚未選擇檔案"}
+                            </Typography>
+                        </Box>
+                        <Typography variant="caption" color="text.secondary">
                             僅支援 .csv 格式檔案
                         </Typography>
-                    </Box>
-                    <IconButton onClick={handleClose} aria-label="close" size="small" disabled={isUploading}>
-                        <CloseIcon sx={{ fontSize: 18 }} />
-                    </IconButton>
-                </Box>
-
-                <Box
-                    sx={{
-                        p: 2,
-                        flex: 1,
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 2,
-                    }}
-                >
-                    <Paper
-                        variant="outlined"
-                        sx={(theme) => ({
-                            borderRadius: 2,
-                            borderStyle: "dashed",
-                            borderColor: theme.palette.semantic.borderSubtle,
-                            backgroundColor: theme.palette.background.paper,
-                            p: 3,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flexDirection: "column",
-                            gap: 1.5,
-                            minHeight: 280,
-                        })}
-                    >
-                        <UploadFileRoundedIcon sx={{ fontSize: 42, color: "text.secondary" }} />
-                        <Typography sx={{ fontSize: 14, fontWeight: 700, color: "text.primary" }}>
-                            選擇要上傳的 CSV 檔案
-                        </Typography>
-                        <Typography sx={{ fontSize: 12, color: "text.secondary" }}>
-                            {selectedFileLabel}
-                        </Typography>
-
-                        <Button
-                            variant="outlined"
-                            onClick={() => {
-                                const fileInput = document.getElementById("csv-upload-input");
-                                fileInput?.click();
-                            }}
-                            disabled={isUploading}
-                        >
-                            選擇檔案
-                        </Button>
-
                         <input
                             id="csv-upload-input"
                             type="file"
@@ -198,7 +177,7 @@ const UploadCsvDialog = ({ open, setOpen, onUploaded }: UploadCsvDialogProps) =>
                             onChange={handleFileChange}
                             disabled={isUploading}
                         />
-                    </Paper>
+                    </Box>
 
                     {errorMessage && (
                         <Alert severity="error" variant="outlined">
@@ -206,30 +185,19 @@ const UploadCsvDialog = ({ open, setOpen, onUploaded }: UploadCsvDialogProps) =>
                         </Alert>
                     )}
                 </Box>
+            </DialogContent>
 
-                <Divider />
-
-                <Box
-                    sx={(theme) => ({
-                        px: 2,
-                        py: 1,
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        gap: 1,
-                        backgroundColor: theme.palette.background.paper,
-                    })}
+            <DialogActions>
+                <Button onClick={handleClose} disabled={isUploading}>取消</Button>
+                <Button
+                    variant="contained"
+                    onClick={() => handleUpload()}
+                    disabled={isUploading || !selectedFile || selectedUploadType === ""}
                 >
-                    <Button variant="text" onClick={handleClose} disabled={isUploading}>取消</Button>
-                    <Button
-                        variant="contained"
-                        onClick={() => handleUpload()}
-                        disabled={isUploading || !selectedFile}
-                    >
-                        {isUploading ? "上傳中..." : "上傳"}
-                    </Button>
-                    {isUploading && <CircularProgress size={20} sx={{ alignSelf: "center", ml: 0.5 }} />}
-                </Box>
-            </Box>
+                    {isUploading ? "上傳中..." : "上傳"}
+                </Button>
+                {isUploading && <CircularProgress size={20} sx={{ alignSelf: "center", ml: 0.5 }} />}
+            </DialogActions>
         </Dialog>
     );
 };
