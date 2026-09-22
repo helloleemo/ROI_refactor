@@ -1,4 +1,5 @@
 import CssBaseline from "@mui/material/CssBaseline"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import type { PaletteMode } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { ThemeProvider } from "@mui/material/styles"
@@ -22,6 +23,8 @@ function AppRoot() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)")
   const [mode, setMode] = useState<PaletteMode>("light")
 
+  // tanstack
+  const queryClient = new QueryClient()
 
 
   useEffect(() => {
@@ -46,16 +49,18 @@ function AppRoot() {
   const theme = mode === "dark" ? darkTheme : lightTheme
 
   return (
-    <LanguageProvider>
-      <ProjectProvider>
-        <ThemeModeProvider mode={mode} setMode={setMode} toggleTheme={toggleTheme}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <RouterProvider router={router} />
-          </ThemeProvider>
-        </ThemeModeProvider>
-      </ProjectProvider>
-    </LanguageProvider>
+    <QueryClientProvider client={queryClient}>
+      <LanguageProvider>
+        <ProjectProvider>
+          <ThemeModeProvider mode={mode} setMode={setMode} toggleTheme={toggleTheme}>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <RouterProvider router={router} />
+            </ThemeProvider>
+          </ThemeModeProvider>
+        </ProjectProvider>
+      </LanguageProvider>
+    </QueryClientProvider>
   )
 }
 

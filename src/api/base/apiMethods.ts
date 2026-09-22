@@ -1,5 +1,5 @@
 
-import { getBearerToken, buildApiUrl, getCurrentProjectId } from "./helpers";
+import { getBearerToken, buildApiUrl, getCurrentProjectId, getCurrentLanguage } from "./helpers";
 import type { GetParams, PostParams, PutParams, DeleteParams, ApiResponse } from "./types";
 
 const formatApiError = (payload: any): string => {
@@ -87,6 +87,8 @@ const createHeaders = (includeJsonContentType = true) => {
     if (projectId) {
         headers.append("X-Project-Id", projectId);
     }
+
+    headers.append("Accept-Language", getCurrentLanguage());
 
     return headers;
 }

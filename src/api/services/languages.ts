@@ -8,7 +8,7 @@ const languageService = {
             query: query
         })
     },
-    getList: async (query?: LanguageListRequest) => {
+    getList: async (query: LanguageListRequest) => {
         return GET<LanguageItem[]>({
             endpoint: API_ENDPOINTS.UI_TEXTS.LIST,
             query: query

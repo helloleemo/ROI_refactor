@@ -22,13 +22,13 @@ export const ProjectService = {
     },
     UPDATE: async (path: string, body: ProjectUpdateRequest) => {
         return PUT<ProjectListItem>({
-            endpoint: `${API_ENDPOINTS.PROJECT.INFO}/${path}`,
+            endpoint: `${API_ENDPOINTS.PROJECT.INFO(path)}`,
             body
         })
     },
     DELETE: async (path: string) => {
         return DELETE({
-            endpoint: `${API_ENDPOINTS.PROJECT.INFO}/${path}`,
+            endpoint: `${API_ENDPOINTS.PROJECT.INFO(path)}`,
         })
     }
 

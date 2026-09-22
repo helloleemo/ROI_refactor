@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import { N30x30OptionsComment as Comment } from "@/components/icons";
 import type { IconProps } from "@/components/icons/types";
+import { headerTranslationKey } from "./languageTranslationKey";
 
 export interface ProfileMenuItem {
     icon: ComponentType<IconProps>;
@@ -13,31 +14,31 @@ export const profile: ProfileMenuItem[] = [
     {
         icon: Comment,
         label: "Profile",
-        value: "profile",
+        value: headerTranslationKey.profile.profile,
         route: "/profile",
     },
     {
         icon: Comment,
         label: "Theme",
-        value: "theme",
+        value: headerTranslationKey.profile.theme,
         route: "/theme",
     },
     {
         icon: Comment,
         label: "About",
-        value: "about",
+        value: headerTranslationKey.profile.about,
         route: "/about",
     },
     {
         icon: Comment,
         label: "Logout",
-        value: "logout",
+        value: headerTranslationKey.profile.logout,
         route: "/logout",
     },
-    {
-        icon: Comment,
-        label: "Languages",
-        value: "languages",
-        route: "/language-settings",
-    }
+    // {
+    //     icon: Comment,
+    //     label: "Languages",
+    //     value: headerTranslationKey.profile.languages,
+    //     route: "/language-settings",
+    // }
 ];

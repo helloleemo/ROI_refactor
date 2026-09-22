@@ -22,8 +22,8 @@ export interface LanguageNestedRequest {
 
 export interface LanguageListRequest {
     locale: LanguageList;
-    category: string;
-    keyword: string; // 關鍵字搜尋 (text_key 或 text_value)
+    category?: string;
+    keyword?: string; // 關鍵字搜尋 (text_key 或 text_value)
 }
 
 export interface LanguageUpdateRequest {

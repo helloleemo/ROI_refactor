@@ -14,22 +14,25 @@ export type MenuItemProps = {
     icon: ReactNode;
     route?: string;
     children?: MenuItemProps[];
+    disabled?: boolean;
 };
 
 export const MenuItem: MenuItemProps[] = [
     {
-        key: "overview",
+        key: "sidebarMenu.overview.label",
         label: "總攬",
         icon: <Overview width={30} height={30} />,
         children: [
             {
-                key: "overview-kpi",
+                key: "sidebarMenu.overview.overview-kpi",
                 label: "KPI總覽",
                 icon: <CustomLine width={20} height={20} />,
                 route: `${PATHS.overview}/${PATHS.kpiOverview}`,
+                disabled: true,
+
             },
             {
-                key: "project-settings",
+                key: "sidebarMenu.overview.project-settings",
                 label: "專案設定",
                 icon: <CustomLine width={20} height={20} />,
                 route: `${PATHS.overview}/${PATHS.projectSettings}`,
@@ -37,54 +40,58 @@ export const MenuItem: MenuItemProps[] = [
         ],
     },
     {
-        key: "equipment-management",
+        key: "sidebarMenu.equipment-management.label",
         label: "設備管理",
         icon: <CustomLine width={30} height={30} />,
         children: [
             {
-                key: "equipment-list",
+                key: "sidebarMenu.equipment-management.equipment-list",
                 label: "設備列表",
                 icon: <CustomLine width={20} height={20} />,
                 route: `${PATHS.equipmentManagement}/${PATHS.equipmentList}`,
             },
             {
-                key: "water-system-diagram",
+                key: "sidebarMenu.equipment-management.water-system-diagram",
                 label: "水路系統圖",
                 icon: <CustomLine width={20} height={20} />,
                 route: `${PATHS.equipmentManagement}/${PATHS.mapping}`,
+                disabled: true,
+
             }
         ],
     },
     {
-        key: "energy-simulation",
+        key: "sidebarMenu.energy-simulation.label",
         label: "節能模擬",
         icon: <CustomLine width={30} height={30} />,
+        disabled: true,
+
         children: [
             {
-                key: "overview-data-cleaning",
+                key: "sidebarMenu.energy-simulation.overview-data-cleaning",
                 label: "總攬",
                 icon: <CustomLine width={20} height={20} />,
                 route: PATHS.energySavingOverview,
             },
             {
-                key: "csv-project",
+                key: "sidebarMenu.energy-simulation.csv-project",
                 label: "專案CSV",
                 icon: <CustomLine width={20} height={20} />,
                 route: `${PATHS.energySavingOverview}/${PATHS.projectCsv}`,
             },
             {
-                key: "energy-simulation-settings",
+                key: "sidebarMenu.energy-simulation.energy-simulation-settings",
                 label: "數據清洗",
                 icon: <CustomLine width={20} height={20} />,
                 route: `${PATHS.energySavingOverview}/${PATHS.dataCleaning}`,
             },
             {
-                key: "energy-simulation-results",
+                key: "sidebarMenu.energy-simulation.energy-simulation-results",
                 label: "M&V基準線",
                 icon: <CustomLine width={20} height={20} />,
                 route: `${PATHS.energySavingOverview}/${PATHS.mAndVBaseline}`,
             }, {
-                key: "energy-simulation-report",
+                key: "sidebarMenu.energy-simulation.energy-simulation-report",
                 label: "模擬報告",
                 icon: <CustomLine width={20} height={20} />,
                 route: `${PATHS.energySavingOverview}/${PATHS.simulationResultReport}`,
@@ -92,18 +99,18 @@ export const MenuItem: MenuItemProps[] = [
         ],
     },
     {
-        key: "modelManagement",
+        key: "sidebarMenu.modelManagement.label",
         label: "模型管理",
         icon: <SiteManagement width={30} height={30} />,
         children: [
             {
-                key: "csv-list",
+                key: "sidebarMenu.modelManagement.csv-list",
                 label: "CSV列表",
                 route: `${PATHS.model}/${PATHS.csvList}`,
                 icon: <CustomLine width={20} height={20} />,
             },
             {
-                key: "model-list",
+                key: "sidebarMenu.modelManagement.model-list",
                 label: "模型列表",
                 route: `${PATHS.model}/${PATHS.modelList}`,
                 icon: <CustomLine width={20} height={20} />,
@@ -111,18 +118,20 @@ export const MenuItem: MenuItemProps[] = [
         ],
     },
     {
-        key: "optimization",
+        key: "sidebarMenu.optimization.label",
         label: "最佳化策略",
         icon: <DocManagement width={26} height={26} />,
+        disabled: true,
+
         children: [
             {
-                key: "optimization-strategies-list",
+                key: "sidebarMenu.optimization.optimization-strategies-list",
                 label: "最佳化策略列表",
                 route: `${PATHS.optimization}/${PATHS.optimizationStrategiesList}`,
                 icon: <CustomLine width={20} height={20} />,
             },
             {
-                key: "add-optimization-strategies",
+                key: "sidebarMenu.optimization.add-optimization-strategies",
                 label: "新增最佳化策略",
                 route: `${PATHS.optimization}/${PATHS.addOptimizationStrategies}`,
                 icon: <CustomLine width={20} height={20} />,
@@ -138,9 +147,9 @@ export const firstLevelItems = MenuItem.map((item) => ({
 }));
 
 export const secondLevelMenuMap: Record<string, MenuItemProps[]> = {
-    overview: MenuItem.filter((item) => item.key === "overview"),
-    modelManagement: MenuItem.filter((item) => item.key === "modelManagement"),
-    optimization: MenuItem.filter((item) => item.key === "optimization"),
+    overview: MenuItem.filter((item) => item.key === "sidebarMenu.overview.label"),
+    modelManagement: MenuItem.filter((item) => item.key === "sidebarMenu.modelManagement.label"),
+    optimization: MenuItem.filter((item) => item.key === "sidebarMenu.optimization.label"),
 };
 
 // export const secondLevelMenuMap: Record<string, SecondLevelMenuItem[]> = {

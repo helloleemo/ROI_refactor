@@ -5,11 +5,8 @@ import { defaultLanguage, supportedLanguages } from './languages';
 
 const LANGUAGE_STORAGE_KEY = 'language';
 
-const supportedLanguageSet = new Set<string>(supportedLanguages);
-
 export function normalizeLanguage(locale?: string | null) {
-    if (!locale) return defaultLanguage;
-    return supportedLanguageSet.has(locale) ? locale : defaultLanguage;
+    return locale || defaultLanguage;
 }
 
 export function getStoredLanguage() {

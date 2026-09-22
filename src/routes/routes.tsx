@@ -5,10 +5,13 @@ import Index from "../pages/Index"
 import ModelManagement from "@/pages/Models/ModelManagement"
 import CsvList from "@/pages/Models/CsvList"
 import OverviewPage from "@/pages/Overview/OverviewPage";
-import EquipmentListPage from "@/pages/EquipmentManagement/EquipmentList/EquipmentListPage";
 import OptimizationListPage from "@/pages/Optimization/OptmizationStrategiesList/OptimizationListPage";
 import LanguageSettings from "@/pages/LanguageSettings/LanguageSettings";
 import NoSidebarLayout from "@/components/layout/NoSidebarLayout";
+import KpiOverview from "@/pages/Overview/KpiOverview/KpiOverview";
+
+// 設備管理
+import EquipmentListPage from "@/pages/EquipmentManagement/EquipmentList/EquipmentListPage";
 
 const PlaceholderPage = ({ title }: { title: string }) => (
   <Box sx={{ p: 3 }}>
@@ -18,19 +21,19 @@ const PlaceholderPage = ({ title }: { title: string }) => (
 
 export const router = createBrowserRouter([
   {
-    path: PATHS.root,
+    path: "/:projectId?",
     element: <Index />,
     children: [
       {
         index: true,
-        element: <Navigate to={PATHS.overview} replace />
+        element: <Navigate to={`${PATHS.overview}/${PATHS.projectSettings}`} replace />
       },
 
       // overview
-      {
-        path: `${PATHS.overview}/${PATHS.kpiOverview}`,
-        element: <PlaceholderPage title="KPI Overview" />
-      },
+      // {
+      //   path: `${PATHS.overview}/${PATHS.kpiOverview}`,
+      //   element: <KpiOverview />
+      // },
       {
         path: `${PATHS.overview}/${PATHS.projectSettings}`,
         element: <PlaceholderPage title="Project Settings" />
@@ -39,35 +42,35 @@ export const router = createBrowserRouter([
       // 設備管理
       {
         path: `${PATHS.equipmentManagement}/${PATHS.equipmentList}`,
-        element: <PlaceholderPage title="Equipment List" />
+        element: <EquipmentListPage />
 
       },
-      {
-        path: `${PATHS.equipmentManagement}/${PATHS.mapping}`,
-        element: <PlaceholderPage title="Mapping" />
-      },
+      // {
+      //   path: `${PATHS.equipmentManagement}/${PATHS.mapping}`,
+      //   element: <PlaceholderPage title="Mapping" />
+      // },
 
       // 節能模擬
-      {
-        path: PATHS.energySavingOverview,
-        element: <PlaceholderPage title="Energy Saving Overview" />
-      },
-      {
-        path: `${PATHS.energySavingOverview}/${PATHS.projectCsv}`,
-        element: <PlaceholderPage title="Project CSV" />
-      },
-      {
-        path: `${PATHS.energySavingOverview}/${PATHS.dataCleaning}`,
-        element: <PlaceholderPage title="Data Cleaning" />
-      },
-      {
-        path: `${PATHS.energySavingOverview}/${PATHS.mAndVBaseline}`,
-        element: <PlaceholderPage title="M&V Baseline" />
-      },
-      {
-        path: `${PATHS.energySavingOverview}/${PATHS.simulationResultReport}`,
-        element: <PlaceholderPage title="Simulation Result Report" />
-      },
+      // {
+      //   path: PATHS.energySavingOverview,
+      //   element: <PlaceholderPage title="Energy Saving Overview" />
+      // },
+      // {
+      //   path: `${PATHS.energySavingOverview}/${PATHS.projectCsv}`,
+      //   element: <PlaceholderPage title="Project CSV" />
+      // },
+      // {
+      //   path: `${PATHS.energySavingOverview}/${PATHS.dataCleaning}`,
+      //   element: <PlaceholderPage title="Data Cleaning" />
+      // },
+      // {
+      //   path: `${PATHS.energySavingOverview}/${PATHS.mAndVBaseline}`,
+      //   element: <PlaceholderPage title="M&V Baseline" />
+      // },
+      // {
+      //   path: `${PATHS.energySavingOverview}/${PATHS.simulationResultReport}`,
+      //   element: <PlaceholderPage title="Simulation Result Report" />
+      // },
 
       // 模型管理
       {
@@ -84,14 +87,14 @@ export const router = createBrowserRouter([
       },
 
       // 最佳化策略
-      {
-        path: `${PATHS.optimization}/${PATHS.optimizationStrategiesList}`,
-        element: <OptimizationListPage />
-      },
-      {
-        path: `${PATHS.optimization}/${PATHS.addOptimizationStrategies}`,
-        element: <PlaceholderPage title="Add Optimization Strategy" />
-      },
+      // {
+      //   path: `${PATHS.optimization}/${PATHS.optimizationStrategiesList}`,
+      //   element: <OptimizationListPage />
+      // },
+      // {
+      //   path: `${PATHS.optimization}/${PATHS.addOptimizationStrategies}`,
+      //   element: <PlaceholderPage title="Add Optimization Strategy" />
+      // },
     ]
   },
   {

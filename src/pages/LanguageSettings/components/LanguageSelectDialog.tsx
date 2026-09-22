@@ -7,16 +7,15 @@ import {
     DialogTitle,
     FormControlLabel,
     FormGroup,
-    Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { languages } from "@/settings/languages";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type LanguageSelectDialogProps = {
     open: boolean;
     selectedLocales: string[];
     onClose: () => void;
-    onConfirm: (locales: string[]) => void;
+    onConfirm: (locales: string[]) => Promise<void> | void;
 };
 
 const LanguageSelectDialog = ({
@@ -26,6 +25,8 @@ const LanguageSelectDialog = ({
     onConfirm,
 }: LanguageSelectDialogProps) => {
     const [draftLocales, setDraftLocales] = useState(selectedLocales);
+    const [isSaving, setIsSaving] = useState(false);
+    const { supportedLocales } = useLanguage();
 
     useEffect(() => {
         if (open) setDraftLocales(selectedLocales);
@@ -41,12 +42,22 @@ const LanguageSelectDialog = ({
         setDraftLocales([...draftLocales, locale]);
     };
 
+    const handleConfirm = async () => {
+        try {
+            setIsSaving(true);
+            await onConfirm(draftLocales);
+            onClose();
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
             <DialogTitle>選取顯示語言</DialogTitle>
             <DialogContent>
                 <FormGroup>
-                    {languages.map((language) => (
+                    {supportedLocales.map((language) => (
                         <FormControlLabel
                             key={language.value}
                             control={(
@@ -62,7 +73,7 @@ const LanguageSelectDialog = ({
             </DialogContent>
             <DialogActions sx={{ px: 3, pb: 2 }}>
                 <Button onClick={onClose} color="inherit">取消</Button>
-                <Button onClick={() => { onConfirm(draftLocales); onClose(); }} variant="contained">
+                <Button onClick={handleConfirm} variant="contained" disabled={isSaving}>
                     確認
                 </Button>
             </DialogActions>

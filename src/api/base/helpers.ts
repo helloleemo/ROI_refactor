@@ -8,6 +8,10 @@ const getCurrentProjectId = () => {
     return sessionStorage.getItem("projectId") || "";
 }
 
+const getCurrentLanguage = () => {
+    return localStorage.getItem("language") || "en-US";
+}
+
 const buildApiUrl = (endpoint: string, query?: Record<string, any>) => {
     const baseUrl = API_URLS.BASE_URL;
     let url = `${baseUrl}${endpoint}`;
@@ -33,4 +37,4 @@ const buildApiUrl = (endpoint: string, query?: Record<string, any>) => {
 
 
 
-export { buildApiUrl, getBearerToken, getCurrentProjectId }
+export { buildApiUrl, getBearerToken, getCurrentProjectId, getCurrentLanguage }

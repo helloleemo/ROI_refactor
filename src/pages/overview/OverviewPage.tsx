@@ -5,7 +5,7 @@ const OverviewPage = () => {
 
     return (
         <div>
-            <h1>{t("overview.KPIoverview.title")}</h1>
+            <h1>{`${t("overview.KPIoverview.title")} ID: ${sessionStorage.getItem("projectId")}`}</h1>
             <p>{t("overview.KPIoverview.description")}</p>
         </div>
     );

@@ -1,26 +1,36 @@
 {
-    "sidebar": {
+    "sidebarMenu": {
         "overview": {
-            "label": "overview",
-            "overviewKpi": "KPI overview"
+            "label": "Overview",
+            "overview-kpi": "KPI Overview",
+            "project-settings": "Project Settings"
+        },
+        "equipment-management": {
+            "label": "Equipment Management",
+            "equipment-list": "Equipment List",
+            "water-system-diagram": "Water System Diagram"
+        },
+        "energy-simulation": {
+            "label": "Energy Simulation",
+            "overview-data-cleaning": "Overview",
+            "csv-project": "Project CSV",
+            "energy-simulation-settings": "Data Cleaning",
+            "energy-simulation-results": "M&V Baseline",
+            "energy-simulation-report": "Simulation Report"
         },
         "modelManagement": {
-            "label": "model management",
-            "modelList": "model list",
-            "csvList": "CSV list"
+            "label": "Model Management",
+            "csv-list": "CSV List",
+            "model-list": "Model List"
         },
         "optimization": {
-            "label": "optimization strategy",
-            "optimizationStrategiesList": "strategy list",
-            "addOptimizationStrategies": "add strategy",
-            "deviceList": "device list",
-            "addDevice": "add/edit device"
+            "label": "Optimization Strategy",
+            "optimization-strategies-list": "Optimization Strategy List",
+            "add-optimization-strategies": "Add Optimization Strategy"
         }
     },
-    "overview": {
-        "KPIoverview": {
-            "title": "KPI overview",
-            "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        }
+    "equipment-list": {
+        "title": "Equipment List",
+        "searchPlaceholder": "Search Equipment Name"
     }
 }

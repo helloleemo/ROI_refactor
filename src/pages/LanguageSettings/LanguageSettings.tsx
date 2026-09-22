@@ -10,14 +10,13 @@ import SearchBar from "@/components/SearchBar";
 import useSearchFilter from "@/hooks/useSearchFilter";
 import languageService from "@/api/services/languages";
 import { groupLanguageItems, type LanguageTableRow } from "@/utils/language";
-import { languages } from "@/settings/languages";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 
 const LanguageSettings = () => {
     const [languageList, setLanguageList] = useState<LanguageTableRow[]>([]);
-    const [selectedLocales, setSelectedLocales] = useState<string[]>(
-        languages.map((language) => language.value),
-    );
+    const [selectedLocales, setSelectedLocales] = useState<string[]>([]);
+    const { enabledLocales, updateEnabledLocales } = useLanguage();
     const { searchValue, handleSearchChange, filteredItems: filteredLanguageList } = useSearchFilter({
         items: languageList,
         fields: ["category"],
@@ -27,6 +26,10 @@ const LanguageSettings = () => {
         importDialog: false,
         selectDisplayLanguageDialog: false,
     });
+
+    useEffect(() => {
+        setSelectedLocales(enabledLocales);
+    }, [enabledLocales]);
 
     const getData = async () => {
         try {
@@ -40,6 +43,10 @@ const LanguageSettings = () => {
 
     const handleSelectDisplayLanguage = () => {
         openDialog("selectDisplayLanguageDialog");
+    };
+
+    const handleEnabledLocalesConfirm = async (locales: string[]) => {
+        await updateEnabledLocales(locales);
     };
 
     const handleExportTemplate = async () => {
@@ -118,7 +125,7 @@ const LanguageSettings = () => {
                 open={open.selectDisplayLanguageDialog}
                 selectedLocales={selectedLocales}
                 onClose={() => closeDialog("selectDisplayLanguageDialog")}
-                onConfirm={setSelectedLocales}
+                onConfirm={handleEnabledLocalesConfirm}
             />
             <ImportTranslation
                 open={open.importDialog}

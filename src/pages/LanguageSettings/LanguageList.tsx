@@ -49,9 +49,9 @@ const LanguageList = ({ rows = [], selectedLocales, onUpdated }: LanguageListPro
             valueSetter: (value: string, row: LanguageTableRow) => {
                 const translation = row.translations[locale];
 
-                if (!translation) {
-                    return row;
-                }
+                // if (!translation) {
+                //     return row;
+                // }
 
                 return {
                     ...row,

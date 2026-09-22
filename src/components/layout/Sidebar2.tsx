@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { MenuItem, type MenuItemProps } from "@/mock/sidebar";
+import { useTranslation } from "react-i18next";
 
 const FIRST_COLLAPSED_WIDTH = 72;
 const FIRST_EXPANDED_WIDTH = 220;
@@ -23,7 +24,20 @@ const SECOND_WIDTH = 220;
 const HEADER_HEIGHT = 70;
 
 const Sidebar2 = () => {
+
+    // console.log("Sidebar2 rendered");
+
+    const { t } = useTranslation();
     const navigate = useNavigate();
+    // const { query: { data } } = useUiTextsNested("sidebarMenu")
+    // console.log("data", data, isLoading, isError);
+    // const getMenuLabel = (keys: string[], fallback: string) => {
+    //     const translationKey = getSidebarTranslationKey(...keys);
+
+    //     return data && translationKey ? getUiText(translationKey, data) : fallback;
+    // };
+
+
     const [activeFirstLevelKey, setActiveFirstLevelKey] = useState<string | null>(null);
     const [activeSecondLevelKey, setActiveSecondLevelKey] = useState<string | null>(null);
     const [activeThirdLevelKey, setActiveThirdLevelKey] = useState<string | null>(null);
@@ -33,7 +47,9 @@ const Sidebar2 = () => {
 
     const activeFirstLevelItem = MenuItem.find((item) => item.key === activeFirstLevelKey) ?? null;
     const secondMenus = activeFirstLevelItem?.children ?? [];
-    const activeFirstLevelLabel = activeFirstLevelItem?.label ?? "";
+    const activeFirstLevelLabel = activeFirstLevelItem
+        ? t(activeFirstLevelItem.key, { defaultValue: activeFirstLevelItem.label })
+        : "";
     const hasSecondLevelMenu = Boolean(activeFirstLevelItem);
     const firstDrawerWidth = isFirstLevelHovered ? FIRST_EXPANDED_WIDTH : FIRST_COLLAPSED_WIDTH;
     const secondDrawerWidth = hasSecondLevelMenu && !isSecondLevelCollapsed ? SECOND_WIDTH : 0;
@@ -128,6 +144,7 @@ const Sidebar2 = () => {
                                 key={item.key}
                                 selected={item.key === activeFirstLevelKey}
                                 onClick={() => handleFirstLevelClick(item)}
+                                disabled={item.disabled}
                                 sx={{
                                     borderRadius: 1,
                                     mb: 0.5,
@@ -162,7 +179,7 @@ const Sidebar2 = () => {
                                             fontSize: 14,
                                             cursor: "pointer",
                                             whiteSpace: "nowrap",
-                                        }}>{item.label}</Typography>
+                                        }}>{t(item.key, { defaultValue: item.label })}</Typography>
                                     }
                                 />
                             </ListItemButton>
@@ -216,6 +233,8 @@ const Sidebar2 = () => {
                                                         key={menu.key}
                                                         selected={menu.key === activeSecondLevelKey}
                                                         onClick={() => handleSecondLevelClick(menu)}
+                                                        disabled={menu.disabled}
+
                                                         sx={{
                                                             // borderRadius: 1,
                                                             mb: 0.5,
@@ -234,7 +253,7 @@ const Sidebar2 = () => {
                                                                     fontSize: 14,
                                                                     cursor: "pointer",
 
-                                                                }}>{menu.label}
+                                                                }}>{t(menu.key, { defaultValue: menu.label })}
                                                                 </Typography>
                                                             }
                                                         />
@@ -253,7 +272,7 @@ const Sidebar2 = () => {
 
                                                         <ListItemIcon sx={{ minWidth: 32, cursor: "pointer" }}>{menu.icon}</ListItemIcon>
                                                         <ListItemText
-                                                            primary={<Typography sx={{ fontSize: 14, cursor: "pointer" }}>{menu.label}</Typography>}
+                                                            primary={<Typography sx={{ fontSize: 14, cursor: "pointer" }}>{t(menu.key, { defaultValue: menu.label })}</Typography>}
                                                         />
                                                         {isGroupOpen ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
                                                     </ListItemButton>
@@ -269,7 +288,7 @@ const Sidebar2 = () => {
                                                                 >
                                                                     <ListItemIcon sx={{ minWidth: 28, cursor: "pointer" }}>{child.icon}</ListItemIcon>
                                                                     <ListItemText
-                                                                        primary={<Typography sx={{ fontSize: 13, cursor: "pointer" }}>{child.label}</Typography>}
+                                                                        primary={<Typography sx={{ fontSize: 13, cursor: "pointer" }}>{t(child.key, { defaultValue: child.label })}</Typography>}
                                                                     />
                                                                 </ListItemButton>
                                                             ))}

@@ -39,10 +39,12 @@ export const API_ENDPOINTS = {
 
     // Equipment
     EQUIPMENT: {
+        CATEGORIES: "equipment/categories",
         CREATE: "equipment/create",
         LIST: "equipment/list",
         UPDATE: "equipment/",
-        DELETE: (id: CommonIdType) => `equipment/${id}`
+        DELETE: (id: CommonIdType) => `equipment/${id}`,
+        APPROACH_TEMP: "equipment/cooling-tower-approach-temp"
     },
 
     // Optimization

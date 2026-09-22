@@ -5,7 +5,9 @@ import { ProjectService } from "@/api/services/project";
 interface ProjectContextValue {
     projects: ProjectListItem[];
     currentProject?: ProjectListItem;
+    invalidProjectId?: string;
     setCurrentProject: (project: ProjectListItem) => void;
+    refreshProjects: () => Promise<ProjectListItem[]>;
 }
 
 
@@ -14,11 +16,18 @@ const ProjectContext = createContext<ProjectContextValue | undefined>(undefined)
 export function ProjectProvider({ children }: { children: React.ReactNode }) {
     const [projects, setProjects] = useState<ProjectListItem[]>([]);
     const [currentProject, setCurrentProjectState] = useState<ProjectListItem>();
+    const [invalidProjectId, setInvalidProjectId] = useState<string>();
     const [isReady, setIsReady] = useState(false);
 
     const setCurrentProject = (project: ProjectListItem) => {
         setCurrentProjectState(project);
+        setInvalidProjectId(undefined);
         sessionStorage.setItem("projectId", String(project.id));
+    };
+
+    const getRouteProjectId = () => {
+        const firstPathSegment = window.location.pathname.split("/")[1];
+        return firstPathSegment || undefined;
     };
 
     const loadProjects = async () => {
@@ -28,35 +37,50 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
             setProjects(allProjects);
 
             if (allProjects.length === 0) {
+                setCurrentProjectState(undefined);
+                setInvalidProjectId(undefined);
                 sessionStorage.removeItem("projectId");
-                return;
+                return allProjects;
             }
 
+            const routeProjectId = getRouteProjectId();
             const storedProjectId = sessionStorage.getItem("projectId");
+            const routeProject = allProjects.find(
+                (project) => String(project.id) === routeProjectId,
+            );
             const storedProject = allProjects.find(
                 (project) => String(project.id) === storedProjectId,
             );
 
-            setCurrentProject(storedProject ?? allProjects[0]);
+            if (routeProjectId && !routeProject) {
+                setInvalidProjectId(routeProjectId);
+            } else {
+                setCurrentProject(routeProject ?? storedProject ?? allProjects[0]);
+            }
+
+            return allProjects;
         }
         catch (error) {
             console.error("Failed to load all projects", error);
+            return [];
         }
         finally {
             setIsReady(true);
         }
-    }
+    };
 
-
-
+    const refreshProjects = async () => {
+        const allProjects = await loadProjects();
+        return allProjects;
+    };
 
     useEffect(() => {
-        loadProjects();
+        void loadProjects();
     }, []);
 
 
     return (
-        <ProjectContext.Provider value={{ projects, currentProject, setCurrentProject }}>
+        <ProjectContext.Provider value={{ projects, currentProject, invalidProjectId, setCurrentProject, refreshProjects }}>
             {isReady ? children : null}
         </ProjectContext.Provider>
     );

@@ -17,26 +17,24 @@ import {
 import DateNow from "./DateNow";
 import HierarchyOptions from "./HierarchyOptions";
 import SearchSite from "./SearchSite";
-import { hierarchyData } from "./hierarchyData";
 import InformationDialog from "../InformationDialog";
 import { Menu, MenuItem } from "@mui/material";
 import { currency } from "@/settings/currency";
-import { languages } from "@/settings/languages";
 import { profile } from "@/settings/profile";
 import { notifications } from "@/mock/notifications";
 import { useThemeMode } from "@/hooks/useThemeMode";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-const getDefaultSite = () => {
-    const firstCompany = hierarchyData[0];
-    if (!firstCompany) return "";
-
-    const firstGroupSites = Object.values(firstCompany.groups)[0];
-    return firstGroupSites?.[0] ?? "";
-};
+import { useProject } from "@/contexts/ProjectContext";
+import PATHS from "@/routes/paths";
+import { headerTranslationKey } from "@/settings/languageTranslationKey";
+import { getUiText } from "@/utils/getUiText";
+import { useUiTextsNested } from "@/hooks/useUiTextsNested";
 
 function ResponsiveAppBar() {
     const navigate = useNavigate();
+    const { query: { data } } = useUiTextsNested("header")
+
+
     const { anchorEl,
         open,
         handleClick,
@@ -44,31 +42,24 @@ function ResponsiveAppBar() {
         handleOpen, } = useMenuToggle();
     const { toggleTheme } = useThemeMode();
     const [searchValue, setSearchValue] = useState("");
-    const [selectedSite, setSelectedSite] = useState(getDefaultSite);
-    const { locale, changeLocale } = useLanguage();
+    const { locale, changeLocale, supportedLocales, enabledLocales } = useLanguage();
+    const { projects, setCurrentProject } = useProject();
 
     const siteSuggestions = useMemo(
-        () =>
-            Array.from(
-                new Set(
-                    hierarchyData.flatMap((company) =>
-                        Object.values(company.groups).flatMap((sites) => sites),
-                    ),
-                ),
-            ),
-        [],
+        () => projects.map((project) => project.name),
+        [projects],
     );
 
     const handleSearchChange = (value: string) => {
         setSearchValue(value);
     };
 
-    const handleHierarchySiteChange = (value: string) => {
-        setSelectedSite(value);
-    };
-
     const handleSearchSuggestionSelect = (value: string) => {
-        setSelectedSite(value);
+        const project = projects.find((item) => item.name === value);
+        if (project) {
+            setCurrentProject(project);
+            navigate(`/${project.id}`, { replace: true });
+        }
         setSearchValue("");
     };
 
@@ -81,6 +72,11 @@ function ResponsiveAppBar() {
         handleClose(value);
         navigate(route)
     };
+
+    const getText = (key: string) => {
+        const translation = getUiText(key, data ?? []);
+        return translation;
+    }
 
 
     return (
@@ -122,8 +118,10 @@ function ResponsiveAppBar() {
                                 backgroundColor: "semantic.borderSubtle"
                             }} />
                             <Typography
+                                onClick={() => navigate(PATHS.root)}
                                 sx={{
                                     color: "semantic.brandAdaptive",
+                                    cursor: "pointer",
                                     fontSize: "1.2rem",
                                     fontWeight: 600,
                                     display: { xs: "none", md: "block" }
@@ -138,10 +136,7 @@ function ResponsiveAppBar() {
                                     alignItems: "center",
                                     gap: 1.5
                                 }}>
-                                <HierarchyOptions
-                                    selectedSite={selectedSite}
-                                    onSiteChange={handleHierarchySiteChange}
-                                /></Box>
+                                <HierarchyOptions /></Box>
                             <SearchSite
                                 value={searchValue}
                                 sx={{
@@ -244,15 +239,17 @@ function ResponsiveAppBar() {
                                 }}
                             >
                                 {
-                                    languages.map((language) => (
-                                        <MenuItem
-                                            key={language.value}
-                                            selected={language.value === locale}
-                                            onClick={() => handleLanguageChange(language.value)}
-                                        >
-                                            {language.label}
-                                        </MenuItem>
-                                    ))
+                                    supportedLocales
+                                        .filter((language) => enabledLocales.includes(language.value))
+                                        .map((language) => (
+                                            <MenuItem
+                                                key={language.value}
+                                                selected={language.value === locale}
+                                                onClick={() => handleLanguageChange(language.value)}
+                                            >
+                                                {language.label}
+                                            </MenuItem>
+                                        ))
                                 }
                             </Menu>
 
@@ -348,33 +345,33 @@ function ResponsiveAppBar() {
                                 {
                                     profile.map((item) => {
                                         const ItemIcon = item.icon;
-                                        if (item.value === "theme") {
+                                        if (item.value === headerTranslationKey.profile.theme) {
                                             return (
                                                 <MenuItem key={item.label} onClick={() => {
                                                     handleClose("user");
                                                     toggleTheme();
                                                 }} sx={{ gap: 1 }}>
                                                     <ItemIcon width={20} height={20} />
-                                                    {item.label}
+                                                    {getText(item.value)}
                                                 </MenuItem>
                                             );
                                         }
 
-                                        if (item.value === "about") {
+                                        if (item.value === headerTranslationKey.profile.about) {
                                             return (
                                                 <MenuItem key={item.label} onClick={() => {
                                                     handleClose("user");
                                                     handleOpen("aboutApplication");
                                                 }} sx={{ gap: 1 }}>
                                                     <ItemIcon width={20} height={20} />
-                                                    {item.label}
+                                                    {getText(item.value)}
                                                 </MenuItem>
                                             );
                                         } else {
                                             return (
                                                 <MenuItem key={item.label} onClick={() => handleProfileMenuItemClick("user", item.route)}>
                                                     <ItemIcon width={20} height={20} />
-                                                    {item.label}
+                                                    {getText(item.value)}
                                                 </MenuItem>
                                             );
                                         }
