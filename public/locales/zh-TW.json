@@ -29,8 +29,83 @@
             "add-optimization-strategies": "新增最佳化策略"
         }
     },
+    "header": {
+        "profile": {
+            "profile": "個人資料",
+            "theme": "主題",
+            "about": "關於",
+            "logout": "登出"
+        }
+    },
     "equipment-list": {
         "title": "設備列表",
-        "searchPlaceholder": "搜尋設備名稱"
+        "search-placeholder": "搜尋設備名稱",
+        "add": "新增",
+        "actions": "操作",
+        "add-dialog": {
+            "title": "新增設備",
+            "name": "設備名稱",
+            "remarks": "備註",
+            "cancel": "取消",
+            "submit": "新增",
+            "submitting": "新增中...",
+            "try-again": "請稍後再試",
+            "error": "新增失敗：{{message}}"
+        },
+        "categories": {
+            "CH": "冰水主機 (CH)",
+            "CHP": "一次冰水泵 (CHP)",
+            "ZP": "二次泵 / 區域泵 (ZP)",
+            "CWP": "冷卻水泵 (CWP)",
+            "CT": "冷卻水塔 (CT)"
+        },
+        "fields1": {
+            "equipment_name": "設備名稱",
+            "cooling_capacity_rt": "冷卻能力 (RT)",
+            "rated_power_kw": "額定耗電 (kW)",
+            "compressor_type": "壓縮機形式",
+            "compressor_count": "壓縮機數量",
+            "is_vfd": "內建變頻",
+            "chw_temp_out": "冰水出水溫 (°C)",
+            "chw_temp_in": "冰水回水溫 (°C)",
+            "cw_temp_in": "冷卻水進水溫 (°C)",
+            "cw_temp_out": "冷卻水出水溫 (°C)",
+            "efficiency_kw_per_rt": "效率 (kW/RT)",
+            "cop": "效率 (COP)",
+            "heat_rejection_kw": "總散熱量 (kW)",
+            "chw_flow_lpm": "冰水流量 (LPM)",
+            "cw_flow_lpm": "冷卻水流量 (LPM)"
+        },
+        "fields2": {
+            "equipment_name": "設備名稱",
+            "rated_flow_lpm": "額定流量 (LPM)",
+            "head_m": "揚程 (m)",
+            "is_vfd": "變頻",
+            "rated_power_kw": "額定功率 (kW)"
+        },
+        "fields3": {
+            "equipment_name": "設備名稱",
+            "rated_flow_lpm": "額定流量 (LPM)",
+            "rated_power_kw": "額定功率 (kW)",
+            "head_m": "揚程 (m)",
+            "is_vfd": "變頻"
+        },
+        "fields4": {
+            "equipment_name": "設備名稱",
+            "rated_power_kw": "額定功率 (kW)",
+            "rated_flow_lpm": "額定流量 (LPM)",
+            "head_m": "揚程 (m)",
+            "is_vfd": "變頻"
+        },
+        "fields5": {
+            "equipment_name": "設備名稱",
+            "heat_rejection_kw": "總散熱量 (kW)",
+            "fan_power_kw": "風扇功率 (kW)",
+            "design_temp_in": "設計進水溫 (°C)",
+            "design_temp_out": "設計出水溫 (°C)",
+            "design_approach_temp": "設計趨近溫度 (°C)",
+            "design_wet_bulb_temp": "設計濕球溫度 (°C)",
+            "is_vfd": "變頻"
+        }
     }
 }

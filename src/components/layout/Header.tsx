@@ -4,6 +4,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import useMenuToggle from "@/hooks/useMenuToggle";
 import SharedIconButton from "../IconButton";
@@ -32,7 +33,8 @@ import { useUiTextsNested } from "@/hooks/useUiTextsNested";
 
 function ResponsiveAppBar() {
     const navigate = useNavigate();
-    const { query: { data } } = useUiTextsNested("header")
+    const { t } = useTranslation();
+    // const { query: { data } } = useUiTextsNested("header")
 
 
     const { anchorEl,
@@ -73,10 +75,10 @@ function ResponsiveAppBar() {
         navigate(route)
     };
 
-    const getText = (key: string) => {
-        const translation = getUiText(key, data ?? []);
-        return translation;
-    }
+    // const getText = (key: string) => {
+    //     const translation = getUiText(key, data ?? []);
+    //     return translation;
+    // }
 
 
     return (
@@ -345,33 +347,33 @@ function ResponsiveAppBar() {
                                 {
                                     profile.map((item) => {
                                         const ItemIcon = item.icon;
-                                        if (item.value === headerTranslationKey.profile.theme) {
+                                        if (item.value === "header.profile.theme") {
                                             return (
                                                 <MenuItem key={item.label} onClick={() => {
                                                     handleClose("user");
                                                     toggleTheme();
                                                 }} sx={{ gap: 1 }}>
                                                     <ItemIcon width={20} height={20} />
-                                                    {getText(item.value)}
+                                                    {t("header.profile.theme")}
                                                 </MenuItem>
                                             );
                                         }
 
-                                        if (item.value === headerTranslationKey.profile.about) {
+                                        if (item.value === "header.profile.about") {
                                             return (
                                                 <MenuItem key={item.label} onClick={() => {
                                                     handleClose("user");
                                                     handleOpen("aboutApplication");
                                                 }} sx={{ gap: 1 }}>
                                                     <ItemIcon width={20} height={20} />
-                                                    {getText(item.value)}
+                                                    {t("header.profile.about")}
                                                 </MenuItem>
                                             );
                                         } else {
                                             return (
                                                 <MenuItem key={item.label} onClick={() => handleProfileMenuItemClick("user", item.route)}>
                                                     <ItemIcon width={20} height={20} />
-                                                    {getText(item.value)}
+                                                    {t(item.value)}
                                                 </MenuItem>
                                             );
                                         }

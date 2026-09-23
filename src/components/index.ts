@@ -5,6 +5,7 @@ export { default as IconButton } from './IconButton';
 export { default as Layout } from './layout/Layout';
 export { default as SearchSite } from './layout/SearchSite';
 export { default as SearchBar } from './SearchBar';
+export { default as Tabs } from './Tabs';
 export { default as TitleText } from './TitleText';
 export { default as DateNow } from './layout/DateNow';
 export { default as ConfirmDeleteDialog } from './ConfirmDeleteDialog';

@@ -14,25 +14,25 @@ export const profile: ProfileMenuItem[] = [
     {
         icon: Comment,
         label: "Profile",
-        value: headerTranslationKey.profile.profile,
+        value: "header.profile.profile",
         route: "/profile",
     },
     {
         icon: Comment,
         label: "Theme",
-        value: headerTranslationKey.profile.theme,
+        value: "header.profile.theme",
         route: "/theme",
     },
     {
         icon: Comment,
         label: "About",
-        value: headerTranslationKey.profile.about,
+        value: "header.profile.about",
         route: "/about",
     },
     {
         icon: Comment,
         label: "Logout",
-        value: headerTranslationKey.profile.logout,
+        value: "header.profile.logout",
         route: "/logout",
     },
     // {

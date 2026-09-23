@@ -29,8 +29,83 @@
             "add-optimization-strategies": "Add Optimization Strategy"
         }
     },
+    "header": {
+        "profile": {
+            "profile": "Profile",
+            "theme": "Theme",
+            "about": "About",
+            "logout": "Logout"
+        }
+    },
     "equipment-list": {
         "title": "Equipment List",
-        "searchPlaceholder": "Search Equipment Name"
+        "search-placeholder": "Search Equipment Name",
+        "add": "Add",
+        "actions": "Actions",
+        "add-dialog": {
+            "title": "Add Equipment",
+            "name": "Equipment Name",
+            "remarks": "Remarks",
+            "cancel": "Cancel",
+            "submit": "Add",
+            "submitting": "Adding...",
+            "try-again": "Please try again later",
+            "error": "Failed to add: {{message}}"
+        },
+        "categories": {
+            "CH": "Chiller (CH)",
+            "CHP": "Primary Chilled Water Pump (CHP)",
+            "ZP": "Secondary / Zone Pump (ZP)",
+            "CWP": "Cooling Water Pump (CWP)",
+            "CT": "Cooling Tower (CT)"
+        },
+        "fields1": {
+            "equipment_name": "Equipment Name",
+            "cooling_capacity_rt": "Cooling Capacity (RT)",
+            "rated_power_kw": "Rated Power (kW)",
+            "compressor_type": "Compressor Type",
+            "compressor_count": "Compressor Count",
+            "is_vfd": "Is VFD",
+            "chw_temp_out": "CHW Temp Out",
+            "chw_temp_in": "CHW Temp In",
+            "cw_temp_in": "CW Temp In",
+            "cw_temp_out": "CW Temp Out",
+            "efficiency_kw_per_rt": "Efficiency (kW/RT)",
+            "cop": "COP",
+            "heat_rejection_kw": "Heat Rejection (kW)",
+            "chw_flow_lpm": "CHW Flow (LPM)",
+            "cw_flow_lpm": "CW Flow (LPM)"
+        },
+        "fields2": {
+            "equipment_name": "Equipment Name",
+            "rated_flow_lpm": "Rated Flow (LPM)",
+            "head_m": "Head (m)",
+            "is_vfd": "Is VFD",
+            "rated_power_kw": "Rated Power (kW)"
+        },
+        "fields3": {
+            "equipment_name": "Equipment Name",
+            "rated_flow_lpm": "Rated Flow (LPM)",
+            "rated_power_kw": "Rated Power (kW)",
+            "head_m": "Head (m)",
+            "is_vfd": "Is VFD"
+        },
+        "fields4": {
+            "equipment_name": "Equipment Name",
+            "rated_power_kw": "Rated Power (kW)",
+            "rated_flow_lpm": "Rated Flow (LPM)",
+            "head_m": "Head (m)",
+            "is_vfd": "Is VFD"
+        },
+        "fields5": {
+            "equipment_name": "Equipment Name",
+            "heat_rejection_kw": "Heat Rejection (kW)",
+            "fan_power_kw": "Fan Power (kW)",
+            "design_temp_in": "Design Temp In",
+            "design_temp_out": "Design Temp Out",
+            "design_approach_temp": "Design Approach Temp",
+            "design_wet_bulb_temp": "Design Wet Bulb Temp",
+            "is_vfd": "Is VFD"
+        }
     }
 }
