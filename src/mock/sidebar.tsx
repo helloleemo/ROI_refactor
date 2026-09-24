@@ -55,7 +55,7 @@ export const MenuItem: MenuItemProps[] = [
                 label: "水路系統圖",
                 icon: <CustomLine width={20} height={20} />,
                 route: `${PATHS.equipmentManagement}/${PATHS.mapping}`,
-                disabled: true,
+                // disabled: true,
 
             }
         ],

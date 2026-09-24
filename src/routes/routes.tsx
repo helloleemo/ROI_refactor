@@ -45,32 +45,32 @@ export const router = createBrowserRouter([
         element: <EquipmentListPage />
 
       },
-      // {
-      //   path: `${PATHS.equipmentManagement}/${PATHS.mapping}`,
-      //   element: <PlaceholderPage title="Mapping" />
-      // },
+      {
+        path: `${PATHS.equipmentManagement}/${PATHS.mapping}`,
+        element: <PlaceholderPage title="Mapping" />
+      },
 
       // 節能模擬
-      // {
-      //   path: PATHS.energySavingOverview,
-      //   element: <PlaceholderPage title="Energy Saving Overview" />
-      // },
-      // {
-      //   path: `${PATHS.energySavingOverview}/${PATHS.projectCsv}`,
-      //   element: <PlaceholderPage title="Project CSV" />
-      // },
-      // {
-      //   path: `${PATHS.energySavingOverview}/${PATHS.dataCleaning}`,
-      //   element: <PlaceholderPage title="Data Cleaning" />
-      // },
-      // {
-      //   path: `${PATHS.energySavingOverview}/${PATHS.mAndVBaseline}`,
-      //   element: <PlaceholderPage title="M&V Baseline" />
-      // },
-      // {
-      //   path: `${PATHS.energySavingOverview}/${PATHS.simulationResultReport}`,
-      //   element: <PlaceholderPage title="Simulation Result Report" />
-      // },
+      {
+        path: PATHS.energySavingOverview,
+        element: <PlaceholderPage title="Energy Saving Overview" />
+      },
+      {
+        path: `${PATHS.energySavingOverview}/${PATHS.projectCsv}`,
+        element: <PlaceholderPage title="Project CSV" />
+      },
+      {
+        path: `${PATHS.energySavingOverview}/${PATHS.dataCleaning}`,
+        element: <PlaceholderPage title="Data Cleaning" />
+      },
+      {
+        path: `${PATHS.energySavingOverview}/${PATHS.mAndVBaseline}`,
+        element: <PlaceholderPage title="M&V Baseline" />
+      },
+      {
+        path: `${PATHS.energySavingOverview}/${PATHS.simulationResultReport}`,
+        element: <PlaceholderPage title="Simulation Result Report" />
+      },
 
       // 模型管理
       {
@@ -87,14 +87,14 @@ export const router = createBrowserRouter([
       },
 
       // 最佳化策略
-      // {
-      //   path: `${PATHS.optimization}/${PATHS.optimizationStrategiesList}`,
-      //   element: <OptimizationListPage />
-      // },
-      // {
-      //   path: `${PATHS.optimization}/${PATHS.addOptimizationStrategies}`,
-      //   element: <PlaceholderPage title="Add Optimization Strategy" />
-      // },
+      {
+        path: `${PATHS.optimization}/${PATHS.optimizationStrategiesList}`,
+        element: <OptimizationListPage />
+      },
+      {
+        path: `${PATHS.optimization}/${PATHS.addOptimizationStrategies}`,
+        element: <PlaceholderPage title="Add Optimization Strategy" />
+      },
     ]
   },
   {

@@ -29,7 +29,7 @@ import { useProject } from "@/contexts/ProjectContext";
 import PATHS from "@/routes/paths";
 import { headerTranslationKey } from "@/settings/languageTranslationKey";
 import { getUiText } from "@/utils/getUiText";
-import { useUiTextsNested } from "@/hooks/useUiTextsNested";
+// import { useUiTextsNested } from "@/hooks/useUiTextsNested";
 
 function ResponsiveAppBar() {
     const navigate = useNavigate();

@@ -11,6 +11,7 @@ import {
     N30x30OptionsEyesopen,
 } from "@/components";
 import equipmentService from "@/api/services/equipment";
+import { isDataGridHiddenField } from "./components/FieldException";
 interface EquipmentDatagridProps {
     selectedCategory: string;
     renderFields: EquipmentField[];
@@ -20,6 +21,20 @@ interface EquipmentDatagridProps {
     onCopy?: (row: EquipementResponse) => void;
     onDeleted?: () => void | Promise<void>;
 }
+
+// const renderIplvNplvData = (value: unknown) => {
+//     if (!Array.isArray(value)) return "-";
+
+//     return (
+//         <Box sx={{ py: 0.5, lineHeight: 1.5, whiteSpace: "pre-line" }}>
+//             {(value as IplvNplvRow[]).map((point, index) => (
+//                 <Box key={`${point.load_ratio ?? "point"}-${index}`}>
+//                     {point.load_ratio ?? "-"} | {point.cw_temp_in ?? "-"} °C | {point.kw_per_rt ?? "-"} kW/RT
+//                 </Box>
+//             ))}
+//         </Box>
+//     );
+// };
 
 const EquipmentDatagrid = ({
     selectedCategory,
@@ -69,12 +84,15 @@ const EquipmentDatagrid = ({
             headerName: `${t(`equipment-list.fields${selectedCategory}.equipment_name`)}`,
             width: 150,
         },
-        ...renderFields.map((field) => {
+        ...renderFields.filter((field) => !isDataGridHiddenField(field)).map((field) => {
             return (
                 {
                     field: field.key,
                     headerName: `${t(`equipment-list.fields${selectedCategory}.${field.key}`)}`,
                     width: 150,
+                    // ...(field.key === "iplv_nplv_data"
+                    //     ? { renderCell: (params: GridRenderCellParams) => renderIplvNplvData(params.value) }
+                    //     : {}),
                 }
             )
         }),
@@ -154,7 +172,18 @@ const EquipmentDatagrid = ({
                 <DataGrid
                     rows={renderRows}
                     columns={columns}
-                    sx={{ height: "100%", width: "100%" }}
+                    sx={{
+                        height: "100%",
+                        width: "100%",
+                        "& .MuiDataGrid-cell": {
+                            display: "flex",
+                            alignItems: "center",
+                        },
+                        "& .MuiDataGrid-columnHeader": {
+                            display: "flex",
+                            alignItems: "center",
+                        },
+                    }}
                     paginationModel={paginationModel}
                     onPaginationModelChange={setPaginationModel}
                     initialState={{
@@ -166,6 +195,7 @@ const EquipmentDatagrid = ({
                     disableRowSelectionOnClick
                     showCellVerticalBorder
                     showColumnVerticalBorder
+                    getRowHeight={() => "auto"}
                 />
             </Box>
 

@@ -74,7 +74,9 @@
             "cop": "效率 (COP)",
             "heat_rejection_kw": "總散熱量 (kW)",
             "chw_flow_lpm": "冰水流量 (LPM)",
-            "cw_flow_lpm": "冷卻水流量 (LPM)"
+            "cw_flow_lpm": "冷卻水流量 (LPM)",
+            "iplv_nplv_mode": "IPLV/NPLV 模式",
+            "iplv_nplv_data": "4 個負載點清單"
         },
         "fields2": {
             "equipment_name": "設備名稱",

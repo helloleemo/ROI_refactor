@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 
 import TitleText from "@/components/TitleText";
 import type { EquipmentCategory, EquipementResponse } from "@/api/types/equipment";
+import IplvNplvDataField from "./IplvNplvDataField";
 
 interface EquipmentViewDialogProps {
     open: boolean;
@@ -25,6 +26,19 @@ interface EquipmentViewDialogProps {
 const getDisplayValue = (value: unknown) => {
     if (value === null || value === undefined || value === "") return "-";
     if (typeof value === "boolean") return value ? "是" : "否";
+    if (Array.isArray(value)) {
+        return value
+            .map((point) => {
+                if (!point || typeof point !== "object") return String(point);
+                const row = point as {
+                    load_ratio?: string;
+                    cw_temp_in?: number | string;
+                    kw_per_rt?: number | string;
+                };
+                return `${row.load_ratio ?? "-"} | ${row.cw_temp_in ?? "-"} °C | ${row.kw_per_rt ?? "-"} kW/RT`;
+            })
+            .join("\n");
+    }
     return String(value);
 };
 
@@ -73,12 +87,28 @@ const EquipmentViewDialog = ({
                 <Divider />
                 {category?.fields.map((field) => (
                     <Box key={field.key}>
-                        <Row
-                            label={t(`equipment-list.fields${category.equipment_type}.${field.key}`, {
-                                defaultValue: field.label,
-                            })}
-                            value={getDisplayValue(equipment?.specs[field.key])}
-                        />
+                        {field.key === "iplv_nplv_data" && equipment?.specs.iplv_nplv_mode !== null ? (
+                            <Box sx={{ py: 1 }}>
+                                <Typography variant="body2" color="text.primary" sx={{ mb: 1 }}>
+                                    {t(`equipment-list.fields${category.equipment_type}.${field.key}`, {
+                                        defaultValue: field.label,
+                                    })}
+                                </Typography>
+                                <IplvNplvDataField
+                                    value={equipment?.specs[field.key]}
+                                    mode={equipment?.specs.iplv_nplv_mode}
+                                    disabled
+                                    onChange={() => undefined}
+                                />
+                            </Box>
+                        ) : (
+                            <Row
+                                label={t(`equipment-list.fields${category.equipment_type}.${field.key}`, {
+                                    defaultValue: field.label,
+                                })}
+                                value={getDisplayValue(equipment?.specs[field.key])}
+                            />
+                        )}
                         <Divider />
                     </Box>
                 ))}

@@ -16,20 +16,24 @@ import {
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import type EvalSetting from "@/api/types/evalSetting";
 import equipmentService from "@/api/services/equipment";
 import type { EquipmentCategory, EquipmentField, EquipementResponse } from "@/api/types/equipment";
 import TitleText from "@/components/TitleText";
+import IplvNplvDataField from "./IplvNplvDataField";
 import {
     getInitialSpecs,
     isFieldReadonly,
     isRequiredFieldEmpty,
     normalizeFieldValue,
 } from "./FieldException";
+import { convertUnitValue, getTargetUnit } from "./UnitTransfer";
 
 interface EquipmentEditDialogProps {
     open: boolean;
     equipment: EquipementResponse | null;
     category?: EquipmentCategory;
+    units?: EvalSetting;
     onClose: () => void;
     onSuccess?: () => void | Promise<void>;
 }
@@ -58,6 +62,7 @@ const EquipmentEditDialog = ({
     open,
     equipment,
     category,
+    units,
     onClose,
     onSuccess,
 }: EquipmentEditDialogProps) => {
@@ -101,7 +106,16 @@ const EquipmentEditDialog = ({
                 equipment_name: equipmentName.trim(),
                 remarks: remarks.trim(),
                 specs: category.fields.reduce<Record<string, unknown>>((values, field) => {
-                    values[field.key] = normalizeFieldValue(field, specs[field.key]);
+                    const normalizedValue = normalizeFieldValue(field, specs[field.key]);
+                    const fieldUnits = getFieldUnits(field);
+                    const selectedUnit = String(
+                        specs[`${field.key}_unit`] ?? fieldUnits?.[0] ?? "",
+                    );
+                    values[field.key] = convertUnitValue({
+                        originalUnit: selectedUnit,
+                        unitCategory: field.unit,
+                        value: typeof normalizedValue === "number" ? normalizedValue : null,
+                    }) ?? normalizedValue;
                     return values;
                 }, {}),
             });
@@ -114,10 +128,34 @@ const EquipmentEditDialog = ({
         }
     };
 
+    const getFieldUnits = (field: EquipmentField) => {
+        if (!units?.available_units || !field.unit) return null;
+
+        const unitKey = field.unit.endsWith("_units")
+            ? field.unit
+            : field.unit.endsWith("_unit")
+                ? `${field.unit}s`
+                : `${field.unit}_units`;
+
+        return units.available_units[
+            unitKey as keyof EvalSetting["available_units"]
+        ] ?? null;
+    };
+
     const renderField = (field: EquipmentField) => {
+        const fieldUnits = getFieldUnits(field);
         const fieldType = field.field_type.toLowerCase();
         const label = t(`equipment-list.fields${category?.equipment_type}.${field.key}`, {
             defaultValue: field.label,
+        });
+        const unitSpecKey = `${field.key}_unit`;
+        const selectedUnit = String(specs[unitSpecKey] ?? fieldUnits?.[0] ?? "");
+        const targetUnit = getTargetUnit(field.unit);
+        const numericValue = Number(specs[field.key]);
+        const convertedValue = convertUnitValue({
+            originalUnit: selectedUnit,
+            unitCategory: field.unit,
+            value: Number.isFinite(numericValue) ? numericValue : null,
         });
 
         if (fieldType === "boolean" || fieldType === "bool") {
@@ -160,17 +198,66 @@ const EquipmentEditDialog = ({
             );
         }
 
+        if (field.field_type.toLowerCase() === "list" && field.key === "iplv_nplv_data") {
+            return (
+                <IplvNplvDataField
+                    key={field.key}
+                    value={specs[field.key]}
+                    mode={specs.iplv_nplv_mode}
+                    disabled={isReadOnly(field)}
+                    onChange={(value) => handleSpecChange(field.key, value)}
+                />
+            );
+        }
+
         return (
-            <TextField
+            <Box
                 key={field.key}
-                fullWidth
-                required
-                label={label}
-                type={["number", "integer", "float"].includes(fieldType) ? "number" : "text"}
-                value={specs[field.key] ?? ""}
-                onChange={(event) => handleSpecChange(field.key, event.target.value)}
-                disabled={isReadOnly(field)}
-            />
+                sx={{
+                    display: "grid",
+                    gap: 2,
+                    gridTemplateColumns: "3fr 1fr 1fr",
+                }}>
+                <TextField
+                    fullWidth
+                    required
+                    label={label}
+                    type={["number", "integer", "float"].includes(fieldType) ? "number" : "text"}
+                    value={specs[field.key] ?? ""}
+                    onChange={(event) => handleSpecChange(field.key, event.target.value)}
+                    disabled={isReadOnly(field)}
+                    sx={{
+                        gridColumn: fieldUnits ? "span 1" : "1 / -1",
+                    }}
+                />
+                {fieldUnits && <TextField
+                    fullWidth
+                    required
+                    select
+                    label="單位"
+                    value={selectedUnit}
+                    onChange={(event) => handleSpecChange(unitSpecKey, event.target.value)}
+                    disabled={isReadOnly(field)}
+                >
+                    {fieldUnits.map((option) => (
+                        <MenuItem key={String(option)} value={String(option)}>
+                            {String(option)}
+                        </MenuItem>
+                    ))}
+                </TextField>}
+                {fieldUnits && (
+                    <Box>
+                        <Typography variant="body2" color="textSecondary">
+                            儲存值
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">
+                            {targetUnit && Number.isFinite(numericValue)
+                                ? `${convertedValue ?? numericValue} ${targetUnit}`
+                                : ""}
+                        </Typography>
+                    </Box>
+                )}
+            </Box>
         );
     };
 

@@ -1,5 +1,6 @@
 import { SearchBar, Tabs, TitleText } from "@/components";
 import { useEffect, useState } from "react"
+import { useEquipmentParams } from "@/hooks/useEquipmentParams";
 import equipmentService from "@/api/services/equipment";
 import type { EquipementResponse, EquipmentCategory, EquipmentField } from "@/api/types/equipment";
 import { Box, Button } from "@mui/material";
@@ -40,6 +41,8 @@ const EquipmentListPage = () => {
         items: equipmentList,
         fields: ["equipment_name"],
     });
+
+    const { units, unitQueryKey, unitQueryFn } = useEquipmentParams();
 
     // const filteredEquipment = selectedCategory === "冰水主機 (CH)"
     //     ? searchedEquipment
@@ -126,7 +129,7 @@ const EquipmentListPage = () => {
     }, []);
 
     useEffect(() => {
-        setSelectedCategory("5");
+        // setSelectedCategory("1");
         getEquipmentData("5");
     }, [approachTemp])
 
@@ -210,6 +213,7 @@ const EquipmentListPage = () => {
                 />
             </Box>
             <EquipmentAddDialog
+                units={units}
                 exceptionFields={exceptionFields}
                 open={open.add}
                 category={selectedCategoryData}
@@ -238,6 +242,7 @@ const EquipmentListPage = () => {
             <EquipmentEditDialog
                 open={open.edit}
                 equipment={selectedEquipment}
+                units={units}
                 category={categories.find(
                     (category) => category.equipment_type === selectedEquipment?.equipment_type,
                 )}

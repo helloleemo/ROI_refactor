@@ -95,6 +95,11 @@ export const API_ENDPOINTS = {
     },
 
 
+    // Unit settins
+    UNIT_SETTINGS: {
+        EVAL_SETTINGS: "eval-setting",
+    },
+
 
 
 }
