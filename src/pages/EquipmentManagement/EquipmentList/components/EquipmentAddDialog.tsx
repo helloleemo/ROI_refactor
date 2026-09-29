@@ -142,12 +142,8 @@ const EquipmentAddDialog = ({
     const getFieldUnits = (field: EquipmentField) => {
         if (!units?.available_units || !field.unit) return null;
 
-        const unitKey = field.unit.endsWith("_units")
-            ? field.unit
-            : field.unit.endsWith("_unit")
-                ? `${field.unit}s`
-                : `${field.unit}_units`;
-
+        const unitKey = Object.keys(units.available_units).find(key => key === field.unit || key === `${field.unit}s`);
+        console.log("unitKey", unitKey);
         return units.available_units[
             unitKey as keyof EvalSetting["available_units"]
         ] ?? null;

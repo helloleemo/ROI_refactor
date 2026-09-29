@@ -12,6 +12,7 @@ import KpiOverview from "@/pages/Overview/KpiOverview/KpiOverview";
 
 // 設備管理
 import EquipmentListPage from "@/pages/EquipmentManagement/EquipmentList/EquipmentListPage";
+import MappingDiagramPage from "@/pages/EquipmentManagement/MappingDiagram/MappingDiagramPage";
 
 const PlaceholderPage = ({ title }: { title: string }) => (
   <Box sx={{ p: 3 }}>
@@ -47,7 +48,7 @@ export const router = createBrowserRouter([
       },
       {
         path: `${PATHS.equipmentManagement}/${PATHS.mapping}`,
-        element: <PlaceholderPage title="Mapping" />
+        element: <MappingDiagramPage />
       },
 
       // 節能模擬

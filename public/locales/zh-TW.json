@@ -109,5 +109,12 @@
             "design_wet_bulb_temp": "設計濕球溫度 (°C)",
             "is_vfd": "變頻"
         }
+    },
+    "MappingDiagram": {
+        "title": "水路系統圖",
+        "tabs": {
+            "chw_table": "冰水側系統圖",
+            "cw_table": "冷卻水側系統圖"
+        }
     }
 }

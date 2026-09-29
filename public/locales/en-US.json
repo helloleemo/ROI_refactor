@@ -107,5 +107,12 @@
             "design_wet_bulb_temp": "Design Wet Bulb Temp",
             "is_vfd": "Is VFD"
         }
+    },
+    "MappingDiagram": {
+        "title": "Mapping Diagram",
+        "tabs": {
+            "chw_table": "Chilled Water Side System Diagram",
+            "cw_table": "Cooling Water Side System Diagram"
+        }
     }
 }

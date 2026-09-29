@@ -100,6 +100,9 @@ export const API_ENDPOINTS = {
         EVAL_SETTINGS: "eval-setting",
     },
 
-
+    // Hydronic Diagram
+    HYDRONIC_DIAGRAM: {
+        HYDRONIC_DIAGRAM: "hydronic-diagram",
+    }
 
 }

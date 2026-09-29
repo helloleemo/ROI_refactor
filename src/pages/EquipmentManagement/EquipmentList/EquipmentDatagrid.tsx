@@ -195,7 +195,7 @@ const EquipmentDatagrid = ({
                     disableRowSelectionOnClick
                     showCellVerticalBorder
                     showColumnVerticalBorder
-                    getRowHeight={() => "auto"}
+                // getRowHeight={() => "auto"}
                 />
             </Box>
 

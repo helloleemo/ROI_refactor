@@ -6,6 +6,5 @@ export const getUiText = (
     languageItem: LanguageItem[],
 ): string => {
     const item = languageItem.find((item) => item.text_key === key);
-
     return item?.text_value === "" || item?.text_value === undefined ? key : item?.text_value;
 };
