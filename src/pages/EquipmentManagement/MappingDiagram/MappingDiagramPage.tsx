@@ -8,6 +8,7 @@ import { useSearchFilter } from "@/hooks";
 import MappingDatgrid from "./MappingDatgrid";
 import { hydronicDiagramService } from "@/api/services/hydronicDiagram";
 import { Typography } from "@mui/material";
+import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import NodeEditMode from "./components/NodeEditMode";
 
 const tabs = [{
@@ -168,13 +169,15 @@ const MappingDiagramPage = () => {
                     <Button
                         variant="text"
                         onClick={handleEditDiagram}
+                        startIcon={<AccountTreeOutlinedIcon />}
                         sx={{
                             color: isNodeEditMode ? "primary.main" : "grey.300",
-                            backgroundColor: isNodeEditMode ? "grey.100" : "transparent"
+                            backgroundColor: isNodeEditMode ? "grey.100" : "transparent",
+                            padding: "6px 12px"
                         }}
                     // disabled={!selectedCategoryData}
                     >
-                        開啟圖形編輯器
+                        圖形檢視
                     </Button>
 
                     <Button
@@ -192,7 +195,10 @@ const MappingDiagramPage = () => {
                 {
                     isNodeEditMode
                         ? (
-                            <NodeEditMode />
+                            <NodeEditMode
+                                selectedCategory={selectedCategory}
+                                diagram={diagram}
+                            />
                         )
                         : (<MappingDatgrid
                             selectedCategory={selectedCategory}

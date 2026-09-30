@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
     ReactFlow,
     applyNodeChanges,
@@ -12,6 +12,7 @@ import {
     type OnNodesChange,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { nodeTypes, defaultEdgeOptions } from './FlowElements';
 
 const initialNodes: Node[] = [
     { id: 'n1', position: { x: 0, y: 0 }, data: { label: 'Node 1' } },
@@ -33,6 +34,11 @@ const ReactFlowInit = ({
     const [nodes, setNodes] = useState<Node[]>(initialNodesProp);
     const [edges, setEdges] = useState<Edge[]>(initialEdgesProp);
 
+    useEffect(() => {
+        setNodes(initialNodesProp);
+        setEdges(initialEdgesProp);
+    }, [initialNodesProp, initialEdgesProp]);
+
     const onNodesChange: OnNodesChange = useCallback((changes) => {
         setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot));
     }, []);
@@ -46,14 +52,16 @@ const ReactFlowInit = ({
     }, []);
 
     return (
-        <div style={{ width: '100vw', height: '100vh' }}>
+        <div style={{ width: '100%', height: '100%' }}>
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
+                nodeTypes={nodeTypes}
+                defaultEdgeOptions={defaultEdgeOptions}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
-                fitView
+            // fitView
             >
                 <Background />
             </ReactFlow>
