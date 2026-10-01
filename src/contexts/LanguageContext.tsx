@@ -38,7 +38,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       const storedLocale = getStoredLanguage();
       if (localeValues.includes(storedLocale) && i18n.language !== storedLocale) {
         await i18n.changeLanguage(storedLocale);
-        setLocale(storedLocale);
+        setLocale(storedLocale as LanguageList);
       }
     }
     catch (error) {

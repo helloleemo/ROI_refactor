@@ -14,7 +14,7 @@ const equipmentService = {
             body: body
         })
     },
-    getList: async (query: { equipment_type: number }) => {
+    getList: async (query?: { equipment_type: number }) => {
         return GET<EquipementResponse[]>({
             endpoint: API_ENDPOINTS.EQUIPMENT.LIST,
             query: query

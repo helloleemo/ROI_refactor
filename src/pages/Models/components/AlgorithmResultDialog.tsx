@@ -85,6 +85,7 @@ const AlgorithmResultDialog = ({ open, onClose, row, onEnable }: AlgorithmResult
 
         const payload = {
             algorithm_id: row.id,
+            upload_id: row.source,
             start_time: "",
             end_time: "",
         };

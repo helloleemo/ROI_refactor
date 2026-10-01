@@ -43,7 +43,7 @@ const AdvancedSettingsDialog = ({ open, onClose, selectedCsv, onUpdate, csvList,
     } = useFormState<Record<string, never>>({});
 
 
-    const [setPhysicsCsvId] = useState<string>("");
+    const [, setPhysicsCsvId] = useState<string>("");
     const [selectedFormulaTags, setSelectedFormulaTags] = useState<string[]>([]);
     const [formula, setFormula] = useState<string>("");
     const [constraints, setConstraints] = useState<PhysicsConstraint[]>([]);
@@ -157,7 +157,7 @@ const AdvancedSettingsDialog = ({ open, onClose, selectedCsv, onUpdate, csvList,
                                 size="small"
                                 disabled
                                 value={selectedCsv?.id}
-                                onChange={(event) => setPhysicsCsvId(Number(event.target.value))}
+                                onChange={(event) => setPhysicsCsvId(event.target.value)}
                                 sx={{ mb: 1.25, maxWidth: 320 }}
                             >
 

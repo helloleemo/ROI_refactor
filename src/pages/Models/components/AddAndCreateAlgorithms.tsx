@@ -67,12 +67,24 @@ const AddAndCreateAlgorithms = ({ modelId, editingRow, previewGridProps, onUpdat
             return;
         }
 
-        const payload = {
-            model_id: form.model_id,
-            upload_id: form.upload_id,
-            algorithm: selectedAlgorithm.label as createModelAlgorithm["algorithm"],
+        const uploadId = Number(form.upload_id);
+        const payload: createModelAlgorithm = {
+            model_id: Number(form.model_id),
+            train_upload_id: uploadId,
+            test_upload_id: uploadId,
+            val_upload_id: uploadId,
+            algorithm: selectedAlgorithm.label,
             x_tags: form.x_tags,
             y_tag: form.y_tag,
+            feature_config: [],
+            physics_config: {},
+            pipeline_config: {
+                resample: { enabled: false, freq: "" },
+                missing: { enabled: false, max_gap: 0 },
+                outlier: { enabled: false, sigma: 0, bounds: {} },
+                physics: { enabled: false },
+                feature_eng: { enabled: false, lags: [], rolling_windows: [] },
+            },
         }
 
         console.log("Adding new algorithm with payload:", payload);

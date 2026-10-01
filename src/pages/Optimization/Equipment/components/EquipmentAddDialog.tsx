@@ -50,6 +50,7 @@ const EquipmentAddDialog = ({ open, onClose, onSuccess }: EquipmentAddDialogProp
             equipment_type: form.equipment_type.trim(),
             equipment_name: form.equipment_name.trim(),
             remarks: form.remarks.trim(),
+            specs: {},
         };
 
         try {
