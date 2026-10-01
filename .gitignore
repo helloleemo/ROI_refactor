@@ -22,3 +22,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Docker
+.tar
+
+
+# compressed files
+*.gz
+*.zip
+*.tar
+*.rar
+*.7z
