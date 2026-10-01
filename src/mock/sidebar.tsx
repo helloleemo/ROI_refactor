@@ -64,7 +64,7 @@ export const MenuItem: MenuItemProps[] = [
         key: "sidebarMenu.energy-simulation.label",
         label: "節能模擬",
         icon: <CustomLine width={30} height={30} />,
-        disabled: true,
+        // disabled: true,
 
         children: [
             {
@@ -72,6 +72,8 @@ export const MenuItem: MenuItemProps[] = [
                 label: "總攬",
                 icon: <CustomLine width={20} height={20} />,
                 route: PATHS.energySavingOverview,
+                disabled: true,
+
             },
             {
                 key: "sidebarMenu.energy-simulation.csv-project",
@@ -90,11 +92,15 @@ export const MenuItem: MenuItemProps[] = [
                 label: "M&V基準線",
                 icon: <CustomLine width={20} height={20} />,
                 route: `${PATHS.energySavingOverview}/${PATHS.mAndVBaseline}`,
+                disabled: true,
+
             }, {
                 key: "sidebarMenu.energy-simulation.energy-simulation-report",
                 label: "模擬報告",
                 icon: <CustomLine width={20} height={20} />,
                 route: `${PATHS.energySavingOverview}/${PATHS.simulationResultReport}`,
+                disabled: true,
+
             }
         ],
     },

@@ -1,4 +1,34 @@
 {
+    "common": {
+        "yes": "Yes",
+        "no": "No"
+    },
+    "toaster_wording": {
+        "success": {
+            "approach_temp_updated": "Approach temperature updated",
+            "equipment_copy": "Equipment copied",
+            "equipment_create": "Equipment created",
+            "equipment_edit": "Equipment updated",
+            "equipment_delete": "Equipment deleted",
+            "add_load": "Load added",
+            "update_diagram": "Diagram updated",
+            "delete_load": "Load deleted",
+            "project_update": "Project updated"
+        },
+        "error": {
+            "approach_temp_updated": "Failed to update approach temperature",
+            "equipment_copy": "Failed to copy equipment",
+            "equipment_create": "Failed to create equipment",
+            "equipment_edit": "Failed to update equipment",
+            "equipment_delete": "Failed to delete equipment",
+            "add_load": "Failed to add load",
+            "update_diagram": "Failed to update diagram",
+            "delete_load": "Failed to delete load",
+            "project_update": "Failed to update project"
+        },
+        "info": {},
+        "warning": {}
+    },
     "sidebarMenu": {
         "overview": {
             "label": "Overview",
@@ -36,6 +66,29 @@
             "about": "About",
             "logout": "Logout"
         }
+    },
+    "project-settings": {
+        "title": "Project Settings",
+        "project-title": "Project Info",
+        "name": "Project Name",
+        "description": "Description",
+        "created-at": "Created At",
+        "updated-at": "Updated At",
+        "save": "Save",
+        "saving": "Saving...",
+        "edit": "Edit",
+        "cancel": "Cancel",
+        "name-required": "Please enter a project name"
+    },
+    "about-application": {
+        "title": "About Application",
+        "system-title": "System Title",
+        "default-locale": "Default Locale",
+        "enabled-locales": "Enabled Locales",
+        "timezone": "Timezone",
+        "date-format": "Date Format",
+        "updated-at": "Updated At",
+        "close": "Close"
     },
     "equipment-list": {
         "title": "Equipment List",
@@ -110,9 +163,39 @@
     },
     "MappingDiagram": {
         "title": "Mapping Diagram",
+        "info": "The form has been updated and will take effect after saving.",
         "tabs": {
             "chw_table": "Chilled Water Side System Diagram",
             "cw_table": "Cooling Water Side System Diagram"
+        },
+        "buttons": {
+            "graph_view": "Graph View",
+            "save_after_update": "Save After Update"
+        },
+        "chw_table": {
+            "in_chp": "In_CHP",
+            "chp_name": "CHP",
+            "out_chp": "Out_CHP",
+            "in_ch": "In_CH",
+            "ch_name": "CH",
+            "out_ch": "Out_CH",
+            "in_zp": "In_ZP",
+            "zp_name": "ZP",
+            "out_zp": "Out_ZP",
+            "in_load": "In_Load",
+            "load_name": "Load",
+            "out_load": "Out_Load"
+        },
+        "cw_table": {
+            "in_cwp": "In_CWP",
+            "cwp_name": "CWP",
+            "out_cwp": "Out_CWP",
+            "in_ch": "In_CH",
+            "ch_name": "CT",
+            "out_ch": "Out_CH",
+            "in_ct": "In_CT",
+            "ct_name": "CT",
+            "out_ct": "Out_CT"
         }
     }
 }

@@ -14,6 +14,8 @@ import "./settings/highchartsSetup"
 import './settings/i18n'
 import { LanguageProvider } from "@/contexts/LanguageContext"
 import { ProjectProvider } from "./contexts/ProjectContext"
+import i18n, { getStoredLanguage } from "./settings/i18n"
+import ToasterCustom from "@/components/ToasterCustom"
 
 
 const THEME_MODE_STORAGE_KEY = "theme-mode"
@@ -56,6 +58,7 @@ function AppRoot() {
             <ThemeProvider theme={theme}>
               <CssBaseline />
               <RouterProvider router={router} />
+              <ToasterCustom />
             </ThemeProvider>
           </ThemeModeProvider>
         </ProjectProvider>
@@ -64,7 +67,11 @@ function AppRoot() {
   )
 }
 
-createRoot(document.getElementById('root')!)
-  .render(
-    <AppRoot />
-  )
+i18n.loadLanguages(getStoredLanguage()).then(() => {
+  createRoot(document.getElementById("root")!).render(<AppRoot />);
+});
+
+// createRoot(document.getElementById('root')!)
+//   .render(
+//     <AppRoot />
+//   )

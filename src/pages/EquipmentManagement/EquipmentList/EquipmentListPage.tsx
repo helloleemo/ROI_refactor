@@ -1,8 +1,8 @@
-import { SearchBar, Tabs, TitleText } from "@/components";
+import { SearchBar, showToast, Tabs, TitleText } from "@/components";
 import { useEffect, useState } from "react"
 import { useEquipmentParams } from "@/hooks/useEquipmentParams";
 import equipmentService from "@/api/services/equipment";
-import type { EquipementResponse, EquipmentCategory, EquipmentField } from "@/api/types/equipment";
+import type { EquipementResponse, EquipmentCategory } from "@/api/types/equipment";
 import { Box, Button } from "@mui/material";
 
 import SectionLayout from "@/components/gridLayout/SectionLayout.tsx"
@@ -14,6 +14,7 @@ import EquipmentAddDialog from "./components/EquipmentAddDialog";
 import SetApproachTempDialog from "./components/SetApproachTempDialog";
 import EquipmentViewDialog from "./components/EquipmentViewDialog";
 import EquipmentEditDialog from "./components/EquipmentEditDialog";
+import toasterWording from "@/settings/toasterWording";
 
 
 const EquipmentListPage = () => {
@@ -21,7 +22,6 @@ const EquipmentListPage = () => {
     const { t } = useTranslation()
     const [categories, setCategories] = useState<EquipmentCategory[]>([]);
     const [selectedCategory, setSelectedCategory] = useState("1");
-    const [renderedFields, setRenderedFields] = useState<EquipmentField[]>([]);
     const [exceptionFields, setExceptionFields] = useState<Record<string, unknown>>({});
     const [equipmentList, setEquipmentList] = useState<EquipementResponse[]>([]);
     const [approachTemp, setApproachTemp] = useState<number | undefined>();
@@ -34,8 +34,9 @@ const EquipmentListPage = () => {
     });
 
     const selectedCategoryData = categories.find(
-        category => String(category.equipment_type) === selectedCategory
+        (category) => String(category.equipment_type) === selectedCategory,
     );
+    const renderedFields = selectedCategoryData?.fields ?? [];
 
     const { searchValue, handleSearchChange, filteredItems: searchedEquipment } = useSearchFilter({
         items: equipmentList,
@@ -51,12 +52,6 @@ const EquipmentListPage = () => {
     const getCategories = async () => {
         const categoryData = await equipmentService.getCategories();
         setCategories(categoryData);
-
-        const defaultCategory = categoryData.find(
-            (category) => String(category.equipment_type) === selectedCategory,
-        );
-
-        setRenderedFields(defaultCategory?.fields ?? []);
     };
 
     const getEquipmentData = async (categoryValue: string) => {
@@ -65,17 +60,9 @@ const EquipmentListPage = () => {
         });
 
         setEquipmentList(equipmentData);
-
-        const category = categories.find(
-            (item) => String(item.equipment_type) === categoryValue,
-        );
-
-        setRenderedFields(category?.fields ?? []);
     };
     const handleSelectedCategoryChange = (value: string) => {
         setSelectedCategory(value);
-        // setRenderedFields(categories.find(category => String(category.equipment_type) === value)?.fields || []);
-        // getEquipmentData(value);
     }
 
     const getApproachTemp = async () => {
@@ -96,9 +83,22 @@ const EquipmentListPage = () => {
         const newApproachTemp = value;
         setApproachTemp(newApproachTemp);
         setExceptionFields(prev => ({ ...prev, design_approach_temp: newApproachTemp }));
-        equipmentService.updateApproachTemp({ design_approach_temp: newApproachTemp }).catch(error => {
-            console.error("Failed to update approach temp:", error);
-        });
+        // equipmentService.updateApproachTemp({ design_approach_temp: newApproachTemp }).catch(error => {
+        //     console.error("Failed to update approach temp:", error);
+        // });
+
+        if (!newApproachTemp) return;
+
+        const updateApproachTemp = async () => {
+            try {
+                await equipmentService.updateApproachTemp({ design_approach_temp: newApproachTemp });
+                showToast(t(toasterWording.success.approach_temp_updated), "success");
+            } catch (error) {
+                console.error("Failed to update approach temp:", error);
+                showToast(`${t(toasterWording.error.approach_temp_updated)}: ${error}`, "error");
+            }
+        };
+        updateApproachTemp();
     };
 
     const handleCopy = async (equipment: EquipementResponse) => {
@@ -110,28 +110,34 @@ const EquipmentListPage = () => {
                 specs: equipment.specs,
             });
             await getEquipmentData(selectedCategory);
+            showToast(t(toasterWording.success.equipment_copy), "success");
         } catch (error) {
+            showToast(`${t(toasterWording.error.equipment_copy)}: ${error}`, "error")
             console.error("Failed to copy equipment:", error);
         }
     };
 
     useEffect(() => {
         getCategories();
+        getApproachTemp();
     }, []);
+
 
     useEffect(() => {
         getEquipmentData(selectedCategory);
     }, [selectedCategory]);
 
-    useEffect(() => {
-        getEquipmentData("1");
-        getApproachTemp();
-    }, []);
+    // useEffect(() => {
+    //     getEquipmentData("1");
+    //     getApproachTemp();
+    // }, []);
 
     useEffect(() => {
-        // setSelectedCategory("1");
-        getEquipmentData("5");
-    }, [approachTemp])
+        if (selectedCategory === "5") {
+            getEquipmentData("5");
+        }
+    }, [approachTemp]);
+
 
     return (
         <SectionLayout sx={{ height: "100%", display: "flex", flexDirection: "column", minHeight: 0 }}>

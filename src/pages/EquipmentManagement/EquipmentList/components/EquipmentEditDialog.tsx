@@ -28,6 +28,8 @@ import {
     normalizeFieldValue,
 } from "./FieldException";
 import { convertUnitValue, getTargetUnit } from "./UnitTransfer";
+import toasterWording from "@/settings/toasterWording";
+import { showToast } from "@/components/ToasterCustom";
 
 interface EquipmentEditDialogProps {
     open: boolean;
@@ -120,9 +122,11 @@ const EquipmentEditDialog = ({
                 }, {}),
             });
             await onSuccess?.();
+            showToast(t(toasterWording.success.equipment_edit), "success");
             onClose();
         } catch (error: any) {
             setErrorMessage(`更新失敗：${error?.message ?? "請稍後再試"}`);
+            showToast(t(toasterWording.error.equipment_edit), "error");
         } finally {
             setSubmitting(false);
         }

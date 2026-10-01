@@ -1,8 +1,10 @@
 import type { GridColDef } from "@mui/x-data-grid";
-import { DataGrid, useGridApiRef } from "@mui/x-data-grid";
+import { DataGrid, GridRemoveIcon, useGridApiRef } from "@mui/x-data-grid";
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Button, Tooltip } from "@mui/material";
-import { useEffect, useState } from "react";
+import { alpha, useTheme } from "@mui/material/styles";
+import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface MappingDatgridProps {
     selectedCategory: string;
@@ -13,6 +15,7 @@ interface MappingDatgridProps {
         num_load: number;
     };
     onClickAddLoad: () => void;
+    onClickDeleteLoad: () => void;
     onUpdateDiagram: (diagram: {
         chw_table: Record<string, any>[];
         cw_table: Record<string, any>[];
@@ -21,11 +24,11 @@ interface MappingDatgridProps {
     }) => void;
 }
 
-
 const MappingDatgrid = ({
     selectedCategory,
     diagram,
     onClickAddLoad,
+    onClickDeleteLoad,
     onUpdateDiagram,
 }: MappingDatgridProps) => {
     const apiRef = useGridApiRef();
@@ -33,38 +36,60 @@ const MappingDatgrid = ({
     // console.log("selectedCategory", selectedCategory);
     // console.log("diagram", diagram);
 
+    const { t } = useTranslation();
+    const theme = useTheme();
+
     const [columns, setColumns] = useState<GridColDef[]>([]);
     const [rows, setRows] = useState<Record<string, any>[]>([]);
+
+    const getValueColor = (value: number) => {
+        const colors = theme.palette.chart.seriesColors;
+        const base = colors[Math.abs(Math.round(value)) % colors.length];
+        return { bg: alpha(base, 0.2), text: base };
+    };
+
 
 
     const renderData = () => {
         switch (selectedCategory) {
             case "chw_table": {
-                const columns = Object.keys(diagram?.chw_table?.[0] || [])
+                const columns = Object.keys(diagram?.chw_table?.[0] || []).join(",").split(",");
                 setColumns(
                     columns.map((col) => {
                         const column: GridColDef = {
                             field: col,
-                            headerName: col,
-                            width: 80,
+                            headerName: t(`MappingDiagram.${selectedCategory}.${col}`),
+                            width: 90,
                             align: "center",
                             editable: true,
                             sortable: false,
                             hideSortIcons: true,
                             disableColumnMenu: true,
-                            // renderCell: (params) => (
-                            //     <Box sx={{
-                            //         backgroundColor: "grey.50",
-                            //         cursor: "pointer",
-                            //     }}>
-                            //         {params.value}
-                            //     </Box>
-                            // ),
-                            // valueSetter: (params) => Number(params.value),
+                            renderCell: (params) => {
+                                if (params.value == null || isNaN(Number(params.value))) return params.value;
+                                const { bg, text } = getValueColor(Number(params.value));
+                                return (
+                                    <Box sx={{
+                                        width: 25,
+                                        height: 25,
+                                        borderRadius: "50%",
+                                        backgroundColor: bg,
+                                        color: text,
+                                        display: "inline-flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        fontSize: 12,
+                                        margin: "auto",
+                                        cursor: "pointer",
+                                    }}>
+                                        {params.value}
+                                    </Box>
+                                );
+                            },
                         };
 
                         if (col === "out_load") {
-                            column.width = 150;
+                            column.width = 200;
                             column.hideSortIcons = true;
                             column.sortable = false;
                             // column.editable = false;
@@ -76,12 +101,19 @@ const MappingDatgrid = ({
                                     gap: "8px",
                                     fontWeight: "bold"
                                 }}>
-                                    out_load
+                                    {t(`MappingDiagram.${selectedCategory}.out_load`)}
                                     <Tooltip title="新增負載數量">
                                         <Button
                                             onClick={onClickAddLoad}
                                             sx={{ minWidth: "auto", padding: "4px", round: "50%" }}>
                                             <AddIcon />
+                                        </Button>
+                                    </Tooltip>
+                                    <Tooltip title="減少負載數量">
+                                        <Button
+                                            onClick={onClickDeleteLoad}
+                                            sx={{ minWidth: "auto", padding: "4px", round: "50%", color: "error.main" }}>
+                                            <GridRemoveIcon />
                                         </Button>
                                     </Tooltip>
                                 </Box>
@@ -118,13 +150,34 @@ const MappingDatgrid = ({
 
                         const column: GridColDef = {
                             field: col,
-                            headerName: col,
-                            width: 80,
+                            headerName: t(`MappingDiagram.${selectedCategory}.${col}`),
+                            width: 90,
                             align: "center",
                             editable: true,
                             sortable: false,
                             hideSortIcons: true,
                             disableColumnMenu: true,
+                            renderCell: (params) => {
+                                if (params.value == null || isNaN(Number(params.value))) return params.value;
+                                const { bg, text } = getValueColor(Number(params.value));
+                                return (
+                                    <Box sx={{
+                                        width: 25,
+                                        height: 25,
+                                        borderRadius: "50%",
+                                        backgroundColor: bg,
+                                        color: text,
+                                        display: "inline-flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        fontSize: 12,
+                                        margin: "auto",
+                                        cursor: "pointer",
+                                    }}>
+                                        {params.value}
+                                    </Box>
+                                );
+                            },
                         };
 
                         if (col.endsWith("name")) {
@@ -146,6 +199,8 @@ const MappingDatgrid = ({
                 const rows =
                     (diagram?.cw_table || []).map((item, index) => ({ id: index, ...item }));
 
+                // console.log("cw_table rows:", rows);
+
                 setRows(rows);
                 break;
             }
@@ -159,11 +214,13 @@ const MappingDatgrid = ({
     }, [selectedCategory, diagram]);
 
 
+
     return (
         <DataGrid
             apiRef={apiRef}
             rows={rows}
             columns={columns}
+            isCellEditable={(params) => params.value !== null}
             sx={{ height: "100%", minHeight: 0, "& .MuiDataGrid-cell--editable": { cursor: "pointer" } }}
             onCellClick={(params) => {
                 const gridApi = apiRef.current;
@@ -175,6 +232,8 @@ const MappingDatgrid = ({
             disableRowSelectionOnClick
             showCellVerticalBorder
             showColumnVerticalBorder
+            columnHeaderHeight={40}
+            rowHeight={40}
             processRowUpdate={(updatedRow) => {
                 if (!diagram) return updatedRow;
 

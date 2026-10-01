@@ -1,17 +1,20 @@
-import { DataGrid, type GridColDef } from "@mui/x-data-grid";
+import { DataGrid, type GridColDef, type GridRenderCellParams } from "@mui/x-data-grid";
 import type { EquipmentField, EquipementResponse } from "@/api/types/equipment";
 import { useTranslation } from "react-i18next";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import { useState } from "react";
 import {
+    BooleanChip,
     ConfirmDeleteDialog,
     N30x30OptionsCopy,
     N30x30OptionsDelete,
     N30x30OptionsEdit,
     N30x30OptionsEyesopen,
+    showToast,
 } from "@/components";
 import equipmentService from "@/api/services/equipment";
 import { isDataGridHiddenField } from "./components/FieldException";
+import toasterWording from "@/settings/toasterWording";
 interface EquipmentDatagridProps {
     selectedCategory: string;
     renderFields: EquipmentField[];
@@ -46,6 +49,8 @@ const EquipmentDatagrid = ({
     onDeleted,
 }: EquipmentDatagridProps) => {
 
+    // console.log(renderFields.map((f) => f.key));
+
     const renderRows = equipmentList.map((equipment) => ({
         id: equipment.id,
         equipment_name: equipment.equipment_name,
@@ -69,9 +74,11 @@ const EquipmentDatagrid = ({
             setDeleteErrorMessage("");
             await equipmentService.delete(deletingRow.id);
             setDeletingRow(null);
+            showToast(t(toasterWording.success.equipment_delete), "success");
             await onDeleted?.();
         } catch (error: any) {
             setDeleteErrorMessage(`刪除失敗：${error?.message ?? "請稍後再試"}`);
+            showToast(`${t(toasterWording.error.equipment_delete)}: ${error}`, "error");
         } finally {
             setIsDeleting(false);
         }
@@ -85,11 +92,16 @@ const EquipmentDatagrid = ({
             width: 150,
         },
         ...renderFields.filter((field) => !isDataGridHiddenField(field)).map((field) => {
+            const fieldType = field.field_type.toLowerCase();
+            const isBoolean = fieldType === "boolean" || fieldType === "bool";
             return (
                 {
                     field: field.key,
                     headerName: `${t(`equipment-list.fields${selectedCategory}.${field.key}`)}`,
                     width: 150,
+                    ...(isBoolean
+                        ? { renderCell: (params: GridRenderCellParams) => <BooleanChip value={Boolean(params.value)} /> }
+                        : {}),
                     // ...(field.key === "iplv_nplv_data"
                     //     ? { renderCell: (params: GridRenderCellParams) => renderIplvNplvData(params.value) }
                     //     : {}),

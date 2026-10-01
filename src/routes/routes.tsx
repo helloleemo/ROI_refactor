@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
+import { ProjectCsvPage } from "../pages/EnergySavingSimulation/ProjectCsv/ProjectCsvPage";
 import PATHS from "./paths"
 import Index from "../pages/Index"
 import ModelManagement from "@/pages/Models/ModelManagement"
@@ -9,6 +10,7 @@ import OptimizationListPage from "@/pages/Optimization/OptmizationStrategiesList
 import LanguageSettings from "@/pages/LanguageSettings/LanguageSettings";
 import NoSidebarLayout from "@/components/layout/NoSidebarLayout";
 import KpiOverview from "@/pages/Overview/KpiOverview/KpiOverview";
+import ProjectSettingsPage from "@/pages/Overview/ProjectSettings/ProjectSettingsPage";
 
 // 設備管理
 import EquipmentListPage from "@/pages/EquipmentManagement/EquipmentList/EquipmentListPage";
@@ -37,7 +39,7 @@ export const router = createBrowserRouter([
       // },
       {
         path: `${PATHS.overview}/${PATHS.projectSettings}`,
-        element: <PlaceholderPage title="Project Settings" />
+        element: <ProjectSettingsPage />
       },
 
       // 設備管理
@@ -58,7 +60,7 @@ export const router = createBrowserRouter([
       },
       {
         path: `${PATHS.energySavingOverview}/${PATHS.projectCsv}`,
-        element: <PlaceholderPage title="Project CSV" />
+        element: <ProjectCsvPage />
       },
       {
         path: `${PATHS.energySavingOverview}/${PATHS.dataCleaning}`,

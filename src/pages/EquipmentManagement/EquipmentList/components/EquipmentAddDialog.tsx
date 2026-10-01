@@ -27,6 +27,8 @@ import {
     normalizeFieldValue,
 } from "./FieldException";
 import { convertUnitValue, getTargetUnit } from "./UnitTransfer";
+import toasterWording from "@/settings/toasterWording";
+import { showToast } from "@/components/ToasterCustom";
 
 interface EquipmentAddDialogProps {
     exceptionFields?: Record<string, unknown>;
@@ -127,6 +129,7 @@ const EquipmentAddDialog = ({
                 }, {}),
             });
             await onSuccess?.();
+            showToast(t(toasterWording.success.equipment_create), "success");
             onClose();
             // console.log(`Category: ${JSON.stringify(category)} Equipment Name: ${equipmentName} Remarks: ${remarks} Specs: ${JSON.stringify(specs)}`);
         } catch (error: any) {
@@ -134,6 +137,7 @@ const EquipmentAddDialog = ({
                 defaultValue: `新增失敗：${error?.message ?? "請稍後再試"}`,
                 message: error?.message ?? t("equipment-list.add-dialog.try-again"),
             }));
+            showToast(t(toasterWording.error.equipment_create), "error");
         } finally {
             setSubmitting(false);
         }
@@ -143,7 +147,7 @@ const EquipmentAddDialog = ({
         if (!units?.available_units || !field.unit) return null;
 
         const unitKey = Object.keys(units.available_units).find(key => key === field.unit || key === `${field.unit}s`);
-        console.log("unitKey", unitKey);
+        // console.log("unitKey", unitKey);
         return units.available_units[
             unitKey as keyof EvalSetting["available_units"]
         ] ?? null;

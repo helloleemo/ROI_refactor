@@ -1,7 +1,7 @@
 import SectionLayout from "@/components/gridLayout/SectionLayout";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { SearchBar, Tabs, TitleText } from "@/components/index";
+import { SearchBar, showToast, Tabs, TitleText } from "@/components/index";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { useSearchFilter } from "@/hooks";
@@ -10,6 +10,7 @@ import { hydronicDiagramService } from "@/api/services/hydronicDiagram";
 import { Typography } from "@mui/material";
 import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import NodeEditMode from "./components/NodeEditMode";
+import toasterWording from "@/settings/toasterWording";
 
 const tabs = [{
     value: "chw_table",
@@ -65,8 +66,10 @@ const MappingDiagramPage = () => {
                     chw_table: payload.chw_table,
                     num_load: payload.num_load
                 })
+                showToast(t(toasterWording.success.update_diagram), "success");
             } catch (error) {
                 console.error("Error saving diagram:", error);
+                showToast(`${t(toasterWording.error.update_diagram)}: ${error}`, "error");
             }
         } else if (selectedCategory === "cw_table") {
             try {
@@ -74,8 +77,10 @@ const MappingDiagramPage = () => {
                     cw_table: payload.cw_table,
                     // num_load: payload.num_load
                 })
+                showToast(t(toasterWording.success.update_diagram), "success");
             } catch (error) {
                 console.error("Error saving diagram:", error);
+                showToast(t(toasterWording.error.update_diagram), "error");
             }
         }
 
@@ -83,31 +88,74 @@ const MappingDiagramPage = () => {
     }
     const handleAddLoad = () => {
         // console.log("Add load clicked");
-        console.log("diagram1", diagram)
-        setNotice("表單已更新，儲存後生效");
+        // console.log("diagram1", diagram)
+        setNotice(t("MappingDiagram.info"));
+
         setDiagram((prev) => {
             if (!prev) return prev;
-
 
             const newNumLoad = prev.num_load + 1;
             const sequenceNum = newNumLoad - 1;
             const outLoadNum = 1
 
             if (prev.chw_table.length <= sequenceNum) {
-                prev.chw_table.push({ load_name: `Load-${sequenceNum + 1}`, in_load: sequenceNum + 1, out_load: outLoadNum });
+                prev.chw_table.push({
+                    load_name: `Load-${sequenceNum + 1}`,
+                    in_load: sequenceNum + 1,
+                    out_load: outLoadNum
+                });
             } else {
-                prev.chw_table[sequenceNum] = { ...prev.chw_table[sequenceNum], in_load: sequenceNum + 1, load_name: `Load-${sequenceNum + 1}`, out_load: outLoadNum };
+                prev.chw_table[sequenceNum] = {
+                    ...prev.chw_table[sequenceNum],
+                    in_load: sequenceNum + 1,
+                    load_name: `Load-${sequenceNum + 1}`,
+                    out_load: outLoadNum
+                };
             }
 
+            showToast(t(toasterWording.success.add_load), "info");
             return {
                 ...prev,
                 num_load: newNumLoad,
                 chw_table: [...prev.chw_table]
             };
         })
-        console.log("diagram2", diagram)
+        // console.log("diagram2", diagram)
 
 
+    }
+
+    const handleDeleteLoad = () => {
+        setDiagram((prev) => {
+            if (!prev) return prev;
+
+            const newNumLoad = Math.max(prev.num_load - 1, 0);
+            const sequenceNum = newNumLoad;
+
+            const clearedRow = {
+                ...prev.chw_table[sequenceNum],
+                load_name: null,
+                in_load: null,
+                out_load: null
+            }
+            prev.chw_table[sequenceNum] = clearedRow;
+
+            const isRowEmpty = Object.values(clearedRow).every((value) => value === null);
+            if (isRowEmpty) {
+                prev.chw_table.splice(sequenceNum, 1);
+            }
+
+            console.log("Delete load:", clearedRow);
+
+
+            showToast(t(toasterWording.success.delete_load), "info");
+
+            return {
+                ...prev,
+                num_load: newNumLoad,
+                chw_table: [...prev.chw_table]
+            };
+        });
     }
 
     const handleUpdateDiagram = (updatedDiagram: {
@@ -117,7 +165,7 @@ const MappingDiagramPage = () => {
         num_load: number;
     }) => {
         setDiagram(updatedDiagram);
-        setNotice("表單已更新，儲存後生效");
+        setNotice(t("MappingDiagram.info"));
     };
 
     const handleEditDiagram = () => {
@@ -177,7 +225,7 @@ const MappingDiagramPage = () => {
                         }}
                     // disabled={!selectedCategoryData}
                     >
-                        圖形檢視
+                        {t("MappingDiagram.buttons.graph_view")}
                     </Button>
 
                     <Button
@@ -185,7 +233,7 @@ const MappingDiagramPage = () => {
                         onClick={handleSave}
                     // disabled={!selectedCategoryData}
                     >
-                        更新後儲存
+                        {t("MappingDiagram.buttons.save_after_update")}
                     </Button>
 
 
@@ -204,6 +252,7 @@ const MappingDiagramPage = () => {
                             selectedCategory={selectedCategory}
                             diagram={diagram}
                             onClickAddLoad={handleAddLoad}
+                            onClickDeleteLoad={handleDeleteLoad}
                             onUpdateDiagram={handleUpdateDiagram}
                         />)
                 }

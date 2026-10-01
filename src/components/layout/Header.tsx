@@ -19,6 +19,7 @@ import DateNow from "./DateNow";
 import HierarchyOptions from "./HierarchyOptions";
 import SearchSite from "./SearchSite";
 import InformationDialog from "../InformationDialog";
+import AboutApplicationDialog from "./AboutApplicationDialog";
 import { Menu, MenuItem } from "@mui/material";
 import { currency } from "@/settings/currency";
 import { profile } from "@/settings/profile";
@@ -418,12 +419,9 @@ function ResponsiveAppBar() {
             />
 
             {/* About Application */}
-            <InformationDialog
+            <AboutApplicationDialog
                 open={open["aboutApplication"]}
                 onClose={() => handleClose("aboutApplication")}
-                title="About Application"
-                contentText="ROI TOOL"
-                buttonText="Close"
             />
         </>
     );
