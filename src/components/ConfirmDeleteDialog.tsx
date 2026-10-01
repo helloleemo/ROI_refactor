@@ -2,12 +2,14 @@ import {
     Alert,
     Box,
     Button,
+    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
     Typography,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 type ConfirmDeleteDialogProps = {
     open: boolean;
@@ -16,20 +18,26 @@ type ConfirmDeleteDialogProps = {
     itemName?: string;
     isDeleting?: boolean;
     errorMessage?: string;
+    cancelText?: string;
+    confirmText?: string;
     onCancel: () => void;
     onConfirm: () => void;
 };
 
 const ConfirmDeleteDialog = ({
     open,
-    title = "確認刪除",
-    description = "刪除後將無法復原，請再次確認。",
+    title,
+    description,
     itemName,
     isDeleting = false,
     errorMessage = "",
+    cancelText,
+    confirmText,
     onCancel,
     onConfirm,
 }: ConfirmDeleteDialogProps) => {
+    const { t } = useTranslation();
+
     return (
         <Dialog
             open={open}
@@ -45,7 +53,7 @@ const ConfirmDeleteDialog = ({
                     </Typography>
                     {itemName && (
                         <Typography sx={{ color: "text.primary", fontSize: 13 }}>
-                            檔案：{itemName}
+                            {t("common.name")}：{itemName}
                         </Typography>
                     )}
                     {errorMessage && (
@@ -57,15 +65,16 @@ const ConfirmDeleteDialog = ({
             </DialogContent>
             <DialogActions sx={{ px: 3, pb: 2, pt: 1 }}>
                 <Button onClick={onCancel} color="inherit" disabled={isDeleting}>
-                    取消
+                    {cancelText ?? t("common.cancel")}
                 </Button>
                 <Button
                     onClick={onConfirm}
                     color="error"
                     variant="contained"
                     disabled={isDeleting}
+                    startIcon={isDeleting ? <CircularProgress size={20} /> : undefined}
                 >
-                    {isDeleting ? "刪除中..." : "確認刪除"}
+                    {confirmText ?? t("common.delete")}
                 </Button>
             </DialogActions>
         </Dialog>

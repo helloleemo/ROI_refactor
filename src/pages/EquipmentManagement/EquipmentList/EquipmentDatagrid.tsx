@@ -77,7 +77,9 @@ const EquipmentDatagrid = ({
             showToast(t(toasterWording.success.equipment_delete), "success");
             await onDeleted?.();
         } catch (error: any) {
-            setDeleteErrorMessage(`刪除失敗：${error?.message ?? "請稍後再試"}`);
+            setDeleteErrorMessage(t("equipment-list.delete-dialog.error", {
+                message: error?.message ?? t("equipment-list.add-dialog.try-again"),
+            }));
             showToast(`${t(toasterWording.error.equipment_delete)}: ${error}`, "error");
         } finally {
             setIsDeleting(false);
@@ -116,7 +118,7 @@ const EquipmentDatagrid = ({
             filterable: false,
             renderCell: ({ row }) => (
                 <Box sx={{ display: "flex", height: "100%", alignItems: "center", gap: 0.25 }}>
-                    <Tooltip title="檢視">
+                    <Tooltip title={t("common.view")}>
                         <IconButton
                             size="small"
                             sx={{ p: 0.5 }}
@@ -128,7 +130,7 @@ const EquipmentDatagrid = ({
                             <N30x30OptionsEyesopen />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title="複製">
+                    <Tooltip title={t("common.copy")}>
                         <IconButton
                             size="small"
                             sx={{ p: 0.5 }}
@@ -140,7 +142,7 @@ const EquipmentDatagrid = ({
                             <N30x30OptionsCopy />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title="編輯">
+                    <Tooltip title={t("common.edit")}>
                         <IconButton
                             size="small"
                             sx={{ p: 0.5 }}
@@ -152,7 +154,7 @@ const EquipmentDatagrid = ({
                             <N30x30OptionsEdit accentColor="primary.main" />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title="刪除">
+                    <Tooltip title={t("common.delete")}>
                         <IconButton
                             size="small"
                             sx={{ p: 0.5 }}
@@ -213,8 +215,8 @@ const EquipmentDatagrid = ({
 
             <ConfirmDeleteDialog
                 open={Boolean(deletingRow)}
-                title="確認刪除設備"
-                description="這個操作無法復原，確定要刪除這筆設備嗎？"
+                title={t("equipment-list.delete-dialog.title")}
+                description={t("equipment-list.delete-dialog.description")}
                 itemName={deletingRow?.equipment_name}
                 isDeleting={isDeleting}
                 errorMessage={deleteErrorMessage}

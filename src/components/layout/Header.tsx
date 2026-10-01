@@ -413,9 +413,6 @@ function ResponsiveAppBar() {
             <InformationDialog
                 open={open["helpAndSupport"]}
                 onClose={() => handleClose("helpAndSupport")}
-                title="Help & Support"
-                contentText="If you need support, please contact the administrator."
-                buttonText="Close"
             />
 
             {/* About Application */}

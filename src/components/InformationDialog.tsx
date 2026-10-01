@@ -5,6 +5,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { forwardRef, type ReactElement, type Ref } from 'react';
+import { useTranslation } from 'react-i18next';
 import Slide, { type SlideProps } from '@mui/material/Slide';
 import { type TransitionProps } from '@mui/material/transitions';
 
@@ -12,9 +13,6 @@ import { type TransitionProps } from '@mui/material/transitions';
 interface InformationDialogProps {
     open: boolean;
     onClose: () => void;
-    title: string;
-    contentText: string;
-    buttonText: string
     transitionAnimation?: boolean;
 }
 
@@ -30,11 +28,9 @@ const Transition = forwardRef(function Transition(
 const InformationDialog = ({
     open,
     onClose,
-    title,
-    contentText,
-    buttonText = "Close",
     transitionAnimation = false,
 }: InformationDialogProps) => {
+    const { t } = useTranslation();
     return (
         <Dialog
             open={open}
@@ -45,11 +41,11 @@ const InformationDialog = ({
             keepMounted
         >
             <DialogTitle >
-                {title}
+                {t('header.help&support.title')}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    {contentText}
+                    {t('header.help&support.content')}
 
                 </DialogContentText>
             </DialogContent>
@@ -58,7 +54,7 @@ const InformationDialog = ({
                     onClick={onClose}
                     variant="text"
                 >
-                    {buttonText}
+                    {t('common.close')}
                 </Button>
             </DialogActions>
         </Dialog>

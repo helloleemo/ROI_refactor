@@ -9,12 +9,15 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteForeverOutlined";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProjectService } from "@/api/services/project";
 import type { ProjectListItem, ProjectUpdateRequest } from "@/api/types/project";
 import { useProject } from "@/contexts/ProjectContext";
+import { showToast } from "../ToasterCustom";
+import toasterWording from "@/settings/toasterWording";
 
 type ProjectEditDialogProps = {
     open: boolean;
@@ -29,6 +32,8 @@ const EMPTY_FORM: ProjectUpdateRequest = {
 };
 
 const ProjectEditDialog = ({ open, project, onClose }: ProjectEditDialogProps) => {
+
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { refreshProjects, setCurrentProject } = useProject();
     const [form, setForm] = useState<ProjectUpdateRequest>(EMPTY_FORM);
@@ -97,10 +102,11 @@ const ProjectEditDialog = ({ open, project, onClose }: ProjectEditDialogProps) =
                 navigate(`/${fallbackProject.id}`, { replace: true });
             }
 
+            showToast(toasterWording.success.project_delete, "success");
             onClose();
         } catch (error) {
             console.error("Failed to delete project", error);
-            setErrorMessage("刪除專案失敗，請稍後再試");
+            showToast(`${toasterWording.error.project_delete}: ${error}`, "error");
         } finally {
             setDeleting(false);
         }
@@ -113,12 +119,12 @@ const ProjectEditDialog = ({ open, project, onClose }: ProjectEditDialogProps) =
             fullWidth
             maxWidth="sm"
         >
-            <DialogTitle>編輯專案</DialogTitle>
+            <DialogTitle>{t("project.edit_project")}</DialogTitle>
             <DialogContent>
                 {project ? (
                     <Stack spacing={2.5} sx={{ pt: 1 }}>
                         <TextField
-                            label="名稱"
+                            label={t("project.name")}
                             value={form.name}
                             onChange={(event) => handleChange("name", event.target.value)}
                             size="small"
@@ -128,7 +134,7 @@ const ProjectEditDialog = ({ open, project, onClose }: ProjectEditDialogProps) =
                             error={Boolean(errorMessage && !form.name.trim())}
                         />
                         <TextField
-                            label="描述"
+                            label={t("project.description")}
                             value={form.description}
                             onChange={(event) => handleChange("description", event.target.value)}
                             size="small"
@@ -149,27 +155,27 @@ const ProjectEditDialog = ({ open, project, onClose }: ProjectEditDialogProps) =
                 <Button
                     color="error"
                     variant="outlined"
-                    startIcon={<DeleteOutlineIcon />}
+                    // startIcon={<DeleteOutlineIcon />}
                     onClick={() => {
                         void handleDelete();
                     }}
                     disabled={submitting || deleting || !project}
                 >
-                    {deleting ? "刪除中..." : "刪除"}
+                    {deleting ? t("common.deleting") : t("common.delete")}
                 </Button>
 
                 <Box sx={{ display: "flex", gap: 1 }}>
                     <Button onClick={onClose} color="inherit" disabled={submitting || deleting}>
-                        取消
+                        {t("common.cancel")}
                     </Button>
                     <Button
                         variant="contained"
                         onClick={() => {
                             void handleSubmit();
                         }}
-                        disabled={submitting || deleting}
+                        disabled={submitting || deleting || !form.name.trim()}
                     >
-                        {submitting ? "更新中..." : "更新"}
+                        {submitting ? t("common.updating") : t("common.update")}
                     </Button>
                 </Box>
             </DialogActions>

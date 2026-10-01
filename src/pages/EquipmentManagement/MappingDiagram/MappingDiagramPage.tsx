@@ -1,9 +1,11 @@
 import SectionLayout from "@/components/gridLayout/SectionLayout";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 import { SearchBar, showToast, Tabs, TitleText } from "@/components/index";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
+import useLoading from "@/hooks/useLoading";
 import { useSearchFilter } from "@/hooks";
 import MappingDatgrid from "./MappingDatgrid";
 import { hydronicDiagramService } from "@/api/services/hydronicDiagram";
@@ -25,6 +27,7 @@ const tabs = [{
 const MappingDiagramPage = () => {
     const { t } = useTranslation();
     // const [categories, setCategories] = useState([]);
+    const { loading, startLoading, stopLoading } = useLoading();
     const [isNodeEditMode, setIsNodeEditMode] = useState(false);
     const [notice, setNotice] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("chw_table");
@@ -57,8 +60,10 @@ const MappingDiagramPage = () => {
         console.log("Saving:", diagram);
         setNotice("");
 
+        const payload = { ...diagram };
         if (!diagram) return;
-        const payload = diagram;
+
+        startLoading();
 
         if (selectedCategory === "chw_table") {
             try {
@@ -70,6 +75,8 @@ const MappingDiagramPage = () => {
             } catch (error) {
                 console.error("Error saving diagram:", error);
                 showToast(`${t(toasterWording.error.update_diagram)}: ${error}`, "error");
+            } finally {
+                stopLoading();
             }
         } else if (selectedCategory === "cw_table") {
             try {
@@ -81,9 +88,12 @@ const MappingDiagramPage = () => {
             } catch (error) {
                 console.error("Error saving diagram:", error);
                 showToast(t(toasterWording.error.update_diagram), "error");
+            } finally {
+                stopLoading();
             }
         }
 
+        stopLoading();
 
     }
     const handleAddLoad = () => {
@@ -231,7 +241,8 @@ const MappingDiagramPage = () => {
                     <Button
                         variant="outlined"
                         onClick={handleSave}
-                    // disabled={!selectedCategoryData}
+                        disabled={loading}
+                        startIcon={loading ? <CircularProgress size={16} color="inherit" /> : undefined}
                     >
                         {t("MappingDiagram.buttons.save_after_update")}
                     </Button>
@@ -248,13 +259,15 @@ const MappingDiagramPage = () => {
                                 diagram={diagram}
                             />
                         )
-                        : (<MappingDatgrid
-                            selectedCategory={selectedCategory}
-                            diagram={diagram}
-                            onClickAddLoad={handleAddLoad}
-                            onClickDeleteLoad={handleDeleteLoad}
-                            onUpdateDiagram={handleUpdateDiagram}
-                        />)
+                        : (
+                            <MappingDatgrid
+                                selectedCategory={selectedCategory}
+                                diagram={diagram}
+                                onClickAddLoad={handleAddLoad}
+                                onClickDeleteLoad={handleDeleteLoad}
+                                onUpdateDiagram={handleUpdateDiagram}
+                            />
+                        )
                 }
 
 

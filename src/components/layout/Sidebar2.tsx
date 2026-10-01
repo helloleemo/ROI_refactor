@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChevronLeft from "@mui/icons-material/ChevronLeft";
 import ChevronRight from "@mui/icons-material/ChevronRight";
 import ExpandLess from "@mui/icons-material/ExpandLess";
@@ -14,7 +14,7 @@ import {
     ListItemText,
     Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { MenuItem, type MenuItemProps } from "@/mock/sidebar";
 import { useTranslation } from "react-i18next";
 
@@ -23,12 +23,41 @@ const FIRST_EXPANDED_WIDTH = 220;
 const SECOND_WIDTH = 220;
 const HEADER_HEIGHT = 70;
 
+type ActiveMenuKeys = {
+    first: string | null;
+    second: string | null;
+    third: string | null;
+};
+
+const isRouteMatch = (pathname: string, route?: string) => {
+    if (!route) return false;
+    const normalized = pathname.replace(/\/+$/, "");
+    return normalized === `/${route}` || normalized.endsWith(`/${route}`);
+};
+
+const findActiveMenuKeys = (pathname: string): ActiveMenuKeys => {
+    for (const first of MenuItem) {
+        for (const second of first.children ?? []) {
+            if (isRouteMatch(pathname, second.route)) {
+                return { first: first.key, second: second.key, third: null };
+            }
+            for (const third of second.children ?? []) {
+                if (isRouteMatch(pathname, third.route)) {
+                    return { first: first.key, second: second.key, third: third.key };
+                }
+            }
+        }
+    }
+    return { first: null, second: null, third: null };
+};
+
 const Sidebar2 = () => {
 
     // console.log("Sidebar2 rendered");
 
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const { pathname } = useLocation();
     // const { query: { data } } = useUiTextsNested("sidebarMenu")
     // console.log("data", data, isLoading, isError);
     // const getMenuLabel = (keys: string[], fallback: string) => {
@@ -38,12 +67,26 @@ const Sidebar2 = () => {
     // };
 
 
-    const [activeFirstLevelKey, setActiveFirstLevelKey] = useState<string | null>(null);
-    const [activeSecondLevelKey, setActiveSecondLevelKey] = useState<string | null>(null);
-    const [activeThirdLevelKey, setActiveThirdLevelKey] = useState<string | null>(null);
-    const [openSecondGroups, setOpenSecondGroups] = useState<Record<string, boolean>>({});
+    const initialKeys = findActiveMenuKeys(pathname);
+    const [activeFirstLevelKey, setActiveFirstLevelKey] = useState<string | null>(initialKeys.first);
+    const [activeSecondLevelKey, setActiveSecondLevelKey] = useState<string | null>(initialKeys.second);
+    const [activeThirdLevelKey, setActiveThirdLevelKey] = useState<string | null>(initialKeys.third);
+    const [openSecondGroups, setOpenSecondGroups] = useState<Record<string, boolean>>(
+        initialKeys.third && initialKeys.second ? { [initialKeys.second]: true } : {},
+    );
     const [isFirstLevelHovered, setIsFirstLevelHovered] = useState(false);
     const [isSecondLevelCollapsed, setIsSecondLevelCollapsed] = useState(false);
+
+    useEffect(() => {
+        const keys = findActiveMenuKeys(pathname);
+        if (!keys.first) return;
+        setActiveFirstLevelKey(keys.first);
+        setActiveSecondLevelKey(keys.second);
+        setActiveThirdLevelKey(keys.third);
+        if (keys.third && keys.second) {
+            setOpenSecondGroups((prev) => ({ ...prev, [keys.second as string]: true }));
+        }
+    }, [pathname]);
 
     const activeFirstLevelItem = MenuItem.find((item) => item.key === activeFirstLevelKey) ?? null;
     const secondMenus = activeFirstLevelItem?.children ?? [];

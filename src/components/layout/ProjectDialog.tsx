@@ -1,5 +1,6 @@
 import {
     Button,
+    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -9,10 +10,12 @@ import {
     Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { ProjectService } from "@/api/services/project";
 import type { ProjectCreateRequest } from "@/api/types/project";
 import { useProject } from "@/contexts/ProjectContext";
+import useLoading from "@/hooks/useLoading";
 
 type ProjectDialogProps = {
     open: boolean;
@@ -25,11 +28,12 @@ const EMPTY_FORM: ProjectCreateRequest = {
 };
 
 const ProjectDialog = ({ open, onClose }: ProjectDialogProps) => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { setCurrentProject, refreshProjects } = useProject();
     const [form, setForm] = useState<ProjectCreateRequest>(EMPTY_FORM);
-    const [submitting, setSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const { loading, startLoading, stopLoading } = useLoading();
 
     useEffect(() => {
         if (open) {
@@ -47,12 +51,12 @@ const ProjectDialog = ({ open, onClose }: ProjectDialogProps) => {
         const description = form.description.trim();
 
         if (!name) {
-            setErrorMessage("請輸入專案名稱");
+            setErrorMessage(t("project.name_required"));
             return;
         }
 
         try {
-            setSubmitting(true);
+            startLoading();
             setErrorMessage("");
 
             const createdProject = await ProjectService.CREATE({
@@ -66,24 +70,24 @@ const ProjectDialog = ({ open, onClose }: ProjectDialogProps) => {
             onClose();
         } catch (error) {
             console.error("Failed to create project", error);
-            setErrorMessage("建立專案失敗，請稍後再試");
+            setErrorMessage(t("project.create_failed"));
         } finally {
-            setSubmitting(false);
+            stopLoading();
         }
     };
 
     return (
         <Dialog
             open={open}
-            onClose={submitting ? undefined : onClose}
+            onClose={loading ? undefined : onClose}
             fullWidth
             maxWidth="sm"
         >
-            <DialogTitle>新增專案</DialogTitle>
+            <DialogTitle>{t("project.create_project")}</DialogTitle>
             <DialogContent>
                 <Stack spacing={2.5} sx={{ pt: 1 }}>
                     <TextField
-                        label="名稱"
+                        label={t("project.name")}
                         value={form.name}
                         onChange={(event) => handleChange("name", event.target.value)}
                         size="small"
@@ -92,7 +96,7 @@ const ProjectDialog = ({ open, onClose }: ProjectDialogProps) => {
                         error={Boolean(errorMessage && !form.name.trim())}
                     />
                     <TextField
-                        label="描述"
+                        label={t("project.description")}
                         value={form.description}
                         onChange={(event) => handleChange("description", event.target.value)}
                         size="small"
@@ -108,15 +112,17 @@ const ProjectDialog = ({ open, onClose }: ProjectDialogProps) => {
                 </Stack>
             </DialogContent>
             <DialogActions sx={{ px: 3, pb: 2 }}>
-                <Button onClick={onClose} color="inherit" disabled={submitting}>
-                    取消
+                <Button onClick={onClose} color="inherit" disabled={loading}>
+                    {t("common.cancel")}
                 </Button>
                 <Button
                     variant="contained"
                     onClick={handleSubmit}
-                    disabled={submitting}
+                    disabled={loading}
+                    startIcon={loading ? <CircularProgress size={16} color="inherit" /> : undefined}
+
                 >
-                    {submitting ? "建立中..." : "建立"}
+                    {t("project.create")}
                 </Button>
             </DialogActions>
         </Dialog>

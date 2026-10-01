@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import Button from "@mui/material/Button";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Popover from "@mui/material/Popover";
@@ -30,6 +31,8 @@ type OptionsRenderProps = {
 };
 
 const OptionsRender = ({ title, options, value, onChange, showArrow = true, onAdd, onEdit }: OptionsRenderProps & { onAdd?: () => void; onEdit?: (projectId: string) => void }) => {
+    const { t } = useTranslation();
+
     return (
         <Box sx={{ flex: 1, minWidth: 0 }}>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
@@ -37,7 +40,7 @@ const OptionsRender = ({ title, options, value, onChange, showArrow = true, onAd
                     {title}
                 </Typography>
                 <Button onClick={onAdd}>
-                    新增
+                    {t("common.add")}
                 </Button>
             </Box>
             <Stack spacing={1.5}>

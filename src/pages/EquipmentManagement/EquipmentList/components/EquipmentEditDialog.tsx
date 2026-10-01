@@ -2,6 +2,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import {
     Box,
     Button,
+    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -125,7 +126,9 @@ const EquipmentEditDialog = ({
             showToast(t(toasterWording.success.equipment_edit), "success");
             onClose();
         } catch (error: any) {
-            setErrorMessage(`更新失敗：${error?.message ?? "請稍後再試"}`);
+            setErrorMessage(t("equipment-list.edit-dialog.error", {
+                message: error?.message ?? t("equipment-list.add-dialog.try-again"),
+            }));
             showToast(t(toasterWording.error.equipment_edit), "error");
         } finally {
             setSubmitting(false);
@@ -238,7 +241,7 @@ const EquipmentEditDialog = ({
                     fullWidth
                     required
                     select
-                    label="單位"
+                    label={t("equipment-list.unit")}
                     value={selectedUnit}
                     onChange={(event) => handleSpecChange(unitSpecKey, event.target.value)}
                     disabled={isReadOnly(field)}
@@ -252,7 +255,7 @@ const EquipmentEditDialog = ({
                 {fieldUnits && (
                     <Box>
                         <Typography variant="body2" color="textSecondary">
-                            儲存值
+                            {t("equipment-list.stored-value")}
                         </Typography>
                         <Typography variant="body2" color="textSecondary">
                             {targetUnit && Number.isFinite(numericValue)
@@ -268,7 +271,7 @@ const EquipmentEditDialog = ({
     return (
         <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
             <DialogTitle sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <TitleText title="編輯設備" />
+                <TitleText title={t("equipment-list.edit-dialog.title")} />
                 <IconButton onClick={handleClose} disabled={submitting} size="small">
                     <CloseIcon fontSize="small" />
                 </IconButton>
@@ -314,8 +317,9 @@ const EquipmentEditDialog = ({
                         !equipmentName.trim() ||
                         category.fields.some((field) => isRequiredFieldEmpty(field, specs[field.key]))
                     }
+                    startIcon={submitting ? <CircularProgress size={16} color="inherit" /> : undefined}
                 >
-                    {submitting ? "更新中..." : "儲存"}
+                    {t("common.save")}
                 </Button>
             </DialogActions>
         </Dialog>

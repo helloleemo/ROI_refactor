@@ -2,6 +2,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import {
     Box,
     Button,
+    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -338,10 +339,9 @@ const EquipmentAddDialog = ({
                         !equipmentName.trim() ||
                         category.fields.some((field) => isRequiredFieldEmpty(field, specs[field.key]))
                     }
+                    startIcon={submitting ? <CircularProgress size={16} color="inherit" /> : undefined}
                 >
-                    {submitting
-                        ? t("equipment-list.add-dialog.submitting")
-                        : t("equipment-list.add-dialog.submit")}
+                    {t("equipment-list.add-dialog.submit")}
                 </Button>
             </DialogActions>
         </Dialog>

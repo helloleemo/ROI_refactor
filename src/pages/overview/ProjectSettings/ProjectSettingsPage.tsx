@@ -1,14 +1,18 @@
 import { showToast, TitleText } from "@/components";
 import { useEffect, useState } from "react";
-import { Box, Button, Chip, Divider, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Chip, CircularProgress, Divider, Stack, TextField, Typography } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+// import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import SectionLayout from "@/components/gridLayout/SectionLayout.tsx";
 import { ProjectService } from "@/api/services/project";
 import type { ProjectUpdateRequest } from "@/api/types/project";
 import { useProject } from "@/contexts/ProjectContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import toasterWording from "@/settings/toasterWording";
+import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
+import useLoading from "@/hooks/useLoading";
 
 const EMPTY_FORM: ProjectUpdateRequest = {
     name: "",
@@ -18,12 +22,15 @@ const EMPTY_FORM: ProjectUpdateRequest = {
 
 const ProjectSettingsPage = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const { currentProject, refreshProjects, setCurrentProject } = useProject();
     const { projectSettings, supportedLocales } = useLanguage();
     const [form, setForm] = useState<ProjectUpdateRequest>(EMPTY_FORM);
     const [submitting, setSubmitting] = useState(false);
     const [nameError, setNameError] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const { loading, startLoading, stopLoading } = useLoading();
 
     useEffect(() => {
         if (currentProject) {
@@ -82,6 +89,34 @@ const ProjectSettingsPage = () => {
         }
         setNameError(false);
         setIsEditing(false);
+    };
+
+    const handleDelete = async () => {
+        if (!currentProject) return;
+
+        try {
+            startLoading();
+            await ProjectService.DELETE(String(currentProject.id));
+            const remainingProjects = await refreshProjects();
+            const fallbackProject = remainingProjects.find(
+                (project) => String(project.id) !== String(currentProject.id),
+            ) ?? remainingProjects[0];
+
+            if (fallbackProject) {
+                setCurrentProject(fallbackProject);
+                navigate(`/${fallbackProject.id}`, { replace: true });
+            } else {
+                navigate("/", { replace: true });
+            }
+
+            setIsDeleteDialogOpen(false);
+            showToast(t(toasterWording.success.project_delete), "success");
+        } catch (error) {
+            console.error("Failed to delete project", error);
+            showToast(`${t(toasterWording.error.project_delete)}: ${error}`, "error");
+        } finally {
+            stopLoading();
+        }
     };
 
     const formatDateTime = (value?: string) =>
@@ -159,23 +194,38 @@ const ProjectSettingsPage = () => {
                                 minRows={4}
                                 disabled={submitting}
                             />
-                            <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
-                                <Button
-                                    color="inherit"
-                                    onClick={handleCancel}
-                                    disabled={submitting}
+                            <Box sx={{ display: "flex", justifyContent: "space-between", gap: 1 }}>
+                                {/* <Button
+                                    color="error"
+                                    variant="outlined"
+                                    // startIcon={<DeleteOutlineIcon />}
+                                    onClick={() => setIsDeleteDialogOpen(true)}
+                                    disabled={submitting || !currentProject}
+                                    startIcon={loading ? <CircularProgress size={16} color="inherit" /> : undefined}
+
                                 >
-                                    {t("project-settings.cancel")}
-                                </Button>
-                                <Button
-                                    variant="contained"
-                                    onClick={() => {
-                                        void handleSubmit();
-                                    }}
-                                    disabled={submitting}
-                                >
-                                    {submitting ? t("project-settings.saving") : t("project-settings.save")}
-                                </Button>
+                                    {t("common.delete")}
+                                </Button> */}
+                                <Box sx={{ display: "flex", gap: 1 }}>
+                                    <Button
+                                        color="inherit"
+                                        onClick={handleCancel}
+                                        disabled={submitting || loading}
+                                    >
+                                        {t("project-settings.cancel")}
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        onClick={() => {
+                                            void handleSubmit();
+                                        }}
+                                        disabled={submitting || loading}
+                                        startIcon={loading ? <CircularProgress size={16} color="inherit" /> : undefined}
+
+                                    >
+                                        {t("project-settings.save")}
+                                    </Button>
+                                </Box>
                             </Box>
                         </Stack>
                     ) : (
@@ -196,12 +246,12 @@ const ProjectSettingsPage = () => {
                                     {currentProject?.description || "-"}
                                 </Typography>
                             </Stack>
-                            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                            <Box sx={{ display: "flex", justifyContent: "end" }}>
                                 <Button
                                     variant="outlined"
                                     startIcon={<EditOutlinedIcon />}
                                     onClick={() => setIsEditing(true)}
-                                    disabled={!currentProject}
+                                    disabled={!currentProject || loading}
                                 >
                                     {t("project-settings.edit")}
                                 </Button>
@@ -271,9 +321,35 @@ const ProjectSettingsPage = () => {
                 </Box>
 
                 <Divider sx={{ my: 2 }} />
+                <Button
+                    color="error"
+                    variant="outlined"
 
+                    // startIcon={<DeleteOutlineIcon />}
+                    onClick={() => setIsDeleteDialogOpen(true)}
+                    disabled={!currentProject || loading}
+                    startIcon={loading ? <CircularProgress size={16} color="inherit" /> : undefined}
+
+                    sx={{
+                        width: "fit-content",
+                        display: "flex",
+                        justifyContent: "flex-end"
+                    }}
+                >
+                    {t("project-settings.delete-this-project")}
+                </Button>
 
             </Stack>
+            <ConfirmDeleteDialog
+                open={isDeleteDialogOpen}
+                title={t("project-settings.delete-title")}
+                description={t("project-settings.delete-confirm", { name: currentProject?.name ?? "" })}
+                isDeleting={loading}
+                cancelText={t("common.cancel")}
+                confirmText={t("common.delete")}
+                onCancel={() => setIsDeleteDialogOpen(false)}
+                onConfirm={() => void handleDelete()}
+            />
         </SectionLayout>
     );
 };

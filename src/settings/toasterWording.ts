@@ -11,6 +11,7 @@ const toasterWording = {
         update_diagram: "toaster_wording.success.update_diagram",
         delete_load: "toaster_wording.success.delete_load",
         project_update: "toaster_wording.success.project_update",
+        project_delete: "toaster_wording.success.project_delete",
     },
     error: {
         approach_temp_updated: "toaster_wording.error.approach_temp_updated",
@@ -22,6 +23,7 @@ const toasterWording = {
         update_diagram: "toaster_wording.error.update_diagram",
         delete_load: "toaster_wording.error.delete_load",
         project_update: "toaster_wording.error.project_update",
+        project_delete: "toaster_wording.error.project_delete",
     },
 };
 

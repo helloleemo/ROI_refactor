@@ -5,6 +5,7 @@ import { Box, Button, Tooltip } from "@mui/material";
 import { alpha, useTheme } from "@mui/material/styles";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { showToast } from "@/components/ToasterCustom";
 
 interface MappingDatgridProps {
     selectedCategory: string;
@@ -48,6 +49,9 @@ const MappingDatgrid = ({
         return { bg: alpha(base, 0.2), text: base };
     };
 
+    const validateValue = (value: number): boolean => {
+        return typeof value === "number" && !isNaN(value) && value >= 0;
+    };
 
 
     const renderData = () => {
@@ -234,8 +238,18 @@ const MappingDatgrid = ({
             showColumnVerticalBorder
             columnHeaderHeight={40}
             rowHeight={40}
-            processRowUpdate={(updatedRow) => {
+            processRowUpdate={(updatedRow, oldRow) => {
                 if (!diagram) return updatedRow;
+
+                const changedField = Object.keys(updatedRow).find(
+                    (key) => key !== "id" && updatedRow[key] !== oldRow[key]
+                );
+                if (changedField) {
+                    const value = updatedRow[changedField];
+                    if (value === "" || !validateValue(Number(value))) {
+                        throw new Error(t("MappingDiagram.invalid-number"));
+                    }
+                }
 
                 if (selectedCategory === "chw_table") {
 
@@ -265,6 +279,7 @@ const MappingDatgrid = ({
                 }
 
             }}
+            onProcessRowUpdateError={(error: Error) => showToast(error.message, "error")}
         />
     );
 };

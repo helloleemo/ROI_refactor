@@ -5,16 +5,15 @@ import PATHS from "./paths"
 import Index from "../pages/Index"
 import ModelManagement from "@/pages/Models/ModelManagement"
 import CsvList from "@/pages/Models/CsvList"
-import OverviewPage from "@/pages/Overview/OverviewPage";
 import OptimizationListPage from "@/pages/Optimization/OptmizationStrategiesList/OptimizationListPage";
 import LanguageSettings from "@/pages/LanguageSettings/LanguageSettings";
 import NoSidebarLayout from "@/components/layout/NoSidebarLayout";
-import KpiOverview from "@/pages/Overview/KpiOverview/KpiOverview";
-import ProjectSettingsPage from "@/pages/Overview/ProjectSettings/ProjectSettingsPage";
+
 
 // 設備管理
 import EquipmentListPage from "@/pages/EquipmentManagement/EquipmentList/EquipmentListPage";
 import MappingDiagramPage from "@/pages/EquipmentManagement/MappingDiagram/MappingDiagramPage";
+import ProjectSettingsPage from "@/pages/overview/ProjectSettings/ProjectSettingsPage";
 
 const PlaceholderPage = ({ title }: { title: string }) => (
   <Box sx={{ p: 3 }}>
@@ -86,7 +85,7 @@ export const router = createBrowserRouter([
       },
       {
         path: PATHS.overview,
-        element: <OverviewPage />
+        element: <PlaceholderPage title="Overview" />
       },
 
       // 最佳化策略

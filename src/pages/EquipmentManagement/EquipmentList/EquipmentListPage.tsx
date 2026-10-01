@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { useEquipmentParams } from "@/hooks/useEquipmentParams";
 import equipmentService from "@/api/services/equipment";
 import type { EquipementResponse, EquipmentCategory } from "@/api/types/equipment";
-import { Box, Button } from "@mui/material";
+import { Box, Button, CircularProgress } from "@mui/material";
 
 import SectionLayout from "@/components/gridLayout/SectionLayout.tsx"
 import useSearchFilter from "@/hooks/useSearchFilter";
@@ -15,11 +15,13 @@ import SetApproachTempDialog from "./components/SetApproachTempDialog";
 import EquipmentViewDialog from "./components/EquipmentViewDialog";
 import EquipmentEditDialog from "./components/EquipmentEditDialog";
 import toasterWording from "@/settings/toasterWording";
+import useLoading from "@/hooks/useLoading";
 
 
 const EquipmentListPage = () => {
 
     const { t } = useTranslation()
+    const { loading, startLoading, stopLoading } = useLoading();
     const [categories, setCategories] = useState<EquipmentCategory[]>([]);
     const [selectedCategory, setSelectedCategory] = useState("1");
     const [exceptionFields, setExceptionFields] = useState<Record<string, unknown>>({});
@@ -179,12 +181,15 @@ const EquipmentListPage = () => {
                         variant="outlined"
                         onClick={() => openDialog("add")}
                         disabled={!selectedCategoryData}
+                        startIcon={loading ? <CircularProgress size={16} color="inherit" /> : undefined}
+
+
                     >
                         + {t("equipment-list.add")}
                     </Button>
                 </Box>
             </Box>
-            <Box sx={{ flex: 1, minHeight: 0 }}>
+            <Box sx={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
                 {/* {filteredEquipment.map((item) => (
                         <Box key={item.id} sx={{ py: 1, borderBottom: 1, borderColor: "divider" }}>
                             <Typography>{item.equipment_name}</Typography>
@@ -192,13 +197,13 @@ const EquipmentListPage = () => {
                     ))} */}
 
                 {selectedCategory === "5" && (
-                    <Box sx={{ display: "flex", justifyContent: "start", gap: 2, mb: 2 }}>
+                    <Box sx={{ display: "flex", minHeight: 0, justifyContent: "start", gap: 2, mb: 2 }}>
                         <Button
                             variant="outlined"
                             onClick={() => openDialog("setApproachTemp")}
                             disabled={!selectedCategoryData}
                         >
-                            設定趨近溫度
+                            {t("equipment-list.fields5.setting_approach_temp")}
                         </Button>
                     </Box>
                 )}
