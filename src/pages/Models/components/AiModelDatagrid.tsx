@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DataGrid, type GridColDef, type GridPaginationModel } from "@mui/x-data-grid";
-import { ConfirmDeleteDialog, N30x30OptionsDelete, N30x30OptionsEdit, N30x30OptionsEyesclose, N30x30OptionsEyesopen } from "@/components";
+import { ConfirmDeleteDialog, N30x30OptionsDelete, N30x30OptionsEyesopen } from "@/components";
 import { Box, IconButton } from "@mui/material";
 import aiModelService from "@/api/services/aiModel";
 import type { AiModel } from "@/api/types/aiModel";
@@ -17,7 +17,6 @@ const AiModelDatagrid = ({
     rows = [],
     onDeleted,
     onReview,
-    onEdit,
 }: AiModelDataGridProps) => {
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [deletingRow, setDeletingRow] = useState<AiModel | null>(null);
@@ -130,9 +129,11 @@ const AiModelDatagrid = ({
                             onClick={() => handleDeleteClick(row)}
                             size="small"
                             sx={{ p: 0.5 }}
-                            disabled={isDeleting}
+                            // disabled={isDeleting}
+                            disabled={true}
                         >
-                            <N30x30OptionsDelete accentColor="semantic.errorAdaptive" />
+                            {/* <N30x30OptionsDelete accentColor="semantic.errorAdaptive" /> */}
+                            <N30x30OptionsDelete accentColor="grey.200" />
                         </IconButton>
                     </Box>
                 );

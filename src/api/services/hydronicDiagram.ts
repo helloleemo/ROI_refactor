@@ -1,5 +1,5 @@
 import type HydronicDiagram from "../types/hydronicDiagram"
-import { API_ENDPOINTS, GET, POST, PUT } from "../base";
+import { API_ENDPOINTS, GET, PUT } from "../base";
 
 
 export const hydronicDiagramService = {

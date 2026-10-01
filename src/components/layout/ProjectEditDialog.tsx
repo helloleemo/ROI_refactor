@@ -10,7 +10,6 @@ import {
     Typography,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteForeverOutlined";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProjectService } from "@/api/services/project";

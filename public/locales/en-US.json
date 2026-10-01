@@ -241,5 +241,11 @@
             "ct_name": "CT",
             "out_ct": "Out_CT"
         }
+    },
+    "projectCsv": {
+        "title": "Project CSV"
+    },
+    "dataCleaning": {
+        "title": "Data Cleaning"
     }
 }

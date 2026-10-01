@@ -21,7 +21,7 @@ import useLoading from "@/hooks/useLoading";
 const EquipmentListPage = () => {
 
     const { t } = useTranslation()
-    const { loading, startLoading, stopLoading } = useLoading();
+    const { loading } = useLoading();
     const [categories, setCategories] = useState<EquipmentCategory[]>([]);
     const [selectedCategory, setSelectedCategory] = useState("1");
     const [exceptionFields, setExceptionFields] = useState<Record<string, unknown>>({});
@@ -45,7 +45,7 @@ const EquipmentListPage = () => {
         fields: ["equipment_name"],
     });
 
-    const { units, unitQueryKey, unitQueryFn } = useEquipmentParams();
+    const { units } = useEquipmentParams();
 
     // const filteredEquipment = selectedCategory === "冰水主機 (CH)"
     //     ? searchedEquipment

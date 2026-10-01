@@ -1,7 +1,6 @@
 import type { ComponentType } from "react";
 import { N30x30OptionsComment as Comment } from "@/components/icons";
 import type { IconProps } from "@/components/icons/types";
-import { headerTranslationKey } from "./languageTranslationKey";
 
 export interface ProfileMenuItem {
     icon: ComponentType<IconProps>;

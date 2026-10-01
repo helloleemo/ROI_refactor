@@ -241,5 +241,11 @@
             "ct_name": "冷卻塔",
             "out_ct": "Out_CT"
         }
+    },
+    "projectCsv": {
+        "title": "專案CSV"
+    },
+    "dataCleaning": {
+        "title": "數據清洗"
     }
 }

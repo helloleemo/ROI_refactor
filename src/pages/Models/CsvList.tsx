@@ -66,6 +66,7 @@ const CsvList = () => {
                     <Button
                         variant="outlined"
                         onClick={() => setIsUploadOpen(true)}
+                        disabled={true}
                     >
                         + 新增
                     </Button>

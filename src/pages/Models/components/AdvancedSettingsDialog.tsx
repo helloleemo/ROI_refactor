@@ -3,7 +3,6 @@ import { FORMULAS } from "@/settings/formulas";
 import {
     Box,
     Button,
-    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -16,7 +15,6 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import { tagDataService } from "@/api/services";
 import type { ImportFile } from "@/api/types/importFile";
 import N30x30OptionsDelete from "@/components/icons/generated/N30x30OptionsDelete";
 import useFormState from "@/hooks/useFormState";
@@ -45,7 +43,7 @@ const AdvancedSettingsDialog = ({ open, onClose, selectedCsv, onUpdate, csvList,
     } = useFormState<Record<string, never>>({});
 
 
-    const [physicsCsvId, setPhysicsCsvId] = useState<string>("");
+    const [setPhysicsCsvId] = useState<string>("");
     const [selectedFormulaTags, setSelectedFormulaTags] = useState<string[]>([]);
     const [formula, setFormula] = useState<string>("");
     const [constraints, setConstraints] = useState<PhysicsConstraint[]>([]);
@@ -159,7 +157,7 @@ const AdvancedSettingsDialog = ({ open, onClose, selectedCsv, onUpdate, csvList,
                                 size="small"
                                 disabled
                                 value={selectedCsv?.id}
-                                onChange={(event) => setPhysicsCsvId(event.target.value)}
+                                onChange={(event) => setPhysicsCsvId(Number(event.target.value))}
                                 sx={{ mb: 1.25, maxWidth: 320 }}
                             >
 

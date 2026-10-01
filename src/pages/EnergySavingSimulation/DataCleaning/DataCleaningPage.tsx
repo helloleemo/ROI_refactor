@@ -3,8 +3,7 @@ import { Box } from "@mui/material";
 import TitleText from "@/components/TitleText";
 import { useTranslation } from "react-i18next";
 
-export const ProjectCsvPage = () => {
-
+export const DataCleaningPage = () => {
     const { t } = useTranslation();
 
     return (
@@ -15,7 +14,7 @@ export const ProjectCsvPage = () => {
                 alignItems: "center",
                 mb: 1
             }}>
-                <TitleText title={t("projectCsv.title")} />
+                <TitleText title={t("dataCleaning.title")} />
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
                     {/* <SearchBar
                         value={searchValue}

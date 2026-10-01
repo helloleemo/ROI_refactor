@@ -1,5 +1,5 @@
 
-import type { CommonIdType, ModelStatusTypes, StatusTypes, algorithmList } from './shared';
+import type { CommonIdType, ModelStatusTypes, StatusTypes } from './shared';
 
 // create
 type featureConfig = {

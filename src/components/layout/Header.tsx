@@ -28,8 +28,6 @@ import { useThemeMode } from "@/hooks/useThemeMode";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useProject } from "@/contexts/ProjectContext";
 import PATHS from "@/routes/paths";
-import { headerTranslationKey } from "@/settings/languageTranslationKey";
-import { getUiText } from "@/utils/getUiText";
 // import { useUiTextsNested } from "@/hooks/useUiTextsNested";
 
 function ResponsiveAppBar() {

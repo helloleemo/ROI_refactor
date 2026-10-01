@@ -1,4 +1,4 @@
-import { API_ENDPOINTS, DELETE, GET, POST, PUT } from "../base"
+import { API_ENDPOINTS, GET, PUT } from "../base"
 import type { SupportedLocales, SystemSettings } from "../types/systemSettings"
 
 

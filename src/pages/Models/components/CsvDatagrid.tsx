@@ -130,9 +130,12 @@ const CsvDataGrid = ({
                             onClick={() => handleDeleteClick(row)}
                             size="small"
                             sx={{ p: 0.5 }}
-                            disabled={isDeleting}
+                            // disabled={isDeleting}
+                            disabled={true}
+
                         >
-                            <N30x30OptionsDelete accentColor="semantic.errorAdaptive" />
+                            <N30x30OptionsDelete accentColor="grey.200" />
+                            {/* <N30x30OptionsDelete accentColor="semantic.errorAdaptive" /> */}
                         </IconButton>
                     </Box>
                 )

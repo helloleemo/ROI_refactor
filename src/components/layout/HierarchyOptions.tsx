@@ -6,7 +6,6 @@ import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Popover from "@mui/material/Popover";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useNavigate } from "react-router-dom";
@@ -30,7 +29,7 @@ type OptionsRenderProps = {
     showArrow?: boolean;
 };
 
-const OptionsRender = ({ title, options, value, onChange, showArrow = true, onAdd, onEdit }: OptionsRenderProps & { onAdd?: () => void; onEdit?: (projectId: string) => void }) => {
+const OptionsRender = ({ title, options, value, onChange, onAdd, onEdit }: OptionsRenderProps & { onAdd?: () => void; onEdit?: (projectId: string) => void }) => {
     const { t } = useTranslation();
 
     return (

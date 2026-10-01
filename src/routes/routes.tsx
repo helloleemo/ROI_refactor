@@ -14,6 +14,7 @@ import NoSidebarLayout from "@/components/layout/NoSidebarLayout";
 import EquipmentListPage from "@/pages/EquipmentManagement/EquipmentList/EquipmentListPage";
 import MappingDiagramPage from "@/pages/EquipmentManagement/MappingDiagram/MappingDiagramPage";
 import ProjectSettingsPage from "@/pages/overview/ProjectSettings/ProjectSettingsPage";
+import { DataCleaningPage } from "@/pages/EnergySavingSimulation/DataCleaning/DataCleaningPage";
 
 const PlaceholderPage = ({ title }: { title: string }) => (
   <Box sx={{ p: 3 }}>
@@ -63,7 +64,7 @@ export const router = createBrowserRouter([
       },
       {
         path: `${PATHS.energySavingOverview}/${PATHS.dataCleaning}`,
-        element: <PlaceholderPage title="Data Cleaning" />
+        element: <DataCleaningPage />
       },
       {
         path: `${PATHS.energySavingOverview}/${PATHS.mAndVBaseline}`,

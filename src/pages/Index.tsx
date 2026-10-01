@@ -8,7 +8,7 @@ const Index = () => {
     const { invalidProjectId } = useProject();
 
     // project settings
-    const { projectSettings, enabledLocales, supportedLocales } = useLanguage();
+    const { projectSettings } = useLanguage();
     console.log("projectSettings", projectSettings)
 
     return invalidProjectId ? <ProjectNotFound /> : <Layout />;

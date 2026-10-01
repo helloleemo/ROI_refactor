@@ -5,7 +5,6 @@ import { getStoredLanguage, normalizeLanguage } from "@/settings/i18n";
 import { SystemSettingsService } from "@/api/services/systemSettings";
 import type { SupportedLocales, SystemSettings } from "@/api/types/systemSettings";
 import type { ProjectListItem } from "@/api/types/project";
-import { ProjectService } from "@/api/services/project";
 import type { LanguageList } from "@/api/types/shared";
 
 interface LanguageContextValue {

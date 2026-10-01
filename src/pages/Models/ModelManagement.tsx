@@ -22,7 +22,7 @@ const ModelManagement = () => {
     const [algorithmList, setAlgorithmList] = useState<algorithmListResponse[]>([]);
     const [isLoadingAlgorithms, setIsLoadingAlgorithms] = useState(false);
     const [reviewErrorMessage, setReviewErrorMessage] = useState("");
-    const { open, setOpen, openDialog, closeDialog, handleOpen, handleClose, } = useOpenDialog({
+    const { open, openDialog, closeDialog } = useOpenDialog({
         create: false,
     });
 
@@ -104,6 +104,7 @@ const ModelManagement = () => {
                         <Button
                             variant="outlined"
                             onClick={() => handleAddDialog("create")}
+                            disabled={true}
                         >
                             + 新增
                         </Button>

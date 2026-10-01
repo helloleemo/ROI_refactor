@@ -6,7 +6,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { forwardRef, type ReactElement, type Ref } from 'react';
 import { useTranslation } from 'react-i18next';
-import Slide, { type SlideProps } from '@mui/material/Slide';
+import Slide from '@mui/material/Slide';
 import { type TransitionProps } from '@mui/material/transitions';
 
 

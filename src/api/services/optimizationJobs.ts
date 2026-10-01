@@ -2,7 +2,6 @@ import { GET, POST } from "../base";
 import { API_ENDPOINTS } from "../base/apiEndpoint";
 import type {
     CreateOptimizationJobCreateRequest,
-    CreateOptimizationJobReExecuteRequest,
     OptimizationJobInfoResponse,
     OptimizationJobListResponse,
     ReExecuteOptimizationJobResponse,

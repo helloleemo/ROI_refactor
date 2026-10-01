@@ -3,7 +3,7 @@ import { DataGrid, GridRemoveIcon, useGridApiRef } from "@mui/x-data-grid";
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Button, Tooltip } from "@mui/material";
 import { alpha, useTheme } from "@mui/material/styles";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { showToast } from "@/components/ToasterCustom";
 

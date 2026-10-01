@@ -6,7 +6,7 @@ import type { DatasetType } from "@/api/types/shared";
 
 
 const importFileService = {
-    getList: async (query: { upload_type: DatasetType | null }) => {
+    getList: async (query?: { upload_type: DatasetType | null }) => {
         return GET<ImportFile[]>({
             endpoint: API_ENDPOINTS.IMPORT_FILE.LIST,
             query,

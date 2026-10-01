@@ -2,7 +2,7 @@
 import { equipmentDataKeys } from "@/api/queryKeys";
 import { evalSettingService } from "@/api/services/evelSetting";
 import type EvalSetting from "@/api/types/evalSetting";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 
 export function useEquipmentParams() {
