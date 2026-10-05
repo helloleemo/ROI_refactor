@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { DataGrid, type GridColDef, type GridPaginationModel } from "@mui/x-data-grid";
 import { Box, IconButton } from "@mui/material";
-import { ConfirmDeleteDialog, N30x30OptionsDelete, N30x30OptionsEdit } from "@/components";
+import { ConfirmDeleteDialog, DataGridNoRowsOverlay, N30x30OptionsDelete, N30x30OptionsEdit } from "@/components";
 import equipmentService from "@/api/services/equipment";
 import type { EquipementResponse } from "@/api/types/equipment";
 
 type EquipmentDatagridProps = {
     rows?: EquipementResponse[];
+    loading?: boolean;
     onDeleted?: () => Promise<void> | void;
     onEdit?: (row: EquipementResponse) => void;
 };
 
-const EquipmentDatagrid = ({ rows = [], onDeleted, onEdit }: EquipmentDatagridProps) => {
+const EquipmentDatagrid = ({ rows = [], loading = false, onDeleted, onEdit }: EquipmentDatagridProps) => {
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [deletingRow, setDeletingRow] = useState<EquipementResponse | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -30,6 +31,8 @@ const EquipmentDatagrid = ({ rows = [], onDeleted, onEdit }: EquipmentDatagridPr
         setDeletingRow(null);
         setIsDeleteOpen(false);
     };
+
+
 
     const handleDeleteConfirm = async () => {
         if (!deletingRow) return;
@@ -118,6 +121,14 @@ const EquipmentDatagrid = ({ rows = [], onDeleted, onEdit }: EquipmentDatagridPr
                     disableRowSelectionOnClick
                     showCellVerticalBorder
                     showColumnVerticalBorder
+                    loading={loading}
+                    slots={{ noRowsOverlay: DataGridNoRowsOverlay }}
+                    slotProps={{
+                        loadingOverlay: {
+                            variant: "circular-progress",
+                            noRowsVariant: "circular-progress",
+                        },
+                    }}
                 />
             </Box>
 

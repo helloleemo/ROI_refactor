@@ -2,6 +2,7 @@ import type { CommonIdType, StatusTypes, DatasetType } from "./shared";
 
 interface ImportFile {
     id: CommonIdType
+    project_id: CommonIdType
     name: string
     file_name: string
     tags: string
@@ -14,3 +15,4 @@ interface ImportFile {
 }
 
 export type { ImportFile };
+

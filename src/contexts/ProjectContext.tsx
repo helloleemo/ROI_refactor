@@ -1,6 +1,8 @@
 import type { ProjectListItem } from "@/api/types/project";
 import { createContext, useState, useEffect, useContext } from "react";
+import { Box, CircularProgress } from "@mui/material";
 import { ProjectService } from "@/api/services/project";
+import useLoading from "@/hooks/useLoading";
 
 interface ProjectContextValue {
     projects: ProjectListItem[];
@@ -17,7 +19,12 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
     const [projects, setProjects] = useState<ProjectListItem[]>([]);
     const [currentProject, setCurrentProjectState] = useState<ProjectListItem>();
     const [invalidProjectId, setInvalidProjectId] = useState<string>();
-    const [isReady, setIsReady] = useState(false);
+    const [initialized, setInitialized] = useState(false);
+    const {
+        isLoading,
+        startLoading,
+        stopLoading
+    } = useLoading()
 
     const setCurrentProject = (project: ProjectListItem) => {
         setCurrentProjectState(project);
@@ -31,9 +38,10 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
     };
 
     const loadProjects = async () => {
+        startLoading("project");
         try {
             const allProjects = await ProjectService.GET();
-            console.log("All projects loaded:", allProjects);
+            // console.log("All projects loaded:", allProjects);
             setProjects(allProjects);
 
             if (allProjects.length === 0) {
@@ -65,7 +73,8 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
             return [];
         }
         finally {
-            setIsReady(true);
+            stopLoading("project");
+            setInitialized(true);
         }
     };
 
@@ -78,10 +87,22 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
         void loadProjects();
     }, []);
 
+    const showLoading = !initialized || isLoading("project");
 
     return (
         <ProjectContext.Provider value={{ projects, currentProject, invalidProjectId, setCurrentProject, refreshProjects }}>
-            {isReady ? children : null}
+            {showLoading ? (
+                <Box
+                    sx={{
+                        minHeight: "100vh",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    <CircularProgress />
+                </Box>
+            ) : children}
         </ProjectContext.Provider>
     );
 }

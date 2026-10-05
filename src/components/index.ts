@@ -12,3 +12,4 @@ export { default as ConfirmDeleteDialog } from './ConfirmDeleteDialog';
 export { default as ConfirmActionDialog } from './ConfirmActionDialog';
 export { default as ToasterCustom, showToast } from './ToasterCustom';
 export { default as BooleanChip } from './BooleanChip';
+export { default as DataGridNoRowsOverlay } from './DataGridNoRowsOverlay';

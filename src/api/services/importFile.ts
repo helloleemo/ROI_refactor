@@ -21,6 +21,7 @@ const importFileService = {
             endpoint: API_ENDPOINTS.IMPORT_FILE.UPLOAD,
             body: formData
         });
+
     },
     deleteFile: async (upload_id: string) => {
         return DELETE({

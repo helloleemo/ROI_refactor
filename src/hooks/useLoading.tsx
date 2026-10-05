@@ -6,6 +6,9 @@ const DEFAULT_KEY = "default";
 
 const useLoading = <K extends string = string>() => {
     const [loadingMap, setLoadingMap] = useState<Record<string, boolean>>({});
+    const [error, setError] = useState<boolean>(false);
+    const [isSaving, setIsSaving] = useState<boolean>(false);
+
 
     const setLoading = useCallback((value: boolean, key: string = DEFAULT_KEY) => {
         setLoadingMap((prev) => {
@@ -14,9 +17,14 @@ const useLoading = <K extends string = string>() => {
         });
     }, []);
 
-    const startLoading = useCallback((key?: K) => setLoading(true, key), [setLoading]);
-    const stopLoading = useCallback((key?: K) => setLoading(false, key), [setLoading]);
-    const isLoading = useCallback((key?: K) => Boolean(loadingMap[key ?? DEFAULT_KEY]), [loadingMap]);
+    const startLoading = useCallback((key?: K) =>
+        setLoading(true, key), [setLoading]);
+
+    const stopLoading = useCallback((key?: K) =>
+        setLoading(false, key), [setLoading]);
+
+    const isLoading = useCallback((key?: K) =>
+        Boolean(loadingMap[key ?? DEFAULT_KEY]), [loadingMap]);
 
     const loading = Boolean(loadingMap[DEFAULT_KEY]);
     const anyLoading = Object.values(loadingMap).some(Boolean);
@@ -25,9 +33,12 @@ const useLoading = <K extends string = string>() => {
         loading,
         anyLoading,
         isLoading,
-        setLoading,
         startLoading,
-        stopLoading
+        stopLoading,
+        error,
+        setError,
+        isSaving,
+        setIsSaving
     };
 };
 

@@ -5,13 +5,15 @@ import ProjectNotFound from "./ProjectNotFound";
 
 
 const Index = () => {
-    const { invalidProjectId } = useProject();
+    const { invalidProjectId, projects } = useProject();
 
     // project settings
     const { projectSettings } = useLanguage();
     console.log("projectSettings", projectSettings)
 
-    return invalidProjectId ? <ProjectNotFound /> : <Layout />;
+    const hasNoProjects = projects.length === 0;
+
+    return invalidProjectId || hasNoProjects ? <ProjectNotFound /> : <Layout />;
 }
 
 export default Index

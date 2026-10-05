@@ -6,6 +6,7 @@ import { alpha, useTheme } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { showToast } from "@/components/ToasterCustom";
+import { DataGridNoRowsOverlay } from "@/components";
 
 interface MappingDatgridProps {
     selectedCategory: string;
@@ -15,6 +16,7 @@ interface MappingDatgridProps {
         raw_nodes: Record<string, number[]>;
         num_load: number;
     };
+    loading?: boolean;
     onClickAddLoad: () => void;
     onClickDeleteLoad: () => void;
     onUpdateDiagram: (diagram: {
@@ -28,6 +30,7 @@ interface MappingDatgridProps {
 const MappingDatgrid = ({
     selectedCategory,
     diagram,
+    loading = false,
     onClickAddLoad,
     onClickDeleteLoad,
     onUpdateDiagram,
@@ -238,6 +241,14 @@ const MappingDatgrid = ({
             showColumnVerticalBorder
             columnHeaderHeight={40}
             rowHeight={40}
+            loading={loading}
+            slots={{ noRowsOverlay: DataGridNoRowsOverlay }}
+            slotProps={{
+                loadingOverlay: {
+                    variant: "circular-progress",
+                    noRowsVariant: "circular-progress",
+                },
+            }}
             processRowUpdate={(updatedRow, oldRow) => {
                 if (!diagram) return updatedRow;
 

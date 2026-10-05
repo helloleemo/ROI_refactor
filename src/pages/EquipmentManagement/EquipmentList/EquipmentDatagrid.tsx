@@ -6,6 +6,7 @@ import { useState } from "react";
 import {
     BooleanChip,
     ConfirmDeleteDialog,
+    DataGridNoRowsOverlay,
     N30x30OptionsCopy,
     N30x30OptionsDelete,
     N30x30OptionsEdit,
@@ -19,6 +20,7 @@ interface EquipmentDatagridProps {
     selectedCategory: string;
     renderFields: EquipmentField[];
     equipmentList: EquipementResponse[];
+    loading?: boolean;
     onView?: (row: EquipementResponse) => void;
     onEdit?: (row: EquipementResponse) => void;
     onCopy?: (row: EquipementResponse) => void;
@@ -43,6 +45,7 @@ const EquipmentDatagrid = ({
     selectedCategory,
     renderFields,
     equipmentList,
+    loading = false,
     onView,
     onEdit,
     onCopy,
@@ -209,6 +212,14 @@ const EquipmentDatagrid = ({
                     disableRowSelectionOnClick
                     showCellVerticalBorder
                     showColumnVerticalBorder
+                    loading={loading}
+                    slots={{ noRowsOverlay: DataGridNoRowsOverlay }}
+                    slotProps={{
+                        loadingOverlay: {
+                            variant: "circular-progress",
+                            noRowsVariant: "circular-progress",
+                        },
+                    }}
                 // getRowHeight={() => "auto"}
                 />
             </Box>

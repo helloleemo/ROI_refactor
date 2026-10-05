@@ -26,7 +26,7 @@ const tabs = [{
 const MappingDiagramPage = () => {
     const { t } = useTranslation();
     // const [categories, setCategories] = useState([]);
-    const { loading, startLoading, stopLoading } = useLoading();
+    const { isLoading, startLoading, stopLoading, error, setError, isSaving, setIsSaving } = useLoading();
     const [isNodeEditMode, setIsNodeEditMode] = useState(false);
     const [notice, setNotice] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("chw_table");
@@ -43,12 +43,17 @@ const MappingDiagramPage = () => {
     // });
 
     const getDiagram = async () => {
-        const data = await hydronicDiagramService.get();
-        setDiagram(data);
-
-        // console.log("diagram", diagram);
-        // console.log("diagram?.chw_table", diagram?.chw_table)
-        // console.log(diagram)
+        startLoading("diagram");
+        try {
+            const data = await hydronicDiagramService.get();
+            setDiagram(data);
+        } catch (error) {
+            console.error("Failed to get diagram:", error);
+            setDiagram(undefined);
+            setError(true);
+        } finally {
+            stopLoading("diagram");
+        }
     }
 
     const handleSelecteChange = (value: string) => {
@@ -57,12 +62,13 @@ const MappingDiagramPage = () => {
 
     const handleSave = async () => {
         console.log("Saving:", diagram);
+        if (!diagram || isSaving) return;
         setNotice("");
 
         const payload = { ...diagram };
-        if (!diagram) return;
 
         startLoading();
+        setIsSaving(true);
 
         if (selectedCategory === "chw_table") {
             try {
@@ -76,6 +82,7 @@ const MappingDiagramPage = () => {
                 showToast(`${t(toasterWording.error.update_diagram)}: ${error}`, "error");
             } finally {
                 stopLoading();
+                setIsSaving(false);
             }
         } else if (selectedCategory === "cw_table") {
             try {
@@ -89,6 +96,7 @@ const MappingDiagramPage = () => {
                 showToast(t(toasterWording.error.update_diagram), "error");
             } finally {
                 stopLoading();
+                setIsSaving(false);
             }
         }
 
@@ -154,7 +162,7 @@ const MappingDiagramPage = () => {
                 prev.chw_table.splice(sequenceNum, 1);
             }
 
-            console.log("Delete load:", clearedRow);
+            // console.log("Delete load:", clearedRow);
 
 
             showToast(t(toasterWording.success.delete_load), "info");
@@ -238,10 +246,13 @@ const MappingDiagramPage = () => {
                     </Button>
 
                     <Button
+                        sx={{
+                            whiteSpace: "nowrap",
+                        }}
                         variant="outlined"
                         onClick={handleSave}
-                        disabled={loading}
-                        startIcon={loading ? <CircularProgress size={16} color="inherit" /> : undefined}
+                        disabled={isLoading("diagram") || error}
+                        startIcon={isLoading("diagram") || isSaving ? <CircularProgress size={16} color="inherit" /> : undefined}
                     >
                         {t("MappingDiagram.buttons.save_after_update")}
                     </Button>
@@ -262,6 +273,7 @@ const MappingDiagramPage = () => {
                             <MappingDatgrid
                                 selectedCategory={selectedCategory}
                                 diagram={diagram}
+                                loading={isLoading("diagram")}
                                 onClickAddLoad={handleAddLoad}
                                 onClickDeleteLoad={handleDeleteLoad}
                                 onUpdateDiagram={handleUpdateDiagram}

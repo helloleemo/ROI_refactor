@@ -13,7 +13,8 @@
         "view": "View",
         "copy": "Copy",
         "edit": "Edit",
-        "name": "Name"
+        "name": "Name",
+        "no_data": "No results found"
     },
     "project": {
         "edit_project": "Edit Project",
@@ -23,7 +24,11 @@
         "create": "Create",
         "creating": "Creating...",
         "name_required": "Please enter a project name",
-        "create_failed": "Failed to create project. Please try again later."
+        "create_failed": "Failed to create project. Please try again later.",
+        "not_found_title": "Project Not Found",
+        "not_found_invalid": "Project does not exist or is unavailable.",
+        "not_found_empty": "There are no available projects.",
+        "back_to_home": "Back to Home"
     },
     "toaster_wording": {
         "success": {
@@ -243,7 +248,24 @@
         }
     },
     "projectCsv": {
-        "title": "Project CSV"
+        "title": "Project CSV",
+        "tags": "Tags",
+        "description": "No file uploaded yet",
+        "basic_info": "Basic Info",
+        "field_browse": "Field Browser",
+        "file_name": "File Name",
+        "field_count": "Field Count",
+        "field_count_value": "{{count}} columns",
+        "row_count": "Row Count",
+        "row_count_value": "{{count}} rows",
+        "status": "Status",
+        "file_type": "File Type",
+        "status_uploading": "Uploading",
+        "status_success": "Success",
+        "status_failed": "Failed",
+        "status_unknown": "Unknown",
+        "column_no": "No.",
+        "column_tags": "Tags"
     },
     "dataCleaning": {
         "title": "Data Cleaning"

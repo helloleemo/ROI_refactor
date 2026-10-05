@@ -75,11 +75,12 @@ type TranslationResponse = {
 };
 
 
-// 依資料集類型篩選: 1=訓練集, 2=測試集, 3=驗證集
-const DatasetTypeNum = {
+// 依資料集類型篩選: 1=訓練集, 2=測試集, 3=驗證集, 4=模擬評估
+export const DatasetTypeNum = {
     TRAINING: 1,
     TEST: 2,
-    VALIDATION: 3
+    VALIDATION: 3,
+    SIMULATION: 4
 } as const;
 
 type DatasetType = typeof DatasetTypeNum[keyof typeof DatasetTypeNum];
@@ -87,7 +88,8 @@ type DatasetType = typeof DatasetTypeNum[keyof typeof DatasetTypeNum];
 export const DatasetTypeText = {
     1: "TRAINING",
     2: "TEST",
-    3: "VALIDATION"
+    3: "VALIDATION",
+    4: "SIMULATION"
 } as const;
 
 const languageList = {

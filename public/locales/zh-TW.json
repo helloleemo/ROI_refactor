@@ -13,7 +13,8 @@
         "view": "檢視",
         "copy": "複製",
         "edit": "編輯",
-        "name": "名稱"
+        "name": "名稱",
+        "no_data": "查無資料"
     },
     "project": {
         "edit_project": "編輯專案",
@@ -23,7 +24,11 @@
         "create": "建立",
         "creating": "建立中...",
         "name_required": "請輸入專案名稱",
-        "create_failed": "建立專案失敗，請稍後再試"
+        "create_failed": "建立專案失敗，請稍後再試",
+        "not_found_title": "找不到專案",
+        "not_found_invalid": "專案不存在或無法使用。",
+        "not_found_empty": "目前沒有任何可用的專案。",
+        "back_to_home": "回到首頁"
     },
     "toaster_wording": {
         "success": {
@@ -243,7 +248,24 @@
         }
     },
     "projectCsv": {
-        "title": "專案CSV"
+        "title": "專案CSV",
+        "tags": "標籤",
+        "description": "尚未上傳檔案",
+        "basic_info": "基本資訊",
+        "field_browse": "欄位瀏覽",
+        "file_name": "檔名",
+        "field_count": "欄位數",
+        "field_count_value": "{{count}} 欄",
+        "row_count": "行數",
+        "row_count_value": "{{count}} 筆",
+        "status": "狀態",
+        "file_type": "檔案類型",
+        "status_uploading": "上傳中",
+        "status_success": "成功",
+        "status_failed": "失敗",
+        "status_unknown": "未知",
+        "column_no": "序號",
+        "column_tags": "點位"
     },
     "dataCleaning": {
         "title": "數據清洗"

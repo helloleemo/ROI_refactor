@@ -9,3 +9,9 @@ export const equipmentDataKeys = {
         ["unit", unit_category] as const,
 }
 
+export const projectKeys = {
+    byId: (projectId: string) => {
+        return ["project", projectId] as const;
+    }
+}
+

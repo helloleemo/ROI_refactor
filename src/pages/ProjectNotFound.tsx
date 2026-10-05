@@ -1,10 +1,13 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useProject } from "@/contexts/ProjectContext";
 
 const ProjectNotFound = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const { invalidProjectId, projects, setCurrentProject } = useProject();
+    // const hasProjects = projects.length > 0;
 
     const handleGoHome = () => {
         const firstProject = projects[0];
@@ -31,13 +34,17 @@ const ProjectNotFound = () => {
                 textAlign: "center",
             }}
         >
-            <Typography variant="h4">找不到專案</Typography>
+            <Typography variant="h4">{t("project.not_found_title")}</Typography>
             <Typography color="text.secondary">
-                Project ID「{invalidProjectId}」不存在或無法使用。
+                {invalidProjectId
+                    ? t("project.not_found_invalid", { projectId: invalidProjectId })
+                    : t("project.not_found_empty")}
             </Typography>
+
             <Button variant="contained" onClick={handleGoHome}>
-                回到首頁
+                {t("project.back_to_home")}
             </Button>
+
         </Box>
     );
 };

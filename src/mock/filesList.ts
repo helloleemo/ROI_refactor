@@ -3,6 +3,7 @@ import type { ImportFile } from "@/api/types";
 export const fileListMock: ImportFile[] = [
     {
         "id": 20,
+        "project_id": 1,
         "name": "NCHU07-double-no_support",
         "file_name": "NCHU07-double-no_support.csv",
         "tags": "MEP_NCH07_RUN,MEP_NCHU07_NCHW_TR,MEP_NCHU07_Temp1,MEP_NCHU07_1CWF,MEP_NCHU07_RT,MEP_NCHU07_LOAD,MEP_NCHU07_RT_SP,MEP_NCHU07_E1,MEP_NCHU07A_KW,MEP_NCHU07B_KW,NCHU07_total_power,A/B,MEP_NCHU07_COP,MEP_Outside_Temp,MEP_Outside_Humi,MEP_NCT_Win_Temp,MEP_NCT_Wout_Temp,A,B,total",
@@ -15,6 +16,7 @@ export const fileListMock: ImportFile[] = [
     },
     {
         "id": 17,
+        "project_id": 2,
         "name": "NCHU07-single-no_support2",
         "file_name": "NCHU07-single-no_support2.csv",
         "tags": "MEP_NCH07_RUN,MEP_NCHU07_NCHW_TR,MEP_NCHU07_Temp1,MEP_NCHU07_1CWF,MEP_NCHU07_RT,MEP_NCHU07_LOAD,MEP_NCHU07_RT_SP,MEP_NCHU07_E1,MEP_NCHU07A_KW,MEP_NCHU07B_KW,NCHU07_total_power,A/B,MEP_NCHU07_COP,MEP_Outside_Temp,MEP_Outside_Humi,MEP_NCT_Win_Temp,MEP_NCT_Wout_Temp,A,B,total",
@@ -28,6 +30,7 @@ export const fileListMock: ImportFile[] = [
     },
     {
         "id": 10,
+        "project_id": 3,
         "name": "NCHU06-double-no_support",
         "file_name": "NCHU06-double-no_support.csv",
         "tags": "MEP_NCH06_RUN,MEP_NCHU06_NCHW_TR,MEP_NCHU06_Temp1,MEP_NCHU06_1CWF,MEP_NCHU06_RT,MEP_NCHU06_LOAD,MEP_NCHU06_RT_SP,MEP_NCHU06_E1,MEP_NCHU06A_KW,MEP_NCHU06B_KW,NCHU06_total_power,A/B,MEP_NCHU06_COP,3AN6_NCHU06_RANK,3AN9_NCHU06_RANK,MEP_Outside_Temp,MEP_Outside_Humi,MEP_NCT_Win_Temp,MEP_NCT_Wout_Temp,A,B,Total",
@@ -41,6 +44,7 @@ export const fileListMock: ImportFile[] = [
     },
     {
         "id": 9,
+        "project_id": 4,
         "name": "NCHU06-single-no_support",
         "file_name": "NCHU06-single-no_support.csv",
         "tags": "MEP_NCH06_RUN,MEP_NCHU06_NCHW_TR,MEP_NCHU06_Temp1,MEP_NCHU06_1CWF,MEP_NCHU06_RT,MEP_NCHU06_LOAD,MEP_NCHU06_RT_SP,MEP_NCHU06_E1,MEP_NCHU06A_KW,MEP_NCHU06B_KW,NCHU06_total_power,A/B,MEP_NCHU06_COP,3AN6_NCHU06_RANK,3AN9_NCHU06_RANK,MEP_Outside_Temp,MEP_Outside_Humi,MEP_NCT_Win_Temp,MEP_NCT_Wout_Temp,MEP_FT9122_F_MAU,A,B,Total",
@@ -54,6 +58,7 @@ export const fileListMock: ImportFile[] = [
     },
     {
         "id": 8,
+        "project_id": 5,
         "name": "NCHU05-double-no_support",
         "file_name": "NCHU05-double-no_support.csv",
         "tags": "MEP_NCH05_RUN,MEP_NCHU05_NCHW_TR,MEP_NCHU05_Temp1,MEP_NCHU05_1CWF,MEP_NCHU05_RT,MEP_NCHU05_LOAD,MEP_NCHU05_RT_SP,MEP_NCHU05_E1,MEP_NCHU05A_KW,MEP_NCHU05B_KW,NCHU05_total_power,A/B,MEP_NCHU05_COP,MEP_Outside_Temp,MEP_Outside_Humi,MEP_NCT_Win_Temp,MEP_NCT_Wout_Temp,MEP_FT9122_F_MAU,A,B,total",
@@ -67,6 +72,7 @@ export const fileListMock: ImportFile[] = [
     },
     {
         "id": 7,
+        "project_id": 6,
         "name": "NCHU05-single-no_support",
         "file_name": "NCHU05-single-no_support.csv",
         "tags": "MEP_NCH05_RUN,MEP_NCHU05_NCHW_TR,MEP_NCHU05_Temp1,MEP_NCHU05_1CWF,MEP_NCHU05_RT,MEP_NCHU05_LOAD,MEP_NCHU05_RT_SP,MEP_NCHU05_E1,MEP_NCHU05A_KW,MEP_NCHU05B_KW,NCHU05_total_power,A/B,MEP_NCHU05_COP,MEP_Outside_Temp,MEP_Outside_Humi,MEP_NCT_Win_Temp,MEP_NCT_Wout_Temp,MEP_FT9122_F_MAU,A,B,total",
@@ -80,6 +86,7 @@ export const fileListMock: ImportFile[] = [
     },
     {
         "id": 6,
+        "project_id": 7,
         "name": "NCHU03-double-no_support",
         "file_name": "NCHU03-double-no_support.csv",
         "tags": "MEP_NCH03_RUN,MEP_NCHU03_NCHW_TR,MEP_NCHU03_Temp1,MEP_NCHU03_1CWF,MEP_NCHU03_RT,MEP_NCHU03_LOAD,MEP_NCHU03_RT_SP,MEP_NCHU03_E1,MEP_NCHU03A_KW,MEP_NCHU03B_KW,A/B,NCHU03_total_power,MEP_NCHU03_COP,MEP_Outside_Temp,MEP_Outside_Humi,MEP_NCT_Win_Temp,MEP_NCT_Wout_Temp,MEP_FT9122_F_MAU,A,B,total",
@@ -93,6 +100,7 @@ export const fileListMock: ImportFile[] = [
     },
     {
         "id": 5,
+        "project_id": 8,
         "name": "NCHU03-single-no_support",
         "file_name": "NCHU03-single-no_support.csv",
         "tags": "MEP_NCH03_RUN,MEP_NCHU03_NCHW_TR,MEP_NCHU03_Temp1,MEP_NCHU03_1CWF,MEP_NCHU03_RT,MEP_NCHU03_LOAD,MEP_NCHU03_RT_SP,MEP_NCHU03_E1,MEP_NCHU03A_KW,MEP_NCHU03B_KW,A/B,NCHU03_total_power,MEP_NCHU03_COP,MEP_Outside_Temp,MEP_Outside_Humi,MEP_NCT_Win_Temp,MEP_NCT_Wout_Temp,MEP_FT9122_F_MAU,A,B,total",
@@ -106,6 +114,7 @@ export const fileListMock: ImportFile[] = [
     },
     {
         "id": 4,
+        "project_id": 9,
         "name": "NCHU02-double-no_support",
         "file_name": "NCHU02-double-no_support.csv",
         "tags": "MEP_NCH02_RUN,MEP_NCHU02_NCHW_TR,MEP_NCHU02_Temp1,MEP_NCHU02_1CWF,MEP_NCHU02_RT,MEP_NCHU02_LOAD,MEP_NCHU02_RT_SP,MEP_NCHU02_E1,MEP_NCHU02A_KW,MEP_NCHU02B_KW,NCHU02_total_power,MEP_NCHU02_COP,MEP_Outside_Temp,MEP_Outside_Humi,MEP_NCT_Win_Temp,MEP_NCT_Wout_Temp,MEP_FT9122_F_MAU,MEP_FT9222_F,A,B,Total,MEP_NP9502_HZ,MEP_NP9502_KW",
@@ -119,6 +128,7 @@ export const fileListMock: ImportFile[] = [
     },
     {
         "id": 3,
+        "project_id": 10,
         "name": "NCHU02-single-no_support",
         "file_name": "NCHU02-single-no_support.csv",
         "tags": "MEP_NCH02_RUN,MEP_NCHU02_NCHW_TR,MEP_NCHU02_Temp1,MEP_NCHU02_1CWF,MEP_NCHU02_RT,MEP_NCHU02_LOAD,MEP_NCHU02_RT_SP,MEP_NCHU02_E1,MEP_NCHU02A_KW,MEP_NCHU02B_KW,NCHU02_total_power,MEP_NCHU02_COP,MEP_Outside_Temp,MEP_Outside_Humi,MEP_NCT_Win_Temp,MEP_NCT_Wout_Temp,MEP_FT9122_F_MAU,MEP_FT9222_F,A,B,Total,MEP_NP9502_HZ,MEP_NP9502_KW",
@@ -132,6 +142,7 @@ export const fileListMock: ImportFile[] = [
     },
     {
         "id": 2,
+        "project_id": 11,
         "name": "NCHU01-double-no_support",
         "file_name": "NCHU01-double-no_support.csv",
         "tags": "MEP_NCHU01_NCHW_TR,MEP_NCHU01_Temp1,MEP_NCHU01_1CWF,MEP_NCHU01_RT,MEP_NCHU01_LOAD,MEP_NCHU01A_KW,MEP_NCHU01B_KW,A,B,Total,NCHU01_total_power,MEP_NCHU01_COP,total_CHW_out_temp,6C_total_CHW_re_temp,MEP_Outside_Temp,MEP_Outside_Humi,MEP_NCT_Win_Temp,MEP_NCT_Wout_Temp,MAU_FLOW,MEP_FT9222_F,MEP_NCT_TotalFlow_6C",
@@ -145,6 +156,7 @@ export const fileListMock: ImportFile[] = [
     },
     {
         "id": 1,
+        "project_id": 12,
         "name": "NCHU01-single-no_support",
         "file_name": "NCHU01-single-no_support.csv",
         "tags": "MEP_NCHU01_NCHW_TR,MEP_NCHU01_Temp1,MEP_NCHU01_1CWF,MEP_NCHU01_RT,MEP_NCHU01_LOAD,MEP_NCHU01A_KW,MEP_NCHU01B_KW,A,B,Total,NCHU01_total_power,MEP_NCHU01_COP,total_CHW_out_temp,6C_total_CHW_re_temp,MEP_Outside_Temp,MEP_Outside_Humi,MEP_NCT_Win_Temp,MEP_NCT_Wout_Temp,MAU_FLOW,MEP_FT9222_F,MEP_NCT_TotalFlow_6C",

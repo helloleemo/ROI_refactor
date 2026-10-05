@@ -21,7 +21,7 @@ import useLoading from "@/hooks/useLoading";
 const EquipmentListPage = () => {
 
     const { t } = useTranslation()
-    const { loading } = useLoading();
+    const { loading, startLoading, stopLoading } = useLoading();
     const [categories, setCategories] = useState<EquipmentCategory[]>([]);
     const [selectedCategory, setSelectedCategory] = useState("1");
     const [exceptionFields, setExceptionFields] = useState<Record<string, unknown>>({});
@@ -57,11 +57,19 @@ const EquipmentListPage = () => {
     };
 
     const getEquipmentData = async (categoryValue: string) => {
-        const equipmentData = await equipmentService.getList({
-            equipment_type: Number(categoryValue),
-        });
+        startLoading();
+        try {
+            const equipmentData = await equipmentService.getList({
+                equipment_type: Number(categoryValue),
+            });
 
-        setEquipmentList(equipmentData);
+            setEquipmentList(equipmentData);
+        } catch (error) {
+            console.error("Failed to get equipment list:", error);
+            setEquipmentList([]);
+        } finally {
+            stopLoading();
+        }
     };
     const handleSelectedCategoryChange = (value: string) => {
         setSelectedCategory(value);
@@ -178,9 +186,12 @@ const EquipmentListPage = () => {
                         sx={{ width: 280 }}
                     />
                     <Button
+                        sx={{
+                            whiteSpace: "nowrap"
+                        }}
                         variant="outlined"
                         onClick={() => openDialog("add")}
-                        disabled={!selectedCategoryData}
+                        disabled={!selectedCategoryData || loading}
                         startIcon={loading ? <CircularProgress size={16} color="inherit" /> : undefined}
 
 
@@ -211,6 +222,7 @@ const EquipmentListPage = () => {
                     selectedCategory={selectedCategory}
                     renderFields={renderedFields}
                     equipmentList={searchedEquipment}
+                    loading={loading}
                     onView={(equipment) => {
                         setSelectedEquipment(equipment);
                         openDialog("view");
