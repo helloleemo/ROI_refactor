@@ -1,6 +1,6 @@
 
 import { getBearerToken, buildApiUrl, getCurrentProjectId, getCurrentLanguage } from "./helpers";
-import type { GetParams, PostParams, PutParams, DeleteParams, ApiResponse } from "./types";
+import type { GetParams, PostParams, PutParams, DeleteParams, ApiResponse, PatchParams } from "./types";
 
 const formatApiError = (payload: any): string => {
     if (!payload) return "An error occurred";
@@ -178,6 +178,19 @@ const PUT = async<T>({ endpoint, body, query }: PutParams) => {
     return handleResponse<T>(response);
 }
 
+const PATCH = async<T>({ endpoint, body, query }: PatchParams) => {
+    const url = buildApiUrl(endpoint, query);
+    const headers = createHeaders();
+
+    const response = await fetch(url, {
+        method: "PATCH",
+        headers,
+        body: body ? JSON.stringify(body) : undefined,
+    });
+
+    return handleResponse<T>(response);
+}
+
 // DELETE
 const DELETE = async<T>({ endpoint, query }: DeleteParams) => {
     const url = buildApiUrl(endpoint, query);
@@ -191,4 +204,4 @@ const DELETE = async<T>({ endpoint, query }: DeleteParams) => {
     return handleResponse<T>(response);
 }
 
-export { GET, GET_FILE, POST, PUT, DELETE }
+export { GET, GET_FILE, POST, PUT, DELETE, PATCH }

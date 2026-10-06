@@ -103,6 +103,13 @@ export const API_ENDPOINTS = {
     // Hydronic Diagram
     HYDRONIC_DIAGRAM: {
         HYDRONIC_DIAGRAM: "hydronic-diagram",
+    },
+
+    // Tag mapping
+    TAG_MAPPING: {
+        TAG_MAPPING: "tag-mapping",
+        TAG_MAPPING_CELL_UPDATE: "tag-mapping/cell-update",
+        TAG_MAPPING_CALCULATE: "tag-mapping/calculate"
     }
 
 }

@@ -23,9 +23,15 @@ interface PostParams {
     query?: Record<string, any>;
 }
 
+interface PatchParams {
+    endpoint: string;
+    body?: Record<string, any>;
+    query?: Record<string, any>;
+}
+
 interface DeleteParams {
     endpoint: string;
     query?: Record<string, any>;
 }
 
-export type { ApiResponse, GetParams, PutParams, PostParams, DeleteParams };
+export type { ApiResponse, GetParams, PutParams, PostParams, PatchParams, DeleteParams };

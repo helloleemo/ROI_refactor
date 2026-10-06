@@ -265,9 +265,71 @@
         "status_failed": "Failed",
         "status_unknown": "Unknown",
         "column_no": "No.",
-        "column_tags": "Tags"
+        "column_tags": "Tags",
+        "upload_title": "Add CSV",
+        "upload_description": "Only .csv files are supported",
+        "choose_file": "Choose file",
+        "no_file_selected": "No file selected",
+        "upload_invalid_file": "Please choose a .csv file",
+        "upload_error": "Upload failed. Please try again. {{message}}",
+        "upload": "Upload",
+        "uploading": "Uploading..."
     },
     "dataCleaning": {
-        "title": "Data Cleaning"
+        "title": "Data Cleaning",
+        "description": "Please upload the project CSV file for data cleaning",
+        "physical_unit_and_system_boundary": "Physical Unit and System Boundary Setting",
+        "error": "Unable to save, please try again later",
+        "environment_and_load_parameters": {
+            "title": "Environment and Load Parameters Mapping",
+            "col_chw_in": "CHW Return Temperature (Inlet) Tag",
+            "col_chw_out": "CHW Supply Temperature (Outlet) Tag",
+            "col_chw_setpoint": "CHW Supply Temperature Setpoint Tag",
+            "col_cw_in": "CW Return Temperature Tag",
+            "col_cw_out": "CW Supply Temperature Tag",
+            "col_flow": "CHW Flow (Single Unit or Main Pipe) Tag",
+            "col_t_out": "Outdoor Air Temperature Tag",
+            "col_t_wb": "Wet Bulb Temperature Tag"
+        },
+        "chiller_sensor_mapping_and_boundary_conditions": {
+            "title": "Chiller Sensor Mapping and Boundary Conditions",
+            "auto_saving": "Auto-saving",
+            "columns": {
+                "equipment_name": "Equipment ID",
+                "unselected": "Unselected",
+                "kw_tag": "Power (kW) Tag",
+                "st_tag": "CHST Tag",
+                "rt_tag": "CHRT Tag",
+                "flow_tag": "CHW Flow Tag",
+                "min_chw_flow_pct": "Min. CHW Flow (%)",
+                "cw_in_tag": "CWRT Tag",
+                "cw_out_tag": "CWST Tag",
+                "cw_flow_tag": "CW Flow Tag",
+                "min_cw_flow_pct": "Min. CW Flow (%)"
+            }
+        },
+        "equipment_power_parameters": {
+            "title": "Equipment Power Parameters (kW)",
+            "columns": {
+                "equipment_name": "Equipment Name",
+                "unselected": "Unselected",
+                "power_tag": "Corresponding Tag",
+                "power_tag_1": "Power Tag 1",
+                "power_tag_2": "Power Tag 2"
+            }
+        },
+        "load_side_sensor_mapping": {
+            "title": "Load Side Sensor Mapping",
+            "columns": {
+                "load_name": "Load Name",
+                "unselected": "Unselected",
+                "st_tag": "CHW Supply Temperature Tag",
+                "rt_tag": "CHW Return Temperature Tag",
+                "flow_tag": "CHW Flow Tag",
+                "dp_tag": "Differential Pressure Tag"
+            }
+        },
+        "file_change_notice": "File change requires re-setting data mapping",
+        "remember_to_save": "Please remember to save"
     }
 }

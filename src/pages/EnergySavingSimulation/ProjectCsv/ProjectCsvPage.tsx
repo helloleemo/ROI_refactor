@@ -13,6 +13,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CsvDatagrid from "./components/CsvDatagrid";
 import SummaryItems from "./components/SummaryItems";
+import ProjectCsvUploadDialog from "./components/ProjectCsvUploadDialog";
 
 export const ProjectCsvPage = () => {
 
@@ -25,14 +26,14 @@ export const ProjectCsvPage = () => {
 
     const { isLoading } = useLoading();
 
-    const { openDialog } = useOpenDialog({
+    const { open, openDialog, closeDialog } = useOpenDialog({
         upload: false
     });
 
     const getFiles = async () => {
         try {
             const projectFiles = await importFileService.getList({
-                upload_type: DatasetTypeNum.TRAINING
+                upload_type: DatasetTypeNum.SIMULATION
             });
             const selectedFile = projectFiles[0];
 
@@ -44,10 +45,9 @@ export const ProjectCsvPage = () => {
 
             setFile(selectedFile);
             const fileTags = (await tagDataService.getTagList(selectedFile.id)).tags;
-            console.log(fileTags);
-
-            const mockTags = Array.from({ length: 150 }, (_, i) => `mock_tag${i + 1}`);
-            fileTags.push(...mockTags);
+            // console.log(fileTags);
+            // const mockTags = Array.from({ length: 150 }, (_, i) => `mock_tag${i + 1}`);
+            // fileTags.push(...mockTags);
 
             setTags(fileTags);
 
@@ -140,6 +140,12 @@ export const ProjectCsvPage = () => {
                     <CsvDatagrid tags={tags ?? []} loading={isFetching} />
                 </Paper>
             </Box>
+            <ProjectCsvUploadDialog
+                projectFile={file}
+                open={open.upload}
+                onClose={() => closeDialog("upload")}
+                onUploaded={getFiles}
+            />
         </OneSectionStyled>
     );
 };

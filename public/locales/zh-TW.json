@@ -152,8 +152,8 @@
         "stored-value": "儲存值",
         "categories": {
             "CH": "冰水主機 (CH)",
-            "CHP": "一次冰水泵 (CHP)",
-            "ZP": "二次泵 / 區域泵 (ZP)",
+            "CHP": "一次泵 (CHP)",
+            "ZP": "二次泵 (ZP)",
             "CWP": "冷卻水泵 (CWP)",
             "CT": "冷卻水塔 (CT)"
         },
@@ -265,9 +265,71 @@
         "status_failed": "失敗",
         "status_unknown": "未知",
         "column_no": "序號",
-        "column_tags": "點位"
+        "column_tags": "點位",
+        "upload_title": "新增 CSV",
+        "upload_description": "僅支援 .csv 格式檔案",
+        "choose_file": "選擇檔案",
+        "no_file_selected": "尚未選擇檔案",
+        "upload_invalid_file": "請選擇 .csv 檔案",
+        "upload_error": "上傳失敗，請稍後再試。{{message}}",
+        "upload": "上傳",
+        "uploading": "上傳中..."
     },
     "dataCleaning": {
-        "title": "數據清洗"
+        "title": "數據清洗",
+        "description": "請上傳專案 CSV 檔案以進行數據清洗",
+        "physical_unit_and_system_boundary": "物理單位與系統邊界設定",
+        "error": "無法儲存請稍後再試",
+        "environment_and_load_parameters": {
+            "title": "環境與負載參數對應",
+            "col_chw_in": "冰水回水溫度 (進水) Tag",
+            "col_chw_out": "冰水出水溫度 (出水) Tag",
+            "col_chw_setpoint": "設定冰水出水溫度 Tag",
+            "col_cw_in": "冷卻水回水溫度 Tag",
+            "col_cw_out": "冷卻水出水溫度 Tag",
+            "col_flow": "冰水流量 (單機或總管) Tag",
+            "col_t_out": "外氣溫度 Tag",
+            "col_t_wb": "濕球溫度 Tag"
+        },
+        "chiller_sensor_mapping_and_boundary_conditions": {
+            "title": "冰機 Sensor Mapping 與邊界條件",
+            "auto_saving": "自動儲存中",
+            "columns": {
+                "equipment_name": "設備編號",
+                "unselected": "未選擇",
+                "kw_tag": "耗電 (kW) Tag",
+                "st_tag": "CHST Tag",
+                "rt_tag": "CHRT Tag",
+                "flow_tag": "冰水流量 Tag",
+                "min_chw_flow_pct": "冰水最低流量 (%)",
+                "cw_in_tag": "CWRT Tag",
+                "cw_out_tag": "CWST Tag",
+                "cw_flow_tag": "冷卻水流量 Tag",
+                "min_cw_flow_pct": "冷卻水最低流量 (%)"
+            }
+        },
+        "equipment_power_parameters": {
+            "title": "設備耗電參數 (kW)",
+            "columns": {
+                "equipment_name": "設備名稱",
+                "unselected": "未選擇",
+                "power_tag": "對應點位",
+                "power_tag_1": "耗電點位 1",
+                "power_tag_2": "耗電點位 2"
+            }
+        },
+        "load_side_sensor_mapping": {
+            "title": "負載端 Sensor Mapping",
+            "columns": {
+                "load_name": "負載名稱",
+                "unselected": "未選擇",
+                "st_tag": "冰水出水溫度 Tag",
+                "rt_tag": "冰水回水溫度 Tag",
+                "flow_tag": "冰水流量 Tag",
+                "dp_tag": "差壓 Tag"
+            }
+        },
+        "file_change_notice": "檔案變更後須重新設定資料Mapping",
+        "remember_to_save": "請記得儲存"
     }
 }
