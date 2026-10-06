@@ -1,5 +1,17 @@
 # React + TypeScript + Vite
 
+## Runtime API URL
+
+The API URL is loaded from `config.js` at runtime. After `npm run build`, edit `dist/config.js` to point to the target API without rebuilding the JavaScript bundle:
+
+```js
+window.__APP_CONFIG__ = {
+  API_BASE_URL: "https://api.example.com/api/",
+};
+```
+
+When deploying the Docker image, mount a deployment-specific `config.js` at `/usr/share/nginx/html/config.js`. Nginx serves this file without caching. The API URL must be reachable from users' browsers; it is not a server-side-only URL.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
