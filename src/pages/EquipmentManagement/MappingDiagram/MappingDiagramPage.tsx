@@ -164,7 +164,6 @@ const MappingDiagramPage = () => {
 
             // console.log("Delete load:", clearedRow);
 
-
             showToast(t(toasterWording.success.delete_load), "info");
 
             return {

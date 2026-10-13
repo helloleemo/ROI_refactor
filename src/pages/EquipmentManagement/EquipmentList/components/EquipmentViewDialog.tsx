@@ -10,11 +10,13 @@ import {
     IconButton,
     Typography,
 } from "@mui/material";
+import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
 import TitleText from "@/components/TitleText";
 import type { EquipmentCategory, EquipementResponse } from "@/api/types/equipment";
 import IplvNplvDataField from "./IplvNplvDataField";
+import BooleanChip from "@/components/BooleanChip";
 
 interface EquipmentViewDialogProps {
     open: boolean;
@@ -23,9 +25,9 @@ interface EquipmentViewDialogProps {
     onClose: () => void;
 }
 
-const getDisplayValue = (value: unknown) => {
+const getDisplayValue = (value: unknown): ReactNode => {
     if (value === null || value === undefined || value === "") return "-";
-    if (typeof value === "boolean") return value ? "是" : "否";
+    if (typeof value === "boolean") return <BooleanChip value={value} />;
     if (Array.isArray(value)) {
         return value
             .map((point) => {
@@ -42,7 +44,7 @@ const getDisplayValue = (value: unknown) => {
     return String(value);
 };
 
-const Row = ({ label, value }: { label: string; value?: string | number | null }) => (
+const Row = ({ label, value }: { label: string; value?: ReactNode }) => (
     <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", py: 0.75, gap: 2 }}>
         <Typography variant="body2" color="text.primary" sx={{ minWidth: 110 }}>
             {label}
@@ -67,7 +69,7 @@ const EquipmentViewDialog = ({
     return (
         <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
             <DialogTitle sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <TitleText title="設備詳情" />
+                <TitleText title={t("equipment-list.detail")} />
                 <IconButton onClick={onClose} size="small">
                     <CloseIcon fontSize="small" />
                 </IconButton>
@@ -83,7 +85,7 @@ const EquipmentViewDialog = ({
                     value={equipment?.equipment_name}
                 />
                 <Divider />
-                <Row label="設備類型" value={equipment?.equipment_type_name} />
+                <Row label={t("equipment-list.equipment_type")} value={equipment?.equipment_type_name} />
                 <Divider />
                 {category?.fields.map((field) => (
                     <Box key={field.key}>
@@ -109,16 +111,30 @@ const EquipmentViewDialog = ({
                                 value={getDisplayValue(equipment?.specs[field.key])}
                             />
                         )}
+
+                        {/* {<Box key={field.key}>
+                            {
+                                field.key === "is_vfd" && (
+                                    <Row
+                                        label={t(`equipment-list.fields${category.equipment_type}.${field.key}`, {
+                                            defaultValue: field.label,
+                                        })}
+                                        value={equipment?.specs[field.key] ? t("common.yes") : t("common.no")}
+                                    />
+                                )
+                            }
+
+                        </Box>} */}
                         <Divider />
                     </Box>
                 ))}
                 <Row label={t("equipment-list.add-dialog.remarks")} value={equipment?.remarks} />
                 <Divider />
-                <Row label="狀態" value={equipment?.status} />
+                <Row label={t("equipment-list.status")} value={equipment?.status} />
             </DialogContent>
 
             <DialogActions sx={{ px: 3, pb: 2 }}>
-                <Button onClick={onClose}>關閉</Button>
+                <Button onClick={onClose}>{t("common.close")}</Button>
             </DialogActions>
         </Dialog>
     );

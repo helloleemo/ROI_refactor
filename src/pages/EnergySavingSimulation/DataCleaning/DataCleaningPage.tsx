@@ -15,10 +15,12 @@ import GlobalMappingSection from "./components/GlobalMappingSection";
 import { showToast } from "@/components/ToasterCustom";
 import EquipmentPowerParametersSection from "./components/EquipmentPowerParametersSection";
 import LoadMappingSection from "./components/LoadMappingSection";
-import type { CommonIdType } from "@/api/types/shared";
+import useOpenDialog from "@/hooks/useOpenDialog";
+import PhysicalUnitAndSystemBoundarySettingDialog from "./components/PhysicalUnitAndSystemBoundarySettingDialog";
 
 export const DataCleaningPage = () => {
     const { t } = useTranslation();
+    const { open, openDialog, closeDialog } = useOpenDialog({ physicalUnitAndBoundary: false });
     const [isSectionOpen, setIsSectionOpen] = useState<Record<string, boolean>>({
         environmentAndLoadParameters: false,
         chillerSensorMappingAndBoundaryConditions: false,
@@ -33,8 +35,6 @@ export const DataCleaningPage = () => {
         equipmentPowerParameters: false,
     });
     const {
-        loading,
-        anyLoading,
         isLoading,
         startLoading,
         stopLoading,
@@ -127,6 +127,7 @@ export const DataCleaningPage = () => {
     }
 
 
+
     useEffect(() => {
         getData();
     }, []);
@@ -162,14 +163,21 @@ export const DataCleaningPage = () => {
                             whiteSpace: "nowrap"
                         }}
                         variant="outlined"
-                    // onClick={() => openDialog("upload")}
-                    // disabled={isLoading("upload")}
-                    // startIcon={isLoading("upload") ? <CircularProgress size={16} color="inherit" /> : undefined}
+                        onClick={() => openDialog("physicalUnitAndBoundary")}
+                        disabled={!tagMappingData || isSaving}
                     >
                         + {t("dataCleaning.physical_unit_and_system_boundary")}
                     </Button>
                 </Box>
             </Box>
+
+            <PhysicalUnitAndSystemBoundarySettingDialog
+                open={open.physicalUnitAndBoundary}
+                onClose={() => closeDialog("physicalUnitAndBoundary")}
+                uploadId={tagMappingData?.upload_id}
+                dataSettings={tagMappingData?.data_settings}
+                onSaved={setTagMappingData}
+            />
 
 
             {/* 1 - 環境與負載參數對應 */}

@@ -16,6 +16,7 @@ const PATHS = {
     energySavingOverview: "energy-saving-overview",
     projectCsv: "project-csv",
     dataCleaning: "data-cleaning",
+    dataQualityAndSteadyStateReport: "data-quality-and-steady-state-report",
     mAndVBaseline: "m-and-v-baseline",
     simulationResultReport: "simulation-result-report",
 

@@ -1,11 +1,12 @@
 import { API_ENDPOINTS } from "@/api/base/apiEndpoint";
 import type { CalculateLoad, PatchTagMapping, RequestTagMapping, TagMapping } from "../types/tagMapping";
-import { GET, PATCH, PUT } from "../base";
+import { GET, PATCH, POST, PUT } from "../base";
 
 export const tagMappingService = {
     get: async () => {
         return GET<TagMapping>({
             endpoint: API_ENDPOINTS.TAG_MAPPING.TAG_MAPPING
+
         });
 
     },
@@ -25,6 +26,11 @@ export const tagMappingService = {
         return PATCH<CalculateLoad>({
             endpoint: API_ENDPOINTS.TAG_MAPPING.TAG_MAPPING_CALCULATE,
         })
+    },
+    reset: async () => {
+        return POST<void>({
+            endpoint: API_ENDPOINTS.TAG_MAPPING.TAG_MAPPING_RESET,
+        });
     }
 
 }

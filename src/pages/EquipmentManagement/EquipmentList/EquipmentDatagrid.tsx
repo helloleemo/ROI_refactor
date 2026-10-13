@@ -1,4 +1,5 @@
 import { DataGrid, type GridColDef, type GridRenderCellParams } from "@mui/x-data-grid";
+import { formatOneDecimal } from "./helpers/formatDecimal";
 import type { EquipmentField, EquipementResponse } from "@/api/types/equipment";
 import { useTranslation } from "react-i18next";
 import { Box, IconButton, Tooltip } from "@mui/material";
@@ -26,6 +27,37 @@ interface EquipmentDatagridProps {
     onCopy?: (row: EquipementResponse) => void;
     onDeleted?: () => void | Promise<void>;
 }
+
+const oneDecimalFieldKeys = new Set([
+    // 1
+    "chw_temp_out",
+    "chw_temp_in",
+    "cw_temp_in",
+    "cw_temp_out",
+    "efficiency_kw_per_rt",
+    "cop",
+    "heat_rejection_kw",
+    "chw_flow_lpm",
+    "cw_flow_lpm",
+    "motor_power_kw",
+
+    // 2
+
+    "rated_power_kw",
+    "rated_flow_lpm",
+    "head_m",
+
+    // 5
+    "heat_rejection_kw",
+    "motor_power_kw",
+    "fan_power_kw",
+    "design_temp_in",
+    "design_temp_out",
+    "design_approach_temp",
+    "design_wet_bulb_temp",
+
+]);
+
 
 // const renderIplvNplvData = (value: unknown) => {
 //     if (!Array.isArray(value)) return "-";
@@ -90,6 +122,7 @@ const EquipmentDatagrid = ({
     };
 
 
+
     const columns: GridColDef[] = [
         {
             field: "equipment_name",
@@ -99,6 +132,8 @@ const EquipmentDatagrid = ({
         ...renderFields.filter((field) => !isDataGridHiddenField(field)).map((field) => {
             const fieldType = field.field_type.toLowerCase();
             const isBoolean = fieldType === "boolean" || fieldType === "bool";
+            const shouldFormatOneDecimal = oneDecimalFieldKeys.has(field.key);
+
             return (
                 {
                     field: field.key,
@@ -106,10 +141,9 @@ const EquipmentDatagrid = ({
                     width: 150,
                     ...(isBoolean
                         ? { renderCell: (params: GridRenderCellParams) => <BooleanChip value={Boolean(params.value)} /> }
-                        : {}),
-                    // ...(field.key === "iplv_nplv_data"
-                    //     ? { renderCell: (params: GridRenderCellParams) => renderIplvNplvData(params.value) }
-                    //     : {}),
+                        : shouldFormatOneDecimal
+                            ? { renderCell: (params: GridRenderCellParams) => formatOneDecimal(params.value) }
+                            : {}),
                 }
             )
         }),

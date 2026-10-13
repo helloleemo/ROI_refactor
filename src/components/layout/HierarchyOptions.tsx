@@ -10,11 +10,13 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import useMenuToggle from "@/hooks/useMenuToggle";
 import { useProject } from "@/contexts/ProjectContext";
 import ProjectDialog from "./ProjectDialog";
 import ProjectEditDialog from "./ProjectEditDialog";
+import { N30x30OptionsCopy, N30x30OptionsEdit } from "../icons";
+import ProjectDuplicateDialog from "./ProjectDuplicateDialog";
+import type { ProjectListItem } from "@/api/types/project";
 
 type OptionItem = {
     value: string;
@@ -29,7 +31,7 @@ type OptionsRenderProps = {
     showArrow?: boolean;
 };
 
-const OptionsRender = ({ title, options, value, onChange, onAdd, onEdit }: OptionsRenderProps & { onAdd?: () => void; onEdit?: (projectId: string) => void }) => {
+const OptionsRender = ({ title, options, value, onChange, onAdd, onEdit, onDuplicate }: OptionsRenderProps & { onAdd?: () => void; onEdit?: (projectId: string) => void; onDuplicate?: (projectId: string) => void }) => {
     const { t } = useTranslation();
 
     return (
@@ -74,10 +76,29 @@ const OptionsRender = ({ title, options, value, onChange, onAdd, onEdit }: Optio
                                 },
                             })}
                         >
-                            <Typography sx={{ fontSize: 14, lineHeight: 1.35, color: "inherit", fontWeight: selected ? 700 : 300, }}>
+                            <Typography sx={{ fontSize: 14, lineHeight: 1.35, color: "inherit", fontWeight: selected ? 700 : 300, cursor: "pointer" }}>
                                 {item.label}
                             </Typography>
                             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                                <Button
+                                    size="small"
+                                    variant="text"
+                                    onClick={(event) => {
+                                        event.stopPropagation();
+                                        onDuplicate?.(item.value);
+                                    }}
+                                    sx={{
+                                        minWidth: 0,
+                                        color: "inherit",
+                                        px: 1,
+                                        py: 0.5,
+                                        fontSize: 12,
+                                        lineHeight: 1.2,
+                                        textTransform: "none",
+                                    }}
+                                    startIcon={<N30x30OptionsCopy sx={{ cursor: "pointer" }} />}
+                                >
+                                </Button>
                                 <Button
                                     size="small"
                                     variant="text"
@@ -93,8 +114,11 @@ const OptionsRender = ({ title, options, value, onChange, onAdd, onEdit }: Optio
                                         fontSize: 12,
                                         lineHeight: 1.2,
                                         textTransform: "none",
+                                        cursor: "pointer"
                                     }}
-                                    startIcon={<EditOutlinedIcon fontSize="small" />}
+                                    startIcon={
+                                        <N30x30OptionsEdit sx={{ cursor: "pointer" }} />
+                                    }
                                 >
                                 </Button>
                                 {/* {showArrow && selected ? <KeyboardArrowRightIcon fontSize="small" sx={{ color: 'inherit' }} /> : null} */}
@@ -113,6 +137,7 @@ const HierarchyOptions = () => {
     const { projects, currentProject, setCurrentProject } = useProject();
     const [isProjectDialogOpen, setProjectDialogOpen] = useState(false);
     const [editingProject, setEditingProject] = useState<any>(null);
+    const [duplicatingProject, setDuplicatingProject] = useState<ProjectListItem | null>(null);
     const projectOptions = useMemo(
         () => projects.map((project) => ({ value: String(project.id), label: project.name })),
         [projects],
@@ -199,6 +224,10 @@ const HierarchyOptions = () => {
                                     const project = projects.find((item) => String(item.id) === projectId) ?? null;
                                     setEditingProject(project);
                                 }}
+                                onDuplicate={(projectId) => {
+                                    const project = projects.find((item) => String(item.id) === projectId) ?? null;
+                                    setDuplicatingProject(project);
+                                }}
                             />
                         </Box>
                     </Box>
@@ -214,6 +243,12 @@ const HierarchyOptions = () => {
                 open={Boolean(editingProject)}
                 project={editingProject}
                 onClose={() => setEditingProject(null)}
+            />
+
+            <ProjectDuplicateDialog
+                open={Boolean(duplicatingProject)}
+                project={duplicatingProject}
+                onClose={() => setDuplicatingProject(null)}
             />
         </>
     );

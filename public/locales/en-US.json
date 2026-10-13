@@ -14,11 +14,14 @@
         "copy": "Copy",
         "edit": "Edit",
         "name": "Name",
-        "no_data": "No results found"
+        "no_data": "No results found",
+        "duplicate": "Duplicate",
+        "duplicating": "Duplicating..."
     },
     "project": {
         "edit_project": "Edit Project",
         "create_project": "New Project",
+        "duplicate_project": "Duplicate Project",
         "name": "Project Name",
         "description": "Description",
         "create": "Create",
@@ -41,7 +44,9 @@
             "update_diagram": "Diagram updated",
             "delete_load": "Load deleted",
             "project_update": "Project updated",
-            "project_delete": "Project deleted"
+            "project_delete": "Project deleted",
+            "project_duplicate": "Project duplicated",
+            "project_upload": "Project uploaded"
         },
         "error": {
             "approach_temp_updated": "Failed to update approach temperature",
@@ -53,7 +58,9 @@
             "update_diagram": "Failed to update diagram",
             "delete_load": "Failed to delete load",
             "project_update": "Failed to update project",
-            "project_delete": "Failed to delete project"
+            "project_delete": "Failed to delete project",
+            "project_duplicate": "Failed to duplicate project",
+            "project_upload": "Failed to upload project"
         },
         "info": {},
         "warning": {}
@@ -74,6 +81,7 @@
             "overview-data-cleaning": "Overview",
             "csv-project": "Project CSV",
             "energy-simulation-settings": "Data Cleaning",
+            "data-quality-and-steady-state-report": "Data Quality and Steady State Report",
             "energy-simulation-results": "M&V Baseline",
             "energy-simulation-report": "Simulation Report"
         },
@@ -128,9 +136,13 @@
     },
     "equipment-list": {
         "title": "Equipment List",
+        "detail": "Equipment Detail",
+        "equipment_type": "Equipment Type",
+        "status": "Status",
         "search-placeholder": "Search Equipment Name",
         "add": "Add",
         "actions": "Actions",
+        "saved-value": "Saved Value",
         "add-dialog": {
             "title": "Add Equipment",
             "name": "Equipment Name",
@@ -159,6 +171,9 @@
             "CWP": "Cooling Water Pump (CWP)",
             "CT": "Cooling Tower (CT)"
         },
+        "helper": {
+            "cop-range": "COP Warning: Recommended value is between 0.4 and 0.85."
+        },
         "fields1": {
             "equipment_name": "Equipment Name",
             "cooling_capacity_rt": "Cooling Capacity (RT)",
@@ -174,7 +189,11 @@
             "cop": "COP",
             "heat_rejection_kw": "Heat Rejection (kW)",
             "chw_flow_lpm": "CHW Flow (LPM)",
-            "cw_flow_lpm": "CW Flow (LPM)"
+            "cw_flow_lpm": "CW Flow (LPM)",
+            "iplv_nplv_mode": "IPLV/NPLV Mode",
+            "iplv_nplv_data": "4 Load Points List",
+            "load_rate": "Load Rate",
+            "kw_per_rt": "kW/RT"
         },
         "fields2": {
             "equipment_name": "Equipment Name",
@@ -201,6 +220,8 @@
             "equipment_name": "Equipment Name",
             "heat_rejection_kw": "Heat Rejection (kW)",
             "fan_power_kw": "Fan Power (kW)",
+            "motor_count": "Motor Count",
+            "motor_power_kw": "Motor Power (kW)",
             "design_temp_in": "Design Temp In",
             "design_temp_out": "Design Temp Out",
             "design_approach_temp": "Design Approach Temp",
@@ -271,6 +292,8 @@
         "choose_file": "Choose file",
         "no_file_selected": "No file selected",
         "upload_invalid_file": "Please choose a .csv file",
+        "upload_warning_title": "Warning",
+        "upload_warning_description": "Uploading a new project CSV will clear the data cleaning data. Do you want to continue?",
         "upload_error": "Upload failed. Please try again. {{message}}",
         "upload": "Upload",
         "uploading": "Uploading..."
@@ -279,6 +302,17 @@
         "title": "Data Cleaning",
         "description": "Please upload the project CSV file for data cleaning",
         "physical_unit_and_system_boundary": "Physical Unit and System Boundary Setting",
+        "settings": {
+            "unit_flow": "Flow Unit",
+            "unit_temp": "Temperature Unit",
+            "unit_pressure": "Pressure Unit",
+            "data_interval": "Data Interval (minutes)",
+            "sys_design_rt": "System Design Capacity (RT)",
+            "sys_design_kw": "System Design Power (kW)",
+            "validation_error": "Enter a valid positive value for each numeric field.",
+            "saved": "Settings saved successfully",
+            "save_error": "Unable to save settings. Please try again."
+        },
         "error": "Unable to save, please try again later",
         "environment_and_load_parameters": {
             "title": "Environment and Load Parameters Mapping",

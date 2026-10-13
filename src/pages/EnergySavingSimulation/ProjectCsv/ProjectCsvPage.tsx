@@ -5,21 +5,19 @@ import useOpenDialog from "@/hooks/useOpenDialog";
 import TitleText from "@/components/TitleText";
 import { useTranslation } from "react-i18next";
 import useLoading from "@/hooks/useLoading";
-import importFileService from "@/api/services/importFile";
-import { DatasetTypeNum } from "@/api/types/shared";
-import tagDataService from "@/api/services/tagData";
-import type { ImportFile } from "@/api/types/importFile";
+import { type CsvDataset } from "@/api/types/tagMapping";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CsvDatagrid from "./components/CsvDatagrid";
 import SummaryItems from "./components/SummaryItems";
 import ProjectCsvUploadDialog from "./components/ProjectCsvUploadDialog";
+import { tagMappingService } from "@/api/services/tagMapping";
 
 export const ProjectCsvPage = () => {
 
     const { t } = useTranslation();
     const [tags, setTags] = useState<string[] | null>(null);
-    const [file, setFile] = useState<ImportFile | null>(null);
+    const [file, setFile] = useState<CsvDataset | null>(null);
     const [isFetching, setIsFetching] = useState(true);
     const [isInfoOpen, setIsInfoOpen] = useState(true);
 
@@ -30,26 +28,46 @@ export const ProjectCsvPage = () => {
         upload: false
     });
 
+
+    const getProjectFile = async () => {
+        try {
+            const data = await tagMappingService.get();
+            return data;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
     const getFiles = async () => {
         try {
-            const projectFiles = await importFileService.getList({
-                upload_type: DatasetTypeNum.SIMULATION
-            });
-            const selectedFile = projectFiles[0];
-
-            if (!selectedFile) {
+            const projectData = await getProjectFile();
+            if (projectData?.upload_id) {
+                const selectedFileId = projectData.upload_id;
+                const fileDetails = projectData.csv_datasets.find(file => file.id === selectedFileId)
+                const fileTags = projectData.available_tags
+                setFile(fileDetails ? fileDetails : null);
+                setTags(fileTags);
+            } else {
                 setFile(null);
                 setTags([]);
-                return;
             }
 
-            setFile(selectedFile);
-            const fileTags = (await tagDataService.getTagList(selectedFile.id)).tags;
+
+            // const projectFiles = await importFileService.getList({
+            //     upload_type: DatasetTypeNum.SIMULATION
+            // });
+            // const selectedFile = projectFiles[0];
+
+
+            // setFile(selectedFile);
+            // const fileTags = (await tagDataService.getTagList(selectedFile.id)).tags;
             // console.log(fileTags);
             // const mockTags = Array.from({ length: 150 }, (_, i) => `mock_tag${i + 1}`);
             // fileTags.push(...mockTags);
 
-            setTags(fileTags);
+            // setTags(fileTags);
+            // setTags([]);
 
         } finally {
             setIsFetching(false);

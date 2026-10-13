@@ -1,4 +1,4 @@
-import type { ProjectCreateRequest, ProjectListItem, ProjectUpdateRequest } from "../types/project"
+import type { ProjectCreateRequest, ProjectDuplicateRequest, ProjectInfo, ProjectListItem, ProjectUpdateRequest } from "../types/project"
 import { API_ENDPOINTS, DELETE, GET, POST, PUT } from "../base"
 
 
@@ -29,6 +29,12 @@ export const ProjectService = {
     DELETE: async (path: string) => {
         return DELETE({
             endpoint: `${API_ENDPOINTS.PROJECT.INFO(path)}`,
+        })
+    },
+    DUPLICATE: async (body: ProjectDuplicateRequest) => {
+        return POST<ProjectInfo>({
+            endpoint: API_ENDPOINTS.PROJECT.DUPLICATE,
+            body: body
         })
     }
 

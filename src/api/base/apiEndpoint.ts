@@ -92,6 +92,7 @@ export const API_ENDPOINTS = {
         LIST: "project/list",
         UPDATE: "project/",
         INFO: (id: CommonIdType) => `project/${id}`,
+        DUPLICATE: `project/duplicate`
     },
 
 
@@ -109,7 +110,8 @@ export const API_ENDPOINTS = {
     TAG_MAPPING: {
         TAG_MAPPING: "tag-mapping",
         TAG_MAPPING_CELL_UPDATE: "tag-mapping/cell-update",
-        TAG_MAPPING_CALCULATE: "tag-mapping/calculate"
+        TAG_MAPPING_CALCULATE: "tag-mapping/calculate",
+        TAG_MAPPING_RESET: "tag-mapping/reset"
     }
 
 }

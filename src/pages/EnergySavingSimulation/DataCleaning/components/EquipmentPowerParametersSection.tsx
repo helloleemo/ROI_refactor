@@ -1,7 +1,6 @@
 
 
 import { Box, MenuItem, Select, Typography } from "@mui/material";
-import ElectricBoltOutlinedIcon from "@mui/icons-material/ElectricBoltOutlined";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -183,7 +182,8 @@ const EquipmentPowerParametersSection = ({
                 return (
                     <Box key={category} sx={{ minWidth: 0 }}>
                         <Typography sx={{ display: "flex", alignItems: "center", gap: 0.75, fontSize: 14, fontWeight: 700, mb: 1 }}>
-                            <ElectricBoltOutlinedIcon sx={{ fontSize: 18, color: "primary.main", flexShrink: 0 }} />
+                            <img src="/energy-ai-favicon.svg" alt="icon" style={{ width: 18, height: 18, color: "grey.200", flexShrink: 0 }} />
+                            {/* <ElectricBoltOutlinedIcon sx={{ fontSize: 18, color: "grey.200", flexShrink: 0 }} /> */}
                             {t(`equipment-list.categories.${category.toUpperCase()}`)}
                         </Typography>
                         <Box sx={{ minWidth: 0, p: 0, mx: 1, my: 2, border: "1px solid", borderColor: "divider", borderRadius: 1 }}>

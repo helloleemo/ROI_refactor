@@ -57,13 +57,21 @@ export interface CsvDataset {
 }
 
 export interface DataSettingsType {
-    unit_flow: string,
-    unit_temp: string,
-    unit_pressure: string,
+    unit_flow: UnitFlow,
+    unit_temp: UnitTemp,
+    unit_pressure: UnitPressure,
     data_interval: number,
     sys_design_rt: number,
     sys_design_kw: number
 }
+
+export type UnitFlow = "LPM" | "GPM" | "CMH";
+export type UnitTemp = "°C" | "°F";
+export type UnitPressure = "kg/cm2" | "BAR" | "PSI";
+
+export const UnitFlowOptions: UnitFlow[] = ["LPM", "GPM", "CMH"];
+export const UnitTempOptions: UnitTemp[] = ["°C", "°F"];
+export const UnitPressureOptions: UnitPressure[] = ["kg/cm2", "BAR", "PSI"];
 
 export interface GlobalMappingType {
     col_t_out: string,

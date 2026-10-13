@@ -15,6 +15,7 @@ import EquipmentListPage from "@/pages/EquipmentManagement/EquipmentList/Equipme
 import MappingDiagramPage from "@/pages/EquipmentManagement/MappingDiagram/MappingDiagramPage";
 import ProjectSettingsPage from "@/pages/overview/ProjectSettings/ProjectSettingsPage";
 import { DataCleaningPage } from "@/pages/EnergySavingSimulation/DataCleaning/DataCleaningPage";
+import DataQualityAndSteadyStateReportPage from "@/pages/EnergySavingSimulation/DataQualityAndSteadyStateReport/DataQualityAndSteadyStateReportPage";
 
 const PlaceholderPage = ({ title }: { title: string }) => (
   <Box sx={{ p: 3 }}>
@@ -65,6 +66,10 @@ export const router = createBrowserRouter([
       {
         path: `${PATHS.energySavingOverview}/${PATHS.dataCleaning}`,
         element: <DataCleaningPage />
+      },
+      {
+        path: `${PATHS.energySavingOverview}/${PATHS.dataQualityAndSteadyStateReport}`,
+        element: <DataQualityAndSteadyStateReportPage />
       },
       {
         path: `${PATHS.energySavingOverview}/${PATHS.mAndVBaseline}`,

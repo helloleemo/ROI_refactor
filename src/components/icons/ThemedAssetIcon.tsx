@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box";
 import { useTheme, type Theme } from "@mui/material/styles";
 import type { IconProps } from "./types";
 
@@ -54,6 +55,7 @@ const ThemedAssetIcon = ({
     defaultWidth,
     defaultHeight,
     forceMode,
+    sx = [],
 }: ThemedAssetIconProps) => {
     const theme = useTheme();
     const effectiveMode = forceMode ?? (theme.palette.mode === "dark" ? "dark" : "light");
@@ -68,12 +70,16 @@ const ThemedAssetIcon = ({
         : src;
 
     return (
-        <img
+        <Box
+            component="img"
             src={finalSrc}
             alt={alt}
             width={finalWidth}
             height={finalHeight}
-            style={{ display: "block" }}
+            sx={[
+                { display: "block" },
+                ...(Array.isArray(sx) ? sx : [sx]),
+            ]}
         />
     );
 };

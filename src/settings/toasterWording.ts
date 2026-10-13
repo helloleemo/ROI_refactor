@@ -12,6 +12,8 @@ const toasterWording = {
         delete_load: "toaster_wording.success.delete_load",
         project_update: "toaster_wording.success.project_update",
         project_delete: "toaster_wording.success.project_delete",
+        project_duplicate: "toaster_wording.success.project_duplicate",
+        project_upload: "toaster_wording.success.project_upload",
     },
     error: {
         approach_temp_updated: "toaster_wording.error.approach_temp_updated",
@@ -24,6 +26,8 @@ const toasterWording = {
         delete_load: "toaster_wording.error.delete_load",
         project_update: "toaster_wording.error.project_update",
         project_delete: "toaster_wording.error.project_delete",
+        project_duplicate: "toaster_wording.error.project_duplicate",
+        project_upload: "toaster_wording.error.project_upload",
     },
 };
 

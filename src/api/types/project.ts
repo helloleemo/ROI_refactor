@@ -29,3 +29,9 @@ export interface ProjectUpdateRequest {
     description: string;
     status: number;
 }
+
+export interface ProjectDuplicateRequest {
+    project_id: CommonIdType;
+    name: string;
+    description: string;
+}

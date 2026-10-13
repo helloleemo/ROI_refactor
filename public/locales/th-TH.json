@@ -22,5 +22,13 @@
             "title": "ภาพรวม KPI",
             "description": "KPI......"
         }
+    },
+    "toaster_wording": {
+        "success": {
+            "project_duplicate": "คัดลอกโปรเจกต์สำเร็จ"
+        },
+        "error": {
+            "project_duplicate": "คัดลอกโปรเจกต์ไม่สำเร็จ"
+        }
     }
 }

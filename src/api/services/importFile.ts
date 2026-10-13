@@ -2,7 +2,7 @@
 import { GET, POST, DELETE } from "@/api/base/apiMethods";
 import { API_ENDPOINTS } from "@/api/base/apiEndpoint";
 import type { ImportFile } from "@/api/types";
-import type { DatasetType } from "@/api/types/shared";
+import type { CommonIdType, DatasetType } from "@/api/types/shared";
 
 
 const importFileService = {
@@ -17,7 +17,7 @@ const importFileService = {
         formData.append("file", file);
         formData.append("upload_type", String(upload_type));
 
-        return POST<FormData>({
+        return POST<{ upload_id: CommonIdType }>({
             endpoint: API_ENDPOINTS.IMPORT_FILE.UPLOAD,
             body: formData
         });

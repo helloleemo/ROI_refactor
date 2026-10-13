@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import { SidebarStepIcon } from "@/components/layout/SidebarStepIcon";
 import {
     N36x36WidgetsCustomLine as CustomLine,
     N36x36SecondMenuDocManagement as DocManagement,
@@ -16,6 +17,7 @@ export type MenuItemProps = {
     children?: MenuItemProps[];
     disabled?: boolean;
 };
+
 
 export const MenuItem: MenuItemProps[] = [
     {
@@ -65,7 +67,6 @@ export const MenuItem: MenuItemProps[] = [
         label: "節能模擬",
         icon: <CustomLine width={30} height={30} />,
         // disabled: true,
-
         children: [
             {
                 key: "sidebarMenu.energy-simulation.overview-data-cleaning",
@@ -78,26 +79,33 @@ export const MenuItem: MenuItemProps[] = [
             {
                 key: "sidebarMenu.energy-simulation.csv-project",
                 label: "專案CSV",
-                icon: <CustomLine width={20} height={20} />,
+                icon: <SidebarStepIcon step={1} status="completed" />,
                 route: `${PATHS.energySavingOverview}/${PATHS.projectCsv}`,
             },
             {
                 key: "sidebarMenu.energy-simulation.energy-simulation-settings",
                 label: "數據清洗",
-                icon: <CustomLine width={20} height={20} />,
+                icon: <SidebarStepIcon step={2} status="notStarted" />,
                 route: `${PATHS.energySavingOverview}/${PATHS.dataCleaning}`,
+            },
+            {
+                key: "sidebarMenu.energy-simulation.data-quality-and-steady-state-report",
+                label: "資料品質與穩態篩選報告",
+                icon: <SidebarStepIcon step={3} status="notStarted" />,
+                route: `${PATHS.energySavingOverview}/${PATHS.dataQualityAndSteadyStateReport}`,
             },
             {
                 key: "sidebarMenu.energy-simulation.energy-simulation-results",
                 label: "M&V基準線",
-                icon: <CustomLine width={20} height={20} />,
+                icon: <SidebarStepIcon step={4} status="notStarted" />,
                 route: `${PATHS.energySavingOverview}/${PATHS.mAndVBaseline}`,
-                disabled: true,
+                // disabled: true,
 
-            }, {
+            },
+            {
                 key: "sidebarMenu.energy-simulation.energy-simulation-report",
                 label: "模擬報告",
-                icon: <CustomLine width={20} height={20} />,
+                icon: <SidebarStepIcon step={5} />,
                 route: `${PATHS.energySavingOverview}/${PATHS.simulationResultReport}`,
                 disabled: true,
 

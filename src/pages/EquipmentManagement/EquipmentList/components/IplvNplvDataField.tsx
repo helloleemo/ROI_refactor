@@ -1,4 +1,5 @@
 import { Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 interface IplvNplvRow {
     load_ratio?: string;
@@ -17,8 +18,13 @@ const getRows = (value: unknown): IplvNplvRow[] =>
     Array.isArray(value) ? value as IplvNplvRow[] : [];
 
 const IplvNplvDataField = ({ value, disabled, mode, onChange }: IplvNplvDataFieldProps) => {
+    const { t } = useTranslation();
     const rows = getRows(value);
-    const isIplv = String(mode).toUpperCase() === "IPLV";
+    const selectedModes = (Array.isArray(mode) ? mode : mode ? [mode] : [])
+        .map((item) => String(item).toUpperCase());
+    const isIplvOnly = selectedModes.includes("IPLV") && !selectedModes.includes("NPLV");
+
+    if (selectedModes.length === 0) return null;
 
     const updateCell = (index: number, key: "cw_temp_in" | "kw_per_rt", cellValue: string) => {
         const nextRows = rows.map((row, rowIndex) =>
@@ -31,9 +37,9 @@ const IplvNplvDataField = ({ value, disabled, mode, onChange }: IplvNplvDataFiel
         <Table size="small">
             <TableHead>
                 <TableRow>
-                    <TableCell>負載率</TableCell>
-                    <TableCell>冷卻水進水溫 (°C)</TableCell>
-                    <TableCell>kW/RT</TableCell>
+                    <TableCell>{t("equipment-list.fields1.load_rate")}</TableCell>
+                    <TableCell>{t("equipment-list.fields1.cw_temp_in")}</TableCell>
+                    <TableCell>{t("equipment-list.fields1.kw_per_rt")}</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
@@ -47,7 +53,7 @@ const IplvNplvDataField = ({ value, disabled, mode, onChange }: IplvNplvDataFiel
                                 required
                                 value={row.cw_temp_in ?? ""}
                                 onChange={(event) => updateCell(index, "cw_temp_in", event.target.value)}
-                                disabled={disabled || isIplv}
+                                disabled={disabled || isIplvOnly}
                                 fullWidth
                             />
                         </TableCell>

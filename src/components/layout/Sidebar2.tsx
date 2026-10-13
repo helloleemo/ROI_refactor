@@ -341,9 +341,11 @@ const Sidebar2 = () => {
                                             );
                                         })}
                                     </List>
+                                    <Typography sx={{ fontSize: 13, color: "grey.200", px: 2, py: 1 }}>aiot-roi-tool-1.0.2</Typography>
                                 </Box>
                             ) : null}
                         </Box>
+
                     </Drawer>
 
                     <Box
@@ -366,6 +368,7 @@ const Sidebar2 = () => {
                         >
                             {isSecondLevelCollapsed ? <ChevronRight fontSize="small" /> : <ChevronLeft fontSize="small" />}
                         </IconButton>
+
                     </Box>
                 </>
             ) : null}

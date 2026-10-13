@@ -1,5 +1,5 @@
 import type { GridColDef } from "@mui/x-data-grid";
-import { DataGrid, GridRemoveIcon, useGridApiRef } from "@mui/x-data-grid";
+import { DataGrid, GridEditInputCell, GridRemoveIcon, useGridApiRef } from "@mui/x-data-grid";
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Button, Tooltip } from "@mui/material";
 import { alpha, useTheme } from "@mui/material/styles";
@@ -72,6 +72,16 @@ const MappingDatgrid = ({
                             sortable: false,
                             hideSortIcons: true,
                             disableColumnMenu: true,
+                            renderEditCell: (params) => (
+                                <GridEditInputCell
+                                    {...params}
+                                    slotProps={{
+                                        root: {
+                                            onFocus: (event) => (event.target as HTMLInputElement).select(),
+                                        },
+                                    }}
+                                />
+                            ),
                             renderCell: (params) => {
                                 if (params.value == null || isNaN(Number(params.value))) return params.value;
                                 const { bg, text } = getValueColor(Number(params.value));
@@ -154,7 +164,6 @@ const MappingDatgrid = ({
                 const columns = Object.keys(diagram?.cw_table?.[0] || [])
                 setColumns(
                     columns.map((col) => {
-
                         const column: GridColDef = {
                             field: col,
                             headerName: t(`MappingDiagram.${selectedCategory}.${col}`),
@@ -164,6 +173,16 @@ const MappingDatgrid = ({
                             sortable: false,
                             hideSortIcons: true,
                             disableColumnMenu: true,
+                            renderEditCell: (params) => (
+                                <GridEditInputCell
+                                    {...params}
+                                    slotProps={{
+                                        root: {
+                                            onFocus: (event) => (event.target as HTMLInputElement).select(),
+                                        },
+                                    }}
+                                />
+                            ),
                             renderCell: (params) => {
                                 if (params.value == null || isNaN(Number(params.value))) return params.value;
                                 const { bg, text } = getValueColor(Number(params.value));

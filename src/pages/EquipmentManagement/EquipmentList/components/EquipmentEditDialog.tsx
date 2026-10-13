@@ -2,12 +2,16 @@ import CloseIcon from "@mui/icons-material/Close";
 import {
     Box,
     Button,
+    Checkbox,
     CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
+    FormControl,
     FormControlLabel,
+    FormGroup,
+    FormLabel,
     IconButton,
     MenuItem,
     Switch,
@@ -31,6 +35,9 @@ import {
 import { convertUnitValue, getTargetUnit } from "./UnitTransfer";
 import toasterWording from "@/settings/toasterWording";
 import { showToast } from "@/components/ToasterCustom";
+import { calculateChwFlowLpm, calculateCop, calculateCwFlowLpm, calculateEfficiency, calculateMotorPower } from "../helpers/calculations";
+import { validateEquipmentField } from "../helpers/validations";
+
 
 interface EquipmentEditDialogProps {
     open: boolean;
@@ -39,6 +46,7 @@ interface EquipmentEditDialogProps {
     units?: EvalSetting;
     onClose: () => void;
     onSuccess?: () => void | Promise<void>;
+    exceptionFields?: Record<string, unknown>;
 }
 
 interface SelectOption {
@@ -68,13 +76,14 @@ const EquipmentEditDialog = ({
     units,
     onClose,
     onSuccess,
+    exceptionFields,
 }: EquipmentEditDialogProps) => {
     const { t } = useTranslation();
     const [equipmentName, setEquipmentName] = useState("");
     const [remarks, setRemarks] = useState("");
     const [specs, setSpecs] = useState<Record<string, unknown>>({});
     const [submitting, setSubmitting] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
+    // const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
         if (!open) return;
@@ -82,34 +91,100 @@ const EquipmentEditDialog = ({
         setEquipmentName(equipment?.equipment_name ?? "");
         setRemarks(equipment?.remarks ?? "");
         setSpecs(getInitialSpecs(category, equipment));
-        setErrorMessage("");
+        // setErrorMessage("");
+
+        const initialSpecs = getInitialSpecs(category, null, exceptionFields);
+        initialSpecs.cw_flow_lpm = calculateCwFlowLpm(
+            initialSpecs.heat_rejection_kw,
+            initialSpecs.cw_temp_in,
+            initialSpecs.cw_temp_out,
+        );
+        initialSpecs.efficiency_kw_per_rt = calculateEfficiency(
+            initialSpecs.rated_power_kw,
+            initialSpecs.cooling_capacity_rt,
+        );
+        initialSpecs.cop = calculateCop(initialSpecs.efficiency_kw_per_rt);
+        initialSpecs.motor_power_kw = calculateMotorPower(
+            initialSpecs.motor_count,
+            initialSpecs.heat_rejection_kw,
+        );
+        // setSpecs(initialSpecs);
+
+
+
     }, [open, equipment, category]);
 
-    const isReadOnly = (field: EquipmentField) => submitting || field.readonly || isFieldReadonly(field);
+    const isReadOnly = (field: EquipmentField) =>
+        submitting || (field.key !== "chw_flow_lpm" && (field.readonly || isFieldReadonly(field)));
 
     const handleClose = () => {
         if (!submitting) onClose();
     };
 
     const handleSpecChange = (key: string, value: unknown) => {
-        setSpecs((previous) => ({ ...previous, [key]: value }));
+        setSpecs((previous) => {
+            const next = { ...previous, [key]: value };
+
+            if (["rated_power_kw", "chw_temp_in", "chw_temp_out"].includes(key)) {
+                next.chw_flow_lpm = calculateChwFlowLpm(
+                    next.rated_power_kw,
+                    next.chw_temp_in,
+                    next.chw_temp_out,
+                );
+            }
+
+            if (["heat_rejection_kw", "cw_temp_in", "cw_temp_out"].includes(key)) {
+                next.cw_flow_lpm = calculateCwFlowLpm(
+                    next.heat_rejection_kw,
+                    next.cw_temp_in,
+                    next.cw_temp_out,
+                );
+            }
+
+            if (["rated_power_kw", "cooling_capacity_rt"].includes(key)) {
+                next.efficiency_kw_per_rt = calculateEfficiency(
+                    next.rated_power_kw,
+                    next.cooling_capacity_rt,
+                );
+            }
+
+            if (["rated_power_kw", "cooling_capacity_rt", "efficiency_kw_per_rt"].includes(key)) {
+                next.cop = calculateCop(next.efficiency_kw_per_rt);
+            }
+
+
+            if (["rated_power_kw", "cooling_capacity_rt", "efficiency_kw_per_rt"].includes(key)) {
+                next.cop = calculateCop(next.efficiency_kw_per_rt);
+            }
+
+            if (["motor_count", "heat_rejection_kw"].includes(key)) {
+                next.motor_power_kw = calculateMotorPower(
+                    next.motor_count,
+                    next.heat_rejection_kw,
+                );
+            }
+
+            return next;
+        });
     };
 
     const handleSubmit = async () => {
         const hasMissingRequiredField = category?.fields.some((field) =>
-            isRequiredFieldEmpty(field, specs[field.key]),
+            isRequiredFieldEmpty(field, specs[field.key], specs.iplv_nplv_mode),
         );
         if (!equipment || !category || !equipmentName.trim() || hasMissingRequiredField || submitting) return;
 
         try {
             setSubmitting(true);
-            setErrorMessage("");
+            // setErrorMessage("");
             await equipmentService.update({
                 id: equipment.id,
                 equipment_name: equipmentName.trim(),
                 remarks: remarks.trim(),
                 specs: category.fields.reduce<Record<string, unknown>>((values, field) => {
                     const normalizedValue = normalizeFieldValue(field, specs[field.key]);
+                    if (field.key === "iplv_nplv_mode" && normalizedValue === null) return values;
+
                     const fieldUnits = getFieldUnits(field);
                     const selectedUnit = String(
                         specs[`${field.key}_unit`] ?? fieldUnits?.[0] ?? "",
@@ -126,9 +201,9 @@ const EquipmentEditDialog = ({
             showToast(t(toasterWording.success.equipment_edit), "success");
             onClose();
         } catch (error: any) {
-            setErrorMessage(t("equipment-list.edit-dialog.error", {
-                message: error?.message ?? t("equipment-list.add-dialog.try-again"),
-            }));
+            // setErrorMessage(t("equipment-list.edit-dialog.error", {
+            //     message: error?.message ?? t("equipment-list.add-dialog.try-again"),
+            // }));
             showToast(t(toasterWording.error.equipment_edit), "error");
         } finally {
             setSubmitting(false);
@@ -164,6 +239,46 @@ const EquipmentEditDialog = ({
             unitCategory: field.unit,
             value: Number.isFinite(numericValue) ? numericValue : null,
         });
+
+        const fieldValidation = validateEquipmentField(field.key, specs[field.key]);
+
+
+        if (field.key === "iplv_nplv_mode" && field.options?.length) {
+            const modeValue = specs[field.key];
+            const selectedModes: string[] = Array.isArray(modeValue)
+                ? modeValue.map(String)
+                : modeValue
+                    ? [String(modeValue)]
+                    : [];
+
+            return (
+                <FormControl key={field.key} component="fieldset" disabled={isReadOnly(field)}>
+                    <FormLabel component="legend">{label}</FormLabel>
+                    <FormGroup row>
+                        {field.options.map((option) => {
+                            const value = String(getOptionValue(option));
+                            return (
+                                <FormControlLabel
+                                    key={value}
+                                    label={getOptionLabel(option)}
+                                    control={
+                                        <Checkbox
+                                            checked={selectedModes.includes(value)}
+                                            onChange={(event) => {
+                                                const nextModes = event.target.checked
+                                                    ? [...selectedModes, value]
+                                                    : selectedModes.filter((mode) => mode !== value);
+                                                handleSpecChange(field.key, nextModes);
+                                            }}
+                                        />
+                                    }
+                                />
+                            );
+                        })}
+                    </FormGroup>
+                </FormControl>
+            );
+        }
 
         if (fieldType === "boolean" || fieldType === "bool") {
             return (
@@ -233,6 +348,12 @@ const EquipmentEditDialog = ({
                     value={specs[field.key] ?? ""}
                     onChange={(event) => handleSpecChange(field.key, event.target.value)}
                     disabled={isReadOnly(field)}
+                    helperText={fieldValidation ? t(fieldValidation.messageKey) : undefined}
+                    slotProps={{
+                        formHelperText: {
+                            error: Boolean(fieldValidation),
+                        },
+                    }}
                     sx={{
                         gridColumn: fieldUnits ? "span 1" : "1 / -1",
                     }}
@@ -259,7 +380,7 @@ const EquipmentEditDialog = ({
                         </Typography>
                         <Typography variant="body2" color="textSecondary">
                             {targetUnit && Number.isFinite(numericValue)
-                                ? `${convertedValue ?? numericValue} ${targetUnit}`
+                                ? `${Number(convertedValue ?? numericValue).toFixed(1)} ${targetUnit}`
                                 : ""}
                         </Typography>
                     </Box>
@@ -299,7 +420,7 @@ const EquipmentEditDialog = ({
                         disabled={submitting}
                         slotProps={{ htmlInput: { maxLength: 500 } }}
                     />
-                    {errorMessage && <Typography color="error">{errorMessage}</Typography>}
+                    {/* {errorMessage && <Typography color="error">{errorMessage}</Typography>} */}
                 </Box>
             </DialogContent>
 
@@ -315,7 +436,9 @@ const EquipmentEditDialog = ({
                         !equipment ||
                         !category ||
                         !equipmentName.trim() ||
-                        category.fields.some((field) => isRequiredFieldEmpty(field, specs[field.key]))
+                        category.fields.some((field) =>
+                            isRequiredFieldEmpty(field, specs[field.key], specs.iplv_nplv_mode),
+                        )
                     }
                     startIcon={submitting ? <CircularProgress size={16} color="inherit" /> : undefined}
                 >

@@ -15,16 +15,19 @@ import { useRef, useState, type ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import importFileService from "@/api/services/importFile";
 import { DatasetTypeNum, type CommonIdType } from "@/api/types/shared";
+import type { CsvDataset } from "@/api/types/tagMapping";
 import TitleText from "@/components/TitleText";
-import type { ImportFile } from "@/api/types";
+import ConfirmActionDialog from "@/components/ConfirmActionDialog";
 import { tagMappingService } from "@/api/services/tagMapping";
 import type { RequestTagMapping } from "@/api/types/tagMapping";
+import { showToast } from "@/components/ToasterCustom";
+import toasterWording from "@/settings/toasterWording";
 
 interface ProjectCsvUploadDialogProps {
     open: boolean;
     onClose: () => void;
     onUploaded: () => Promise<void> | void;
-    projectFile?: ImportFile | null;
+    projectFile?: CsvDataset | null;
 }
 
 const resetData: Omit<RequestTagMapping, "upload_id"> = {
@@ -49,8 +52,7 @@ const ProjectCsvUploadDialog = ({ open, onClose, onUploaded, projectFile }: Proj
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [isUploading, setIsUploading] = useState(false);
-
-
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
     const resetDialog = () => {
         setSelectedFile(null);
@@ -74,13 +76,9 @@ const ProjectCsvUploadDialog = ({ open, onClose, onUploaded, projectFile }: Proj
             event.target.value = "";
             return;
         }
-
         setSelectedFile(file);
     };
 
-    const resetDataCleaning = async (id: CommonIdType) => {
-        await tagMappingService.update({ upload_id: id, ...resetData });
-    }
 
     const handleUpload = async () => {
         if (!selectedFile || isUploading) return;
@@ -88,14 +86,21 @@ const ProjectCsvUploadDialog = ({ open, onClose, onUploaded, projectFile }: Proj
         try {
             setIsUploading(true);
             setErrorMessage("");
-            await importFileService.uploadFile(selectedFile, DatasetTypeNum.SIMULATION);
-            if (projectFile) await resetDataCleaning(projectFile.id);
-            await onUploaded();
-            resetDialog();
+            const csvId = await importFileService.uploadFile(selectedFile, DatasetTypeNum.SIMULATION);
+
+            if (csvId.upload_id) {
+                console.log("csvId:", csvId);
+                console.log("csvId:", csvId, "typeof:", typeof csvId);
+                await tagMappingService.update({ upload_id: csvId.upload_id });
+                await tagMappingService.reset();
+                await onUploaded();
+                resetDialog();
+
+                showToast(t(toasterWording.success.project_upload), "success");
+                onClose();
+            }
 
 
-
-            onClose();
         } catch (error) {
             const message = error instanceof Error ? error.message : "";
             setErrorMessage(t("projectCsv.upload_error", { message }));
@@ -103,6 +108,7 @@ const ProjectCsvUploadDialog = ({ open, onClose, onUploaded, projectFile }: Proj
             setIsUploading(false);
         }
     };
+
 
     return (
         <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
@@ -147,13 +153,27 @@ const ProjectCsvUploadDialog = ({ open, onClose, onUploaded, projectFile }: Proj
                 <Button onClick={handleClose} disabled={isUploading}>{t("common.cancel")}</Button>
                 <Button
                     variant="contained"
-                    onClick={() => void handleUpload()}
+                    onClick={() => setIsConfirmOpen(true)}
                     disabled={isUploading || !selectedFile}
                     startIcon={isUploading ? <CircularProgress size={16} color="inherit" /> : undefined}
                 >
                     {isUploading ? t("projectCsv.uploading") : t("projectCsv.upload")}
                 </Button>
             </DialogActions>
+
+            <ConfirmActionDialog
+                open={isConfirmOpen}
+                title={t("projectCsv.upload_warning_title")}
+                description={t("projectCsv.upload_warning_description")}
+                confirmText={t("projectCsv.upload")}
+                cancelText={t("common.cancel")}
+                isSubmitting={isUploading}
+                onCancel={() => setIsConfirmOpen(false)}
+                onConfirm={() => {
+                    setIsConfirmOpen(false);
+                    void handleUpload();
+                }}
+            />
         </Dialog>
     );
 };

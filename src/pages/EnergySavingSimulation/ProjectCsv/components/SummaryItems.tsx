@@ -1,43 +1,43 @@
-import { alpha, Box, Chip, Grid, Paper, Typography, type ChipProps } from "@mui/material";
+import { alpha, Grid, Paper, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { DatasetTypeText } from "@/api/types/shared";
-import type { ImportFile } from "@/api/types/importFile";
+import type { CsvDataset } from "@/api/types/tagMapping";
 
 type SummaryItemsProps = {
-    file: ImportFile | null;
+    file: CsvDataset | null;
     tags: string[];
 };
 
 const SummaryItems = ({ file, tags }: SummaryItemsProps) => {
     const { t } = useTranslation();
-    const statusLabel = file?.status === 1
-        ? t("projectCsv.status_uploading")
-        : file?.status === 2
-            ? t("projectCsv.status_success")
-            : file?.status === 3
-                ? t("projectCsv.status_failed")
-                : t("projectCsv.status_unknown");
-    const statusColor: ChipProps["color"] = file?.status === 1
-        ? "warning"
-        : file?.status === 2
-            ? "success"
-            : file?.status === 3
-                ? "error"
-                : "default";
-    const uploadType = file?.upload_type == null ? "-" : DatasetTypeText[file.upload_type];
+    // const statusLabel = file?.status === 1
+    //     ? t("projectCsv.status_uploading")
+    //     : file?.status === 2
+    //         ? t("projectCsv.status_success")
+    //         : file?.status === 3
+    //             ? t("projectCsv.status_failed")
+    //             : t("projectCsv.status_unknown");
+    // const statusColor: ChipProps["color"] = file?.status === 1
+    //     ? "warning"
+    //     : file?.status === 2
+    //         ? "success"
+    //         : file?.status === 3
+    //             ? "error"
+    //             : "default";
+    // const uploadType = file?.upload_type == null ? "-" : DatasetTypeText[file.upload_type];
     const summaryItems = [
         { label: t("projectCsv.file_name"), value: file?.file_name ?? "-" },
         { label: t("projectCsv.field_count"), value: t("projectCsv.field_count_value", { count: tags.length }) },
         { label: t("projectCsv.row_count"), value: t("projectCsv.row_count_value", { count: file?.row_count ?? "-" }) },
-        { label: t("projectCsv.status"), value: statusLabel, isStatus: true },
-        { label: t("projectCsv.file_type"), value: uploadType },
+        // { label: t("projectCsv.status"), value: statusLabel, isStatus: true },
+        // { label: t("projectCsv.file_type"), value: uploadType },
     ];
 
     return (
         <Grid container spacing={1.5}>
             {summaryItems.map((item) => (
-                <Grid size={{ xs: 12, sm: 6, md: 2.4 }} key={item.label}>
+                <Grid size={{ xs: 12, sm: 4, md: 4 }} key={item.label}>
                     <Paper
+                        key={item.label}
                         variant="outlined"
                         sx={(theme) => ({
                             px: 1,
@@ -58,7 +58,10 @@ const SummaryItems = ({ file, tags }: SummaryItemsProps) => {
                         <Typography sx={{ fontSize: 12, color: "text.secondary", lineHeight: 1.1 }}>
                             {item.label}
                         </Typography>
-                        {item.isStatus ? (
+                        <Typography sx={{ fontSize: 13, color: "text.primary", fontWeight: 600, lineHeight: 1.2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                            {item.value}
+                        </Typography>
+                        {/* {item.isStatus ? (
                             <Box sx={{ display: "flex", alignItems: "center" }}>
                                 <Chip size="small" label={statusLabel} color={statusColor} variant="outlined" />
                             </Box>
@@ -66,7 +69,7 @@ const SummaryItems = ({ file, tags }: SummaryItemsProps) => {
                             <Typography sx={{ fontSize: 13, color: "text.primary", fontWeight: 600, lineHeight: 1.2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                                 {item.value}
                             </Typography>
-                        )}
+                        )} */}
                     </Paper>
                 </Grid>
             ))}
