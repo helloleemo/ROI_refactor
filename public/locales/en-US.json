@@ -28,6 +28,8 @@
         "creating": "Creating...",
         "name_required": "Please enter a project name",
         "create_failed": "Failed to create project. Please try again later.",
+        "empty_title": "Create your first project",
+        "empty_description": "Create a project to get started.",
         "not_found_title": "Project Not Found",
         "not_found_invalid": "Project does not exist or is unavailable.",
         "not_found_empty": "There are no available projects.",

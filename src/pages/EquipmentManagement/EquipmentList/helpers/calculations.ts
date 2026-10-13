@@ -69,15 +69,15 @@ export const calculateMotorPower = (motorCount: unknown, heatRejectionKw: unknow
 };
 
 
-export const calculateDesignApproachTemp = (designTempOutC: unknown, DesignWetBulbTempC: unknown) => {
-    if ([designTempOutC, DesignWetBulbTempC].some((value) => value === "" || value === null || value === undefined)) {
+export const calculateDesignWetBulbTemp = (designTempOut: unknown, designApproachTempC: unknown) => {
+    if ([designTempOut, designApproachTempC].some((value) => value === "" || value === null || value === undefined)) {
         return "";
     }
 
-    const designTempOut = Number(designTempOutC);
-    const designWetBulbTemp = Number(DesignWetBulbTempC);
+    const designTempOutNum = Number(designTempOut);
+    const designApproachTemp = Number(designApproachTempC);
 
-    if (![designTempOut, designWetBulbTemp].every(Number.isFinite)) return "";
+    if (![designTempOutNum, designApproachTemp].every(Number.isFinite)) return "";
 
-    return Number((designTempOut - designWetBulbTemp).toFixed(1));
+    return Number((designTempOutNum - designApproachTemp).toFixed(2));
 };

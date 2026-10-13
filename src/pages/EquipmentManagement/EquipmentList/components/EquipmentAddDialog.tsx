@@ -1,5 +1,5 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { calculateChwFlowLpm, calculateCwFlowLpm, calculateEfficiency, calculateCop, calculateMotorPower, calculateDesignApproachTemp } from "../helpers/calculations";
+import { calculateChwFlowLpm, calculateCwFlowLpm, calculateEfficiency, calculateCop, calculateMotorPower, calculateDesignWetBulbTemp } from "../helpers/calculations";
 import {
     Box,
     Button,
@@ -112,11 +112,10 @@ const EquipmentAddDialog = ({
                 initialSpecs.motor_count,
                 initialSpecs.heat_rejection_kw,
             );
-            initialSpecs.design_approach_temp = calculateDesignApproachTemp(
+            initialSpecs.design_wet_bulb_temp = calculateDesignWetBulbTemp(
                 initialSpecs.design_temp_out,
-                initialSpecs.design_wet_bulb_temp,
+                initialSpecs.design_approach_temp,
             );
-
 
 
             setSpecs(initialSpecs);
@@ -166,10 +165,10 @@ const EquipmentAddDialog = ({
                 );
             }
 
-            if (["design_temp_out", "design_wet_bulb_temp"].includes(key)) {
-                next.design_approach_temp = calculateDesignApproachTemp(
+            if (["design_temp_out", "design_approach_temp"].includes(key)) {
+                next.design_wet_bulb_temp = calculateDesignWetBulbTemp(
                     next.design_temp_out,
-                    next.design_wet_bulb_temp,
+                    next.design_approach_temp,
                 );
             }
 

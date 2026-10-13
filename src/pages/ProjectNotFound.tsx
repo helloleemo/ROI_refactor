@@ -1,13 +1,16 @@
+import { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useProject } from "@/contexts/ProjectContext";
+import ProjectDialog from "@/components/layout/ProjectDialog";
 
 const ProjectNotFound = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { invalidProjectId, projects, setCurrentProject } = useProject();
-    // const hasProjects = projects.length > 0;
+    const [isCreateDialogOpen, setCreateDialogOpen] = useState(false);
+    const hasNoProjects = projects.length === 0;
 
     const handleGoHome = () => {
         const firstProject = projects[0];
@@ -34,17 +37,26 @@ const ProjectNotFound = () => {
                 textAlign: "center",
             }}
         >
-            <Typography variant="h4">{t("project.not_found_title")}</Typography>
+            <Typography variant="h4">
+                {hasNoProjects ? t("project.empty_title") : t("project.not_found_title")}
+            </Typography>
             <Typography color="text.secondary">
-                {invalidProjectId
-                    ? t("project.not_found_invalid", { projectId: invalidProjectId })
-                    : t("project.not_found_empty")}
+                {hasNoProjects
+                    ? t("project.empty_description")
+                    : t("project.not_found_invalid", { projectId: invalidProjectId })}
             </Typography>
 
-            <Button variant="contained" onClick={handleGoHome}>
-                {t("project.back_to_home")}
+            <Button
+                variant="contained"
+                onClick={hasNoProjects ? () => setCreateDialogOpen(true) : handleGoHome}
+            >
+                {hasNoProjects ? t("project.create_project") : t("project.back_to_home")}
             </Button>
 
+            <ProjectDialog
+                open={isCreateDialogOpen}
+                onClose={() => setCreateDialogOpen(false)}
+            />
         </Box>
     );
 };

@@ -28,6 +28,8 @@
         "creating": "建立中...",
         "name_required": "請輸入專案名稱",
         "create_failed": "建立專案失敗，請稍後再試",
+        "empty_title": "建立第一個專案",
+        "empty_description": "新增專案後即可開始使用。",
         "not_found_title": "找不到專案",
         "not_found_invalid": "專案不存在或無法使用。",
         "not_found_empty": "目前沒有任何可用的專案。",

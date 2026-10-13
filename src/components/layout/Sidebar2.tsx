@@ -341,7 +341,7 @@ const Sidebar2 = () => {
                                             );
                                         })}
                                     </List>
-                                    <Typography sx={{ fontSize: 13, color: "grey.200", px: 2, py: 1 }}>aiot-roi-tool-1.0.2</Typography>
+                                    <Typography sx={{ fontSize: 13, color: "grey.200", px: 2, py: 1 }}>aiot-roi-tool-1.0.4</Typography>
                                 </Box>
                             ) : null}
                         </Box>

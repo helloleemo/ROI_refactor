@@ -63,7 +63,7 @@ const SetApproachTempDialog = ({
                     fullWidth
                     required
                     type="number"
-                    label={t("equipment-list.fields5.approach_temp") + " (°C)"}
+                    label={t("equipment-list.fields5.setting_approach_temp") + " (°C)"}
                     value={approachTemp}
                     onChange={(event) => setApproachTemp(event.target.value)}
                     disabled={isLoading("submit")}

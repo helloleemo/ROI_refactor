@@ -19,7 +19,6 @@ import type { CsvDataset } from "@/api/types/tagMapping";
 import TitleText from "@/components/TitleText";
 import ConfirmActionDialog from "@/components/ConfirmActionDialog";
 import { tagMappingService } from "@/api/services/tagMapping";
-import type { RequestTagMapping } from "@/api/types/tagMapping";
 import { showToast } from "@/components/ToasterCustom";
 import toasterWording from "@/settings/toasterWording";
 

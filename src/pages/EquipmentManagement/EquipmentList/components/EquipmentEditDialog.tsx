@@ -35,7 +35,7 @@ import {
 import { convertUnitValue, getTargetUnit } from "./UnitTransfer";
 import toasterWording from "@/settings/toasterWording";
 import { showToast } from "@/components/ToasterCustom";
-import { calculateChwFlowLpm, calculateCop, calculateCwFlowLpm, calculateEfficiency, calculateMotorPower } from "../helpers/calculations";
+import { calculateChwFlowLpm, calculateCop, calculateCwFlowLpm, calculateDesignWetBulbTemp, calculateEfficiency, calculateMotorPower } from "../helpers/calculations";
 import { validateEquipmentField } from "../helpers/validations";
 
 
@@ -108,7 +108,11 @@ const EquipmentEditDialog = ({
             initialSpecs.motor_count,
             initialSpecs.heat_rejection_kw,
         );
-        // setSpecs(initialSpecs);
+        initialSpecs.design_wet_bulb_temp = calculateDesignWetBulbTemp(
+            initialSpecs.design_temp_out,
+            initialSpecs.design_approach_temp,
+        );
+
 
 
 
@@ -161,6 +165,12 @@ const EquipmentEditDialog = ({
                 next.motor_power_kw = calculateMotorPower(
                     next.motor_count,
                     next.heat_rejection_kw,
+                );
+            }
+            if (["design_temp_out", "design_approach_temp"].includes(key)) {
+                next.design_wet_bulb_temp = calculateDesignWetBulbTemp(
+                    next.design_temp_out,
+                    next.design_approach_temp,
                 );
             }
 
