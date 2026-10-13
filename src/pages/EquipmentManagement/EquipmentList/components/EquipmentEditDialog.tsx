@@ -295,9 +295,30 @@ const EquipmentEditDialog = ({
                 />
             );
         }
-
         if (field.options?.length) {
-            return (
+            if (field.key.toLowerCase() === "compressor_type") {
+                return (
+                    <TextField
+                        key={field.key}
+                        select
+                        fullWidth
+                        required
+                        label={t(`equipment-list.fields1.${field.key}`)}
+                        value={specs[field.key] ?? ""}
+                        onChange={(event) => handleSpecChange(field.key, event.target.value)}
+                        disabled={isReadOnly(field)}
+                    >
+                        {field.options.map((option) => {
+                            const value = getOptionValue(option);
+                            return (
+                                <MenuItem key={String(value)} value={`${String(value)}`}>
+                                    {t(`equipment-list.fields1.compressor_type_options.${String(value)}`)}
+                                </MenuItem>
+                            );
+                        })}
+                    </TextField>
+                );
+            } else {
                 <TextField
                     key={field.key}
                     select
@@ -317,8 +338,9 @@ const EquipmentEditDialog = ({
                         );
                     })}
                 </TextField>
-            );
+            }
         }
+
 
         if (field.field_type.toLowerCase() === "list" && field.key === "iplv_nplv_data") {
             return (

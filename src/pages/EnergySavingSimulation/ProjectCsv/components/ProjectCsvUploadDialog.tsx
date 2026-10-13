@@ -14,7 +14,7 @@ import {
 import { useRef, useState, type ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import importFileService from "@/api/services/importFile";
-import { DatasetTypeNum, type CommonIdType } from "@/api/types/shared";
+import { DatasetTypeNum } from "@/api/types/shared";
 import type { CsvDataset } from "@/api/types/tagMapping";
 import TitleText from "@/components/TitleText";
 import ConfirmActionDialog from "@/components/ConfirmActionDialog";
@@ -30,20 +30,20 @@ interface ProjectCsvUploadDialogProps {
     projectFile?: CsvDataset | null;
 }
 
-const resetData: Omit<RequestTagMapping, "upload_id"> = {
-    data_settings: null,
-    global_mapping: null,
-    chiller_mappings: null,
-    chp_mappings: null,
-    zp_mappings: null,
-    cwp_mappings: null,
-    ct_mappings: null,
-    pump_mappings: null,
-    load_mappings: null,
-    calculation_results: null
-};
+// const resetData: Omit<RequestTagMapping, "upload_id"> = {
+//     data_settings: null,
+//     global_mapping: null,
+//     chiller_mappings: null,
+//     chp_mappings: null,
+//     zp_mappings: null,
+//     cwp_mappings: null,
+//     ct_mappings: null,
+//     pump_mappings: null,
+//     load_mappings: null,
+//     calculation_results: null
+// };
 
-const ProjectCsvUploadDialog = ({ open, onClose, onUploaded, projectFile }: ProjectCsvUploadDialogProps) => {
+const ProjectCsvUploadDialog = ({ open, onClose, onUploaded }: ProjectCsvUploadDialogProps) => {
 
     // console.log("projectFile:", projectFile);
 

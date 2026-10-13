@@ -1,11 +1,9 @@
-import { DataGrid, type GridColDef, type GridRenderCellParams } from "@mui/x-data-grid";
-import { formatOneDecimal } from "./helpers/formatDecimal";
+import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import type { EquipmentField, EquipementResponse } from "@/api/types/equipment";
 import { useTranslation } from "react-i18next";
 import { Box, IconButton, Tooltip } from "@mui/material";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
-    BooleanChip,
     ConfirmDeleteDialog,
     DataGridNoRowsOverlay,
     N30x30OptionsCopy,
@@ -17,6 +15,7 @@ import {
 import equipmentService from "@/api/services/equipment";
 import { isDataGridHiddenField } from "./components/FieldException";
 import toasterWording from "@/settings/toasterWording";
+import { resolveColumnDef } from "./helpers/columnRules";
 interface EquipmentDatagridProps {
     selectedCategory: string;
     renderFields: EquipmentField[];
@@ -27,37 +26,6 @@ interface EquipmentDatagridProps {
     onCopy?: (row: EquipementResponse) => void;
     onDeleted?: () => void | Promise<void>;
 }
-
-const oneDecimalFieldKeys = new Set([
-    // 1
-    "chw_temp_out",
-    "chw_temp_in",
-    "cw_temp_in",
-    "cw_temp_out",
-    "efficiency_kw_per_rt",
-    "cop",
-    "heat_rejection_kw",
-    "chw_flow_lpm",
-    "cw_flow_lpm",
-    "motor_power_kw",
-
-    // 2
-
-    "rated_power_kw",
-    "rated_flow_lpm",
-    "head_m",
-
-    // 5
-    "heat_rejection_kw",
-    "motor_power_kw",
-    "fan_power_kw",
-    "design_temp_in",
-    "design_temp_out",
-    "design_approach_temp",
-    "design_wet_bulb_temp",
-
-]);
-
 
 // const renderIplvNplvData = (value: unknown) => {
 //     if (!Array.isArray(value)) return "-";
@@ -121,32 +89,15 @@ const EquipmentDatagrid = ({
         }
     };
 
-
-
-    const columns: GridColDef[] = [
+    const columns: GridColDef[] = useMemo(() => [
         {
             field: "equipment_name",
             headerName: `${t(`equipment-list.fields${selectedCategory}.equipment_name`)}`,
             width: 150,
         },
-        ...renderFields.filter((field) => !isDataGridHiddenField(field)).map((field) => {
-            const fieldType = field.field_type.toLowerCase();
-            const isBoolean = fieldType === "boolean" || fieldType === "bool";
-            const shouldFormatOneDecimal = oneDecimalFieldKeys.has(field.key);
-
-            return (
-                {
-                    field: field.key,
-                    headerName: `${t(`equipment-list.fields${selectedCategory}.${field.key}`)}`,
-                    width: 150,
-                    ...(isBoolean
-                        ? { renderCell: (params: GridRenderCellParams) => <BooleanChip value={Boolean(params.value)} /> }
-                        : shouldFormatOneDecimal
-                            ? { renderCell: (params: GridRenderCellParams) => formatOneDecimal(params.value) }
-                            : {}),
-                }
-            )
-        }),
+        ...renderFields
+            .filter((field) => !isDataGridHiddenField(field))
+            .map((field) => resolveColumnDef(field, { t, selectedCategory })),
         {
             field: "actions",
             headerName: `${t(`equipment-list.actions`)}`,
@@ -206,8 +157,8 @@ const EquipmentDatagrid = ({
                     </Tooltip>
                 </Box>
             ),
-        }
-    ]
+        },
+    ], [renderFields, selectedCategory, t, equipmentList, onView, onCopy, onEdit]);
 
     return (
         <>

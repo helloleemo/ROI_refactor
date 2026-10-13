@@ -177,6 +177,11 @@
             "cooling_capacity_rt": "冷卻能力 (RT)",
             "rated_power_kw": "額定耗電 (kW)",
             "compressor_type": "壓縮機形式",
+            "compressor_type_options": {
+                "screw": "螺桿式",
+                "magnetic": "磁浮式",
+                "centrifugal": "離心式"
+            },
             "compressor_count": "壓縮機數量",
             "is_vfd": "內建變頻",
             "chw_temp_out": "冰水出水溫 (°C)",

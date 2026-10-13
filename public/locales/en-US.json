@@ -179,6 +179,11 @@
             "cooling_capacity_rt": "Cooling Capacity (RT)",
             "rated_power_kw": "Rated Power (kW)",
             "compressor_type": "Compressor Type",
+            "compressor_type_options": {
+                "screw": "Screw",
+                "magnetic": "Magnetic",
+                "centrifugal": "Centrifugal"
+            },
             "compressor_count": "Compressor Count",
             "is_vfd": "Is VFD",
             "chw_temp_out": "CHW Temp Out",
