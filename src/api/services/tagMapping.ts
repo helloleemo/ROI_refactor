@@ -23,7 +23,7 @@ export const tagMappingService = {
         });
     },
     calculate: async () => {
-        return PATCH<CalculateLoad>({
+        return POST<CalculateLoad>({
             endpoint: API_ENDPOINTS.TAG_MAPPING.TAG_MAPPING_CALCULATE,
         })
     },

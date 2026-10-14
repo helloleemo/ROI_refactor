@@ -8,21 +8,41 @@ import ProjectDialog from "@/components/layout/ProjectDialog";
 const ProjectNotFound = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { invalidProjectId, projects, setCurrentProject } = useProject();
+    const { invalidProjectId, projects, projectLoadError, refreshProjects, setCurrentProject } = useProject();
     const [isCreateDialogOpen, setCreateDialogOpen] = useState(false);
     const hasNoProjects = projects.length === 0;
 
     const handleGoHome = () => {
         const firstProject = projects[0];
 
-        if (!firstProject) {
+        if (firstProject) {
+            setCurrentProject(firstProject);
+            navigate(`/${firstProject.id}`, { replace: true });
+        } else {
             navigate("/", { replace: true });
-            return;
         }
-
-        setCurrentProject(firstProject);
-        navigate(`/${firstProject.id}`, { replace: true });
     };
+
+    const page = projectLoadError
+        ? {
+            title: t("project.load_failed_title"),
+            description: t("project.load_failed_description"),
+            action: t("project.retry"),
+            onAction: () => void refreshProjects(),
+        }
+        : hasNoProjects
+            ? {
+                title: t("project.empty_title"),
+                description: t("project.empty_description"),
+                action: t("project.create_project"),
+                onAction: () => setCreateDialogOpen(true),
+            }
+            : {
+                title: t("project.not_found_title"),
+                description: t("project.not_found_invalid", { projectId: invalidProjectId }),
+                action: t("project.back_to_home"),
+                onAction: handleGoHome,
+            };
 
     return (
         <Box
@@ -37,21 +57,9 @@ const ProjectNotFound = () => {
                 textAlign: "center",
             }}
         >
-            <Typography variant="h4">
-                {hasNoProjects ? t("project.empty_title") : t("project.not_found_title")}
-            </Typography>
-            <Typography color="text.secondary">
-                {hasNoProjects
-                    ? t("project.empty_description")
-                    : t("project.not_found_invalid", { projectId: invalidProjectId })}
-            </Typography>
-
-            <Button
-                variant="contained"
-                onClick={hasNoProjects ? () => setCreateDialogOpen(true) : handleGoHome}
-            >
-                {hasNoProjects ? t("project.create_project") : t("project.back_to_home")}
-            </Button>
+            <Typography variant="h4">{page.title}</Typography>
+            <Typography color="text.secondary">{page.description}</Typography>
+            <Button variant="contained" onClick={page.onAction}>{page.action}</Button>
 
             <ProjectDialog
                 open={isCreateDialogOpen}

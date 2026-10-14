@@ -40,7 +40,7 @@ export const calculateEfficiency = (ratedKw: unknown, cooingCapacityRt: unknown)
 
     if (![power, capacity].every(Number.isFinite) || capacity === 0) return "";
 
-    return Number((power / capacity).toFixed(1));
+    return Number((power / capacity).toFixed(3));
 };
 
 
@@ -52,7 +52,7 @@ export const calculateCop = (efficiency_kw_per_rt: unknown) => {
     const efficiency = Number(efficiency_kw_per_rt);
     if (!Number.isFinite(efficiency) || efficiency === 0) return "";
 
-    return Number((1 / efficiency).toFixed(1));
+    return Number((1 / efficiency * 3.517).toFixed(3));
 };
 
 export const calculateMotorPower = (motorCount: unknown, heatRejectionKw: unknown) => {

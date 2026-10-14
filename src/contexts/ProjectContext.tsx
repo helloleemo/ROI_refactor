@@ -8,6 +8,7 @@ interface ProjectContextValue {
     projects: ProjectListItem[];
     currentProject?: ProjectListItem;
     invalidProjectId?: string;
+    projectLoadError: boolean;
     setCurrentProject: (project: ProjectListItem) => void;
     refreshProjects: () => Promise<ProjectListItem[]>;
 }
@@ -19,6 +20,7 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
     const [projects, setProjects] = useState<ProjectListItem[]>([]);
     const [currentProject, setCurrentProjectState] = useState<ProjectListItem>();
     const [invalidProjectId, setInvalidProjectId] = useState<string>();
+    const [projectLoadError, setProjectLoadError] = useState(false);
     const [initialized, setInitialized] = useState(false);
     const {
         isLoading,
@@ -41,6 +43,7 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
         startLoading("project");
         try {
             const allProjects = await ProjectService.GET();
+            setProjectLoadError(false);
             // console.log("All projects loaded:", allProjects);
             setProjects(allProjects);
 
@@ -70,6 +73,7 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
         }
         catch (error) {
             console.error("Failed to load all projects", error);
+            setProjectLoadError(true);
             return [];
         }
         finally {
@@ -90,7 +94,7 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
     const showLoading = !initialized || isLoading("project");
 
     return (
-        <ProjectContext.Provider value={{ projects, currentProject, invalidProjectId, setCurrentProject, refreshProjects }}>
+        <ProjectContext.Provider value={{ projects, currentProject, invalidProjectId, projectLoadError, setCurrentProject, refreshProjects }}>
             {showLoading ? (
                 <Box
                     sx={{
