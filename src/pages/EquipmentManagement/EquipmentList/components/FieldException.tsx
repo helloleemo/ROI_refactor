@@ -1,5 +1,6 @@
 
 import type { EquipmentCategory, EquipmentField, EquipementResponse } from "@/api/types/equipment";
+import { isModeDataEmpty } from "../helpers/iplvNplv";
 
 interface FieldExceptionProps {
     field: EquipmentField;
@@ -55,28 +56,7 @@ const isRequiredFieldEmpty = (field: EquipmentField, value: unknown, mode?: unkn
     if (field.key === "iplv_nplv_mode") return false;
 
     if (field.key === "iplv_nplv_data") {
-        const selectedModes = Array.isArray(mode)
-            ? mode.map(String).map((item) => item.toUpperCase())
-            : mode
-                ? [String(mode).toUpperCase()]
-                : [];
-        if (selectedModes.length === 0) return false;
-        if (!Array.isArray(value) || value.length === 0) return true;
-
-        return value.some((row) => {
-            if (!row || typeof row !== "object") return true;
-
-            const data = row as {
-                load_ratio?: unknown;
-                cw_temp_in?: unknown;
-                kw_per_rt?: unknown;
-            };
-            const requiredValues = [data.load_ratio, data.kw_per_rt];
-            if (selectedModes.includes("NPLV")) requiredValues.push(data.cw_temp_in);
-            return requiredValues.some(
-                (item) => item === null || item === undefined || String(item).trim() === "",
-            );
-        });
+        return isModeDataEmpty(value, mode);
     }
 
     return value === null || value === undefined || String(value).trim() === "";
