@@ -1,5 +1,5 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { calculateChwFlowLpm, calculateCwFlowLpm, calculateEfficiency, calculateCop, calculateMotorPower, calculateDesignWetBulbTemp } from "../helpers/calculations";
+import { recalculateEquipmentSpecs } from "../helpers/calculations";
 import {
     Box,
     Button,
@@ -96,27 +96,12 @@ const EquipmentAddDialog = ({
             setEquipmentName("");
             setRemarks("");
 
-            const initialSpecs = getInitialSpecs(category, null, exceptionFields);
-            initialSpecs.iplv_nplv_mode = [];
-            initialSpecs.cw_flow_lpm = calculateCwFlowLpm(
-                initialSpecs.heat_rejection_kw,
-                initialSpecs.cw_temp_in,
-                initialSpecs.cw_temp_out,
-            );
-            initialSpecs.efficiency_kw_per_rt = calculateEfficiency(
-                initialSpecs.rated_power_kw,
-                initialSpecs.cooling_capacity_rt,
-            );
-            initialSpecs.cop = calculateCop(initialSpecs.efficiency_kw_per_rt);
-            initialSpecs.motor_power_kw = calculateMotorPower(
-                initialSpecs.motor_count,
-                initialSpecs.heat_rejection_kw,
-            );
-            initialSpecs.design_wet_bulb_temp = calculateDesignWetBulbTemp(
-                initialSpecs.design_temp_out,
-                initialSpecs.design_approach_temp,
-            );
 
+
+            const initialSpecs = recalculateEquipmentSpecs({
+                ...getInitialSpecs(category, null, exceptionFields),
+                iplv_nplv_mode: [],
+            });
 
             setSpecs(initialSpecs);
             // setErrorMessage("");
@@ -128,53 +113,7 @@ const EquipmentAddDialog = ({
     };
 
     const handleSpecChange = (key: string, value: unknown) => {
-        setSpecs((previous) => {
-            const next = { ...previous, [key]: value };
-
-            if (["rated_power_kw", "chw_temp_in", "chw_temp_out"].includes(key)) {
-                next.chw_flow_lpm = calculateChwFlowLpm(
-                    next.rated_power_kw,
-                    next.chw_temp_in,
-                    next.chw_temp_out,
-                );
-            }
-
-            if (["heat_rejection_kw", "cw_temp_in", "cw_temp_out"].includes(key)) {
-                next.cw_flow_lpm = calculateCwFlowLpm(
-                    next.heat_rejection_kw,
-                    next.cw_temp_in,
-                    next.cw_temp_out,
-                );
-            }
-
-            if (["rated_power_kw", "cooling_capacity_rt"].includes(key)) {
-                next.efficiency_kw_per_rt = calculateEfficiency(
-                    next.rated_power_kw,
-                    next.cooling_capacity_rt,
-                );
-            }
-
-            if (["rated_power_kw", "cooling_capacity_rt", "efficiency_kw_per_rt"].includes(key)) {
-                next.cop = calculateCop(next.efficiency_kw_per_rt);
-            }
-
-            if (["motor_count", "heat_rejection_kw"].includes(key)) {
-                next.motor_power_kw = calculateMotorPower(
-                    next.motor_count,
-                    next.heat_rejection_kw,
-                );
-            }
-
-            if (["design_temp_out", "design_approach_temp"].includes(key)) {
-                next.design_wet_bulb_temp = calculateDesignWetBulbTemp(
-                    next.design_temp_out,
-                    next.design_approach_temp,
-                );
-            }
-
-
-            return next;
-        });
+        setSpecs((previous) => recalculateEquipmentSpecs({ ...previous, [key]: value }, key));
     };
 
     const handleSubmit = async () => {
@@ -284,7 +223,6 @@ const EquipmentAddDialog = ({
         }
 
 
-
         if (fieldType === "boolean" || fieldType === "bool") {
             return (
                 <FormControlLabel
@@ -307,6 +245,7 @@ const EquipmentAddDialog = ({
                 return (
                     <TextField
                         key={field.key}
+                        autoComplete="off"
                         select
                         fullWidth
                         required
@@ -328,6 +267,7 @@ const EquipmentAddDialog = ({
             } else {
                 <TextField
                     key={field.key}
+                    autoComplete="off"
                     select
                     fullWidth
                     required
@@ -378,6 +318,7 @@ const EquipmentAddDialog = ({
                 }}>
                 <TextField
                     key={field.key}
+                    autoComplete="off"
                     fullWidth
                     required
                     label={`${label}`}
@@ -395,22 +336,26 @@ const EquipmentAddDialog = ({
                         gridColumn: fieldUnits ? "span 1" : "1 / -1",
                     }}
                 />
-                {fieldUnits && <TextField
-                    key={`${field.key}-extra`}
-                    fullWidth
-                    required
-                    select
-                    label={t("equipment-list.unit")}
-                    value={selectedUnit}
-                    onChange={(event) => handleSpecChange(unitSpecKey, event.target.value)}
-                    disabled={isReadOnly(field)}
-                >
-                    {fieldUnits.map((option) => (
-                        <MenuItem key={String(option)} value={String(option)}>
-                            {String(option)}
-                        </MenuItem>
-                    ))}
-                </TextField>}
+                {
+                    fieldUnits &&
+                    <TextField
+                        key={`${field.key}-extra`}
+                        autoComplete="off"
+                        fullWidth
+                        required
+                        select
+                        label={t("equipment-list.unit")}
+                        value={selectedUnit}
+                        onChange={(event) => handleSpecChange(unitSpecKey, event.target.value)}
+                        disabled={isReadOnly(field)}
+                    >
+                        {fieldUnits.map((option) => (
+                            <MenuItem key={String(option)} value={String(option)}>
+                                {String(option)}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                }
 
                 {/* 計算轉換後顯示 */}
                 {
@@ -451,6 +396,7 @@ const EquipmentAddDialog = ({
             <DialogContent sx={{ pt: 2 }}>
                 <Box sx={{ display: "grid", gap: 2, mt: 1 }}>
                     <TextField
+                        autoComplete="off"
                         fullWidth
                         required
                         label={t("equipment-list.add-dialog.name")}
@@ -461,6 +407,7 @@ const EquipmentAddDialog = ({
                     />
                     {category?.fields.map(renderField)}
                     <TextField
+                        autoComplete="off"
                         fullWidth
                         multiline
                         minRows={3}

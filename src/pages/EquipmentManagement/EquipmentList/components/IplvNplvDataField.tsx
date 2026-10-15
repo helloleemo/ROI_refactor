@@ -48,6 +48,7 @@ const IplvNplvDataField = ({ value, disabled, mode, onChange }: IplvNplvDataFiel
                         <TableCell>{row.load_ratio ?? ""}</TableCell>
                         <TableCell>
                             <TextField
+                                autoComplete="off"
                                 variant="standard"
                                 type="number"
                                 required
@@ -59,10 +60,10 @@ const IplvNplvDataField = ({ value, disabled, mode, onChange }: IplvNplvDataFiel
                         </TableCell>
                         <TableCell>
                             <TextField
+                                autoComplete="off"
                                 variant="standard"
                                 type="number"
                                 required
-
                                 value={row.kw_per_rt ?? ""}
                                 onChange={(event) => updateCell(index, "kw_per_rt", event.target.value)}
                                 disabled={disabled}

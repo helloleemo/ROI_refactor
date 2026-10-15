@@ -35,7 +35,7 @@ import {
 import { convertUnitValue, getTargetUnit } from "./UnitTransfer";
 import toasterWording from "@/settings/toasterWording";
 import { showToast } from "@/components/ToasterCustom";
-import { calculateChwFlowLpm, calculateCop, calculateCwFlowLpm, calculateDesignWetBulbTemp, calculateEfficiency, calculateMotorPower } from "../helpers/calculations";
+import { recalculateEquipmentSpecs } from "../helpers/calculations";
 import { validateEquipmentField } from "../helpers/validations";
 
 
@@ -90,31 +90,8 @@ const EquipmentEditDialog = ({
 
         setEquipmentName(equipment?.equipment_name ?? "");
         setRemarks(equipment?.remarks ?? "");
-        setSpecs(getInitialSpecs(category, equipment));
+        setSpecs(recalculateEquipmentSpecs(getInitialSpecs(category, equipment, exceptionFields)));
         // setErrorMessage("");
-
-        const initialSpecs = getInitialSpecs(category, null, exceptionFields);
-        initialSpecs.cw_flow_lpm = calculateCwFlowLpm(
-            initialSpecs.heat_rejection_kw,
-            initialSpecs.cw_temp_in,
-            initialSpecs.cw_temp_out,
-        );
-        initialSpecs.efficiency_kw_per_rt = calculateEfficiency(
-            initialSpecs.rated_power_kw,
-            initialSpecs.cooling_capacity_rt,
-        );
-        initialSpecs.cop = calculateCop(initialSpecs.efficiency_kw_per_rt);
-        initialSpecs.motor_power_kw = calculateMotorPower(
-            initialSpecs.motor_count,
-            initialSpecs.heat_rejection_kw,
-        );
-        initialSpecs.design_wet_bulb_temp = calculateDesignWetBulbTemp(
-            initialSpecs.design_temp_out,
-            initialSpecs.design_approach_temp,
-        );
-
-
-
 
     }, [open, equipment, category]);
 
@@ -126,56 +103,7 @@ const EquipmentEditDialog = ({
     };
 
     const handleSpecChange = (key: string, value: unknown) => {
-        setSpecs((previous) => {
-            const next = { ...previous, [key]: value };
-
-            if (["rated_power_kw", "chw_temp_in", "chw_temp_out"].includes(key)) {
-                next.chw_flow_lpm = calculateChwFlowLpm(
-                    next.rated_power_kw,
-                    next.chw_temp_in,
-                    next.chw_temp_out,
-                );
-            }
-
-            if (["heat_rejection_kw", "cw_temp_in", "cw_temp_out"].includes(key)) {
-                next.cw_flow_lpm = calculateCwFlowLpm(
-                    next.heat_rejection_kw,
-                    next.cw_temp_in,
-                    next.cw_temp_out,
-                );
-            }
-
-            if (["rated_power_kw", "cooling_capacity_rt"].includes(key)) {
-                next.efficiency_kw_per_rt = calculateEfficiency(
-                    next.rated_power_kw,
-                    next.cooling_capacity_rt,
-                );
-            }
-
-            if (["rated_power_kw", "cooling_capacity_rt", "efficiency_kw_per_rt"].includes(key)) {
-                next.cop = calculateCop(next.efficiency_kw_per_rt);
-            }
-
-
-            if (["rated_power_kw", "cooling_capacity_rt", "efficiency_kw_per_rt"].includes(key)) {
-                next.cop = calculateCop(next.efficiency_kw_per_rt);
-            }
-
-            if (["motor_count", "heat_rejection_kw"].includes(key)) {
-                next.motor_power_kw = calculateMotorPower(
-                    next.motor_count,
-                    next.heat_rejection_kw,
-                );
-            }
-            if (["design_temp_out", "design_approach_temp"].includes(key)) {
-                next.design_wet_bulb_temp = calculateDesignWetBulbTemp(
-                    next.design_temp_out,
-                    next.design_approach_temp,
-                );
-            }
-
-            return next;
-        });
+        setSpecs((previous) => recalculateEquipmentSpecs({ ...previous, [key]: value }, key));
     };
 
     const handleSubmit = async () => {
@@ -309,6 +237,7 @@ const EquipmentEditDialog = ({
             if (field.key.toLowerCase() === "compressor_type") {
                 return (
                     <TextField
+                        autoComplete="off"
                         key={field.key}
                         select
                         fullWidth
@@ -330,6 +259,8 @@ const EquipmentEditDialog = ({
                 );
             } else {
                 <TextField
+                    autoComplete="off"
+
                     key={field.key}
                     select
                     fullWidth
@@ -373,6 +304,8 @@ const EquipmentEditDialog = ({
                     gridTemplateColumns: "3fr 1fr 1fr",
                 }}>
                 <TextField
+                    autoComplete="off"
+
                     fullWidth
                     required
                     label={label}
@@ -391,6 +324,8 @@ const EquipmentEditDialog = ({
                     }}
                 />
                 {fieldUnits && <TextField
+                    autoComplete="off"
+
                     fullWidth
                     required
                     select
@@ -433,6 +368,8 @@ const EquipmentEditDialog = ({
             <DialogContent sx={{ pt: 2 }}>
                 <Box sx={{ display: "grid", gap: 2, mt: 1 }}>
                     <TextField
+                        autoComplete="off"
+
                         fullWidth
                         required
                         label={t("equipment-list.add-dialog.name")}
@@ -443,6 +380,8 @@ const EquipmentEditDialog = ({
                     />
                     {category?.fields.map(renderField)}
                     <TextField
+                        autoComplete="off"
+
                         fullWidth
                         multiline
                         minRows={3}
