@@ -288,7 +288,7 @@ const EquipmentAddDialog = ({
             }
         }
 
-        if (field.field_type.toLowerCase() === "list" && field.key === "iplv_nplv_data") {
+        if (field.key === "iplv_nplv_data") {
             return (
                 <IplvNplvDataField
                     key={field.key}

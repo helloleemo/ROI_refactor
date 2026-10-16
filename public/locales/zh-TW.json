@@ -398,6 +398,7 @@
         "energy_breakdown": "設備耗能明細",
         "equipment": "設備名稱",
         "percentage": "耗能占比",
-        "pie_chart": "耗能占比"
+        "pie_chart": "耗能占比",
+        "refresh": "重新整理"
     }
 }

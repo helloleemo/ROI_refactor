@@ -21,6 +21,13 @@ export const PieChart = ({ title, data }: PieChartProps) => {
             legend: { itemStyle: { color: theme.palette.text.primary } },
             tooltip: { backgroundColor: theme.palette.background.paper, style: { color: theme.palette.text.primary } },
             credits: { enabled: false },
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        enabled: false,
+                    },
+                },
+            },
         }}>
             <Title>{title}</Title>
             <Tooltip pointFormat="<b>{point.y:,.2f} kWh</b><br/>{point.percentage:.1f}%" />
@@ -33,8 +40,14 @@ export const PieChart = ({ title, data }: PieChartProps) => {
                         format: '{point.percentage:.1f}%',
                         distance: -30,
                         style: { fontSize: '14px', textOutline: 'none', color: theme.palette.getContrastText(theme.palette.chart.seriesColors[0]) }
-                    }
-                }}
+                    },
+
+
+                }
+
+
+
+                }
             />
             <Exporting />
             <Accessibility />

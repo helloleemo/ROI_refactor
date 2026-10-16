@@ -89,7 +89,7 @@ export const ProjectCsvPage = () => {
                 <Box sx={{ minWidth: 0 }}>
                     <TitleText title={t("projectCsv.title")} />
                     <Typography sx={{ fontSize: 12, color: "text.secondary" }} noWrap>
-                        {file?.file_name ?? t("projectCsv.description")}
+                        {file?.file_name}
                     </Typography>
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, flexShrink: 0 }}>

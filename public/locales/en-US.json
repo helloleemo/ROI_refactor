@@ -400,6 +400,7 @@
         "energy_breakdown": "Equipment Energy Breakdown",
         "equipment": "Equipment",
         "percentage": "Energy Consumption Share",
-        "pie_chart": "Energy Consumption Share"
+        "pie_chart": "Energy Consumption Share",
+        "refresh": "Refresh"
     }
 }
