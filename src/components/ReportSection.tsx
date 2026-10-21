@@ -34,7 +34,17 @@ const ReportSection = ({ title, children, action, sx = [] }: ReportSectionProps)
                 ...(Array.isArray(sx) ? sx : [sx]),
             ]}
         >
-            <Box sx={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+            <Box
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexShrink: 0,
+                    "&:hover": { backgroundColor: "action.hover" },
+                    "&:hover .MuiButton-root, &:hover .MuiIconButton-root": {
+                        backgroundColor: "transparent",
+                    },
+                }}
+            >
                 <Button
                     onClick={toggle}
                     color="inherit"
@@ -42,7 +52,7 @@ const ReportSection = ({ title, children, action, sx = [] }: ReportSectionProps)
                     aria-controls={contentId}
                     sx={{ px: 1, py: 1, minHeight: 40, minWidth: 0, flex: 1, justifyContent: "flex-start", textTransform: "none", borderRadius: 0, alignSelf: "stretch" }}
                 >
-                    <Typography sx={{ fontSize: 14, fontWeight: 700, color: "text.primary", lineHeight: 1.4, textAlign: "left", overflowWrap: "anywhere" }}>
+                    <Typography sx={{ fontSize: 14, fontWeight: 700, color: "text.primary", lineHeight: 1.4, textAlign: "left", overflowWrap: "anywhere", cursor: "pointer" }}>
                         {title}
                     </Typography>
                 </Button>

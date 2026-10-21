@@ -8,7 +8,7 @@ import CsvList from "@/pages/Models/CsvList"
 import OptimizationListPage from "@/pages/Optimization/OptmizationStrategiesList/OptimizationListPage";
 import LanguageSettings from "@/pages/LanguageSettings/LanguageSettings";
 import NoSidebarLayout from "@/components/layout/NoSidebarLayout";
-
+import MAndVBaseLinePage from "../pages/EnergySavingSimulation/MAndVBaseLine/MAndVBaseLinePage";
 
 // 設備管理
 import EquipmentListPage from "@/pages/EquipmentManagement/EquipmentList/EquipmentListPage";
@@ -73,7 +73,7 @@ export const router = createBrowserRouter([
       },
       {
         path: `${PATHS.energySavingOverview}/${PATHS.mAndVBaseline}`,
-        element: <PlaceholderPage title="M&V Baseline" />
+        element: <MAndVBaseLinePage />
       },
       {
         path: `${PATHS.energySavingOverview}/${PATHS.simulationResultReport}`,

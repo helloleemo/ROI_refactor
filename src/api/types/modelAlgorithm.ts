@@ -7,6 +7,7 @@ type featureConfig = {
     formula: string;
     description: string;
 };
+
 interface createModelAlgorithm {
     model_id: number;
     train_upload_id: number;

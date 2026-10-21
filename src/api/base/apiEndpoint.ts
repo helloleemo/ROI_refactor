@@ -1,3 +1,4 @@
+import { ExportCsv } from "@mui/x-data-grid";
 import type { CommonIdType } from "../types/shared";
 
 export const API_ENDPOINTS = {
@@ -112,6 +113,18 @@ export const API_ENDPOINTS = {
         TAG_MAPPING_CELL_UPDATE: "tag-mapping/cell-update",
         TAG_MAPPING_CALCULATE: "tag-mapping/calculate",
         TAG_MAPPING_RESET: "tag-mapping/reset"
+    },
+
+    // M&V Baseline
+    M_AND_V_BASELINE: {
+        BASELINE: "baseline",
+        FILTER: "baseline/filter",
+        TRAIN: "baseline/train",
+        DEEP_DIVE_CHILLER: "baseline/deep-dive/chiller",
+        DEEP_DIVE_PUMP: "baseline/deep-dive/pump",
+        DEEP_DIVE_TOWER: "baseline/deep-dive/tower",
+        EXPORT_CSV: "baseline/export-csv"
+
     }
 
 }
