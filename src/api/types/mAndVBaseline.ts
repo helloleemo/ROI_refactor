@@ -10,9 +10,34 @@ export interface MAndVBaseline {
     data_quality: dataQualityType,
     system_kpis: SystemKpisType,
     model_config: Record<string, any>,
-    model_results: Record<string, any>,
+    model_results: BaselineModelResults | null,
     deep_dive_options: Record<string, any>,
     updated_at: string
+}
+
+export interface BaselineChartPoint {
+    x: number;
+    y: number | null;
+    y_pred: number | null;
+    timestamp: string | null;
+}
+
+export interface BaselineModelResults {
+    metrics: {
+        r2: number | null;
+        cv_rmse: number | null;
+        nmbe: number | null;
+        formula: string;
+        intercept: number;
+        coefficients: Record<string, number>;
+    };
+    is_single_var: boolean;
+    x1_name: string;
+    x2_name: string | null;
+    y_name: string;
+    scatter_points: BaselineChartPoint[];
+    line_points: BaselineChartPoint[];
+    time_series_points: BaselineChartPoint[];
 }
 
 type dataQualityType = {
@@ -35,17 +60,17 @@ type SystemKpisType = {
     sys_design_cw_dt: number
 }
 
-type ModelConfigType = {
-    x1: string,
-    x2: string | null,
-    y: string
-}
+// type ModelConfigType = {
+//     x1: string,
+//     x2: string | null,
+//     y: string
+// }
 
-type DeepDiveOptionsType = {
-    chillers: string[],
-    pumps: string[],
-    has_tower_data: boolean
-}
+// type DeepDiveOptionsType = {
+//     chillers: string[],
+//     pumps: string[],
+//     has_tower_data: boolean
+// }
 
 
 export interface FilterRequest {
@@ -70,8 +95,8 @@ export interface DeepDiveChillerResponse {
     rated_rt: number,
     rated_dt: number,
     rated_cw_dt: number,
-    efficiency_points: Record<string, any>[],
-    cop_daily_trend: Record<string, any>[],
+    efficiency_points: { rt: number; kw_rt: number }[],
+    cop_daily_trend: { date: string; cop: number }[],
     chw_dt_points: Record<string, any>[],
     cw_dt_points: Record<string, any>[]
 }

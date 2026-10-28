@@ -146,6 +146,7 @@
         "status": "Status",
         "search-placeholder": "Search Equipment Name",
         "add": "Add",
+        "reupload": "Reupload",
         "actions": "Actions",
         "saved-value": "Saved Value",
         "add-dialog": {
@@ -177,7 +178,7 @@
             "CT": "Cooling Tower (CT)"
         },
         "helper": {
-            "cop-range": "COP Warning: Recommended value is between 0.4 and 0.85."
+            "efficiency_kw_per_rt-range": "Recommended value is between 0.4 and 0.85."
         },
         "fields1": {
             "equipment_name": "Equipment Name",
@@ -203,7 +204,7 @@
             "iplv_nplv_mode": "IPLV/NPLV Mode",
             "iplv_nplv_data": "4 Load Points List",
             "load_rate": "Load Rate",
-            "kw_per_rt": "kW/RT"
+            "kw_per_rt": "COP"
         },
         "fields2": {
             "equipment_name": "Equipment Name",
@@ -405,7 +406,29 @@
         "var_total_chp_kw": "Primary CHW Pump Power",
         "var_total_zp_kw": "Secondary Pump Power",
         "var_total_cwp_kw": "Condenser Water Pump Power",
-        "var_total_ct_kw": "Cooling Tower Power"
+        "var_total_ct_kw": "Cooling Tower Power",
+        "chart_actual": "Actual",
+        "chart_predicted": "Predicted",
+        "chart_perfect_fit": "Perfect Fit (y=x)",
+        "chart_fitted_line": "Regression Fit",
+        "chart_time": "Time",
+        "charts": {
+            "efficiency_points": "Efficiency Scatter Plot",
+            "cop_daily_trend": "COP Daily Trend",
+            "chw_dt_points": "Chilled Water Temperature Difference Check (ΔT vs RT)",
+            "cw_dt_points": "Cooling Water Temperature Difference Check (ΔT vs RT)",
+            "rt_chart": "Real-Time Power Chart",
+            "flow_chart": "Flow Chart",
+            "dt_chart": "Temperature Difference Chart"
+        },
+        "rated_rt": "Rated Cooling Capacity",
+        "rated_dt": "Rated Chilled Water Temperature Difference",
+        "rated_cw_dt": "Rated Cooling Water Temperature Difference",
+        "tabs": {
+            "chillers": "Chillers Deep Dive",
+            "pumps": "Pumps Deep Dive",
+            "has_tower_data": "Cooling Towers Deep Dive"
+        }
     },
     "data_quality_and_steady_state_report": {
         "title": "Data Quality Report",

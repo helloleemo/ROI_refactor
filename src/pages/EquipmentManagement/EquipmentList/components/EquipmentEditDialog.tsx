@@ -37,6 +37,7 @@ import toasterWording from "@/settings/toasterWording";
 import { showToast } from "@/components/ToasterCustom";
 import { recalculateEquipmentSpecs } from "../helpers/calculations";
 import { validateEquipmentField } from "../helpers/validations";
+import { formatOneDecimal, formatThreeDecimals, getEquipmentDecimalPlaces, normalizeEquipmentDecimalInput } from "../helpers/formatDecimal";
 
 
 interface EquipmentEditDialogProps {
@@ -165,6 +166,8 @@ const EquipmentEditDialog = ({
     const renderField = (field: EquipmentField) => {
         const fieldUnits = getFieldUnits(field);
         const fieldType = field.field_type.toLowerCase();
+        const isNumericField = ["number", "integer", "float"].includes(fieldType);
+        const formatNumericValue = getEquipmentDecimalPlaces(field.key) === 3 ? formatThreeDecimals : formatOneDecimal;
         const label = t(`equipment-list.fields${category?.equipment_type}.${field.key}`, {
             defaultValue: field.label,
         });
@@ -309,12 +312,19 @@ const EquipmentEditDialog = ({
                     fullWidth
                     required
                     label={label}
-                    type={["number", "integer", "float"].includes(fieldType) ? "number" : "text"}
-                    value={specs[field.key] ?? ""}
-                    onChange={(event) => handleSpecChange(field.key, event.target.value)}
+                    type="text"
+                    value={isNumericField && isReadOnly(field) ? formatNumericValue(specs[field.key]) : specs[field.key] ?? ""}
+                    onChange={(event) => {
+                        const value = isNumericField
+                            ? normalizeEquipmentDecimalInput(event.target.value, field.key)
+                            : event.target.value;
+                        if (value === null) return;
+                        handleSpecChange(field.key, value);
+                    }}
                     disabled={isReadOnly(field)}
                     helperText={fieldValidation ? t(fieldValidation.messageKey) : undefined}
                     slotProps={{
+                        htmlInput: { inputMode: isNumericField ? "decimal" : "text" },
                         formHelperText: {
                             error: Boolean(fieldValidation),
                         },

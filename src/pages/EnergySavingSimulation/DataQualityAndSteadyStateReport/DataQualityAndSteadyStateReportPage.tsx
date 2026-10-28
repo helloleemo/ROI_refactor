@@ -1,5 +1,6 @@
 import SectionLayout from "@/components/gridLayout/SectionLayout";
-import { Box, Button, Card, CardContent, Chip, CircularProgress, Collapse, Divider, Paper, Typography } from "@mui/material";
+import { Box, Button, Chip, CircularProgress, Collapse, Divider, Paper, Typography } from "@mui/material";
+import MetricCards, { type MetricItem } from "@/components/MetricCards";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -10,13 +11,6 @@ import { PieChart } from "./components/PieChart";
 import { tagMappingService } from "@/api/services/tagMapping";
 import type { CalculateLoad } from "@/api/types/tagMapping";
 import useLoading from "@/hooks/useLoading";
-
-interface ReportMetric {
-    key: string;
-    label: string;
-    value: number | null | undefined;
-    unit: string;
-}
 
 interface ReportSectionProps {
     title: string;
@@ -125,7 +119,7 @@ const DataQualityAndSteadyStateReportPage = () => {
         }).format(value);
     };
 
-    const qualityMetrics: ReportMetric[] = [
+    const qualityMetrics: MetricItem[] = [
         { key: "total_raw_rows", label: t("data_quality_and_steady_state_report.total_raw_rows"), value: reportData?.data_quality.total_raw_rows, unit: "" },
         { key: "running_rows", label: t("data_quality_and_steady_state_report.running_rows"), value: reportData?.data_quality.running_rows, unit: "" },
         { key: "final_valid_len", label: t("data_quality_and_steady_state_report.final_valid_len"), value: reportData?.data_quality.final_valid_len, unit: "" },
@@ -134,7 +128,7 @@ const DataQualityAndSteadyStateReportPage = () => {
         { key: "outlier_dropped", label: t("data_quality_and_steady_state_report.outlier_dropped"), value: reportData?.data_quality.outlier_dropped, unit: "" },
     ];
 
-    const systemMetrics: ReportMetric[] = [
+    const systemMetrics: MetricItem[] = [
         { key: "total_kwh", label: t("data_quality_and_steady_state_report.total_kwh"), value: Number((reportData?.system_kpis.total_kwh)?.toFixed(1)), unit: "kWh" },
         { key: "total_rth", label: t("data_quality_and_steady_state_report.total_rth"), value: Number((reportData?.system_kpis.total_rth)?.toFixed(1)), unit: "RTh" },
         { key: "avg_kw_rt", label: t("data_quality_and_steady_state_report.avg_kw_rt"), value: Number((reportData?.system_kpis.avg_kw_rt)?.toFixed(1)), unit: "kW/RT" },
@@ -170,27 +164,6 @@ const DataQualityAndSteadyStateReportPage = () => {
         { field: "percentage", headerName: t("data_quality_and_steady_state_report.percentage"), flex: 0.8, minWidth: 110 },
     ];
 
-
-    const cardSx = { height: "100%", borderRadius: 2, boxShadow: "none" };
-    const renderMetrics = (metrics: ReportMetric[]) => (
-        <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr)", sm: "repeat(2, minmax(0, 1fr))", lg: "repeat(4, minmax(0, 1fr))" }, gap: 2 }}>
-            {metrics.map((metric) => (
-                <Card key={metric.key} variant="outlined" sx={cardSx}>
-                    <CardContent>
-                        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                            {metric.label}
-                        </Typography>
-                        <Box sx={{ display: "flex", alignItems: "baseline", flexWrap: "wrap", gap: 1 }}>
-                            <Typography variant="h5" sx={{ fontWeight: 600, overflowWrap: "anywhere" }}>
-                                {formatNumber(metric.value)}
-                            </Typography>
-                            {metric.value !== null && <Typography variant="body2" color="text.secondary">{metric.unit}</Typography>}
-                        </Box>
-                    </CardContent>
-                </Card>
-            ))}
-        </Box>
-    );
 
     return (
         <SectionLayout sx={{ height: "100%", display: "flex", flexDirection: "column", minHeight: 0 }}>
@@ -228,17 +201,27 @@ const DataQualityAndSteadyStateReportPage = () => {
             </Box>
             <Box sx={{ flex: 1, minHeight: 0, overflow: "hidden", pr: 1, display: "flex", flexDirection: "column", gap: 0.75 }}>
                 <ReportSection
-                    title={text("data_quality")}
+                    title={text("title")}
                     action={
                         reportData?.data_quality.final_valid_len === 0 && (
                             <Chip size="small" color="warning" label={text("no_valid_data")} />
                         )
                     }
                 >
-                    {renderMetrics(qualityMetrics)}
-                </ReportSection>
-                <ReportSection title={text("system_kpis")}>
-                    {renderMetrics(systemMetrics)}
+                    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                        <Box>
+                            <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5 }}>
+                                {text("data_quality")}
+                            </Typography>
+                            <MetricCards items={qualityMetrics} locale={i18n.resolvedLanguage} />
+                        </Box>
+                        <Box>
+                            <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5 }}>
+                                {text("system_kpis")}
+                            </Typography>
+                            <MetricCards items={systemMetrics} locale={i18n.resolvedLanguage} startIndex={qualityMetrics.length} />
+                        </Box>
+                    </Box>
                 </ReportSection>
                 <ReportSection title={text("energy_breakdown")}>
                     <Box sx={{ display: "flex", justifyContent: "space-between", gap: 2, minHeight: 380 }}>

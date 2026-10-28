@@ -102,7 +102,11 @@ export const ProjectCsvPage = () => {
                         disabled={isLoading("upload")}
                         startIcon={isLoading("upload") ? <CircularProgress size={16} color="inherit" /> : undefined}
                     >
-                        + {t("equipment-list.add")}
+
+                        {
+                            file ? (<>{t("equipment-list.reupload")}</>) : (<>+ {t("equipment-list.add")}</>)
+                        }
+
                     </Button>
                 </Box>
             </Box>

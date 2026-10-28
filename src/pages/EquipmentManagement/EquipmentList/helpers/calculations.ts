@@ -111,20 +111,20 @@ export const recalculateEquipmentSpecs = (
             next.rated_power_kw,
         );
     }
-    if (shouldRecalculate(["cooling_capacity_rt", "chw_temp_in", "chw_temp_out"])) {
-        next.chw_flow_lpm = calculateChwFlowLpm(
-            next.cooling_capacity_rt,
-            next.chw_temp_in,
-            next.chw_temp_out,
-        );
-    }
-    if (shouldRecalculate(["heat_rejection_kw", "cooling_capacity_rt", "rated_power_kw", "cw_temp_in", "cw_temp_out"])) {
-        next.cw_flow_lpm = calculateCwFlowLpm(
-            next.heat_rejection_kw,
-            next.cw_temp_in,
-            next.cw_temp_out,
-        );
-    }
+    // if (shouldRecalculate(["cooling_capacity_rt", "chw_temp_in", "chw_temp_out"])) {
+    //     next.chw_flow_lpm = calculateChwFlowLpm(
+    //         next.cooling_capacity_rt,
+    //         next.chw_temp_in,
+    //         next.chw_temp_out,
+    //     );
+    // }
+    // if (shouldRecalculate(["heat_rejection_kw", "cooling_capacity_rt", "rated_power_kw", "cw_temp_in", "cw_temp_out"])) {
+    //     next.cw_flow_lpm = calculateCwFlowLpm(
+    //         next.heat_rejection_kw,
+    //         next.cw_temp_in,
+    //         next.cw_temp_out,
+    //     );
+    // }
     if (shouldRecalculate(["rated_power_kw", "cooling_capacity_rt"])) {
         next.efficiency_kw_per_rt = calculateEfficiency(
             next.rated_power_kw,

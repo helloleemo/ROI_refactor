@@ -144,6 +144,7 @@
         "status": "狀態",
         "search-placeholder": "搜尋設備名稱",
         "add": "新增",
+        "reupload": "重新上傳",
         "actions": "操作",
         "saved-value": "儲存值",
         "add-dialog": {
@@ -175,7 +176,7 @@
             "CT": "冷卻水塔 (CT)"
         },
         "helper": {
-            "cop-range": "COP 警告：建議值介於 0.4 到 0.85。"
+            "efficiency_kw_per_rt-range": "建議值介於 0.4 到 0.85。"
         },
         "fields1": {
             "equipment_name": "設備名稱",
@@ -201,7 +202,7 @@
             "iplv_nplv_mode": "IPLV/NPLV 模式",
             "iplv_nplv_data": "4 個負載點清單",
             "load_rate": "負載率",
-            "kw_per_rt": "kW/RT"
+            "kw_per_rt": "COP"
         },
         "fields2": {
             "equipment_name": "設備名稱",
@@ -403,7 +404,29 @@
         "var_total_chp_kw": "一次冰水泵總能耗",
         "var_total_zp_kw": "二次水泵總能耗",
         "var_total_cwp_kw": "冷卻水泵總能耗",
-        "var_total_ct_kw": "冷卻水塔總能耗"
+        "var_total_ct_kw": "冷卻水塔總能耗",
+        "chart_actual": "實際值",
+        "chart_predicted": "預測值",
+        "chart_perfect_fit": "理想擬合線 (y=x)",
+        "chart_fitted_line": "迴歸擬合線",
+        "chart_time": "時間",
+        "charts": {
+            "efficiency_points": "效能點陣圖",
+            "cop_daily_trend": "COP隨時間變化",
+            "chw_dt_points": "單機冰水溫差檢核 (ΔT vs RT)",
+            "cw_dt_points": "單機冷卻水溫差檢核 (ΔT vs RT)",
+            "rt_chart": "即時功率曲線",
+            "flow_chart": "流量曲線",
+            "dt_chart": "溫差曲線"
+        },
+        "rated_rt": "額定冷凍能力",
+        "rated_dt": "額定冰水溫差",
+        "rated_cw_dt": "額定冷卻水溫差",
+        "tabs": {
+            "chillers": "冰機深度分析",
+            "pumps": "水泵深度分析",
+            "has_tower_data": "冷卻水塔深度分析"
+        }
     },
     "data_quality_and_steady_state_report": {
         "title": "資料品質與穩態篩選報告",

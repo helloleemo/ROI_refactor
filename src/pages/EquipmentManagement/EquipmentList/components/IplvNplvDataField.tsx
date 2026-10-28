@@ -1,6 +1,7 @@
 import { Box, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { getModeRows, getSelectedModes, updateModeCell, type IplvNplvData } from "../helpers/iplvNplv";
+import { normalizeDecimalInput } from "../helpers/formatDecimal";
 
 interface IplvNplvDataFieldProps {
     value: unknown;
@@ -14,6 +15,7 @@ const IplvNplvDataField = ({ value, disabled, mode, onChange }: IplvNplvDataFiel
     const selectedModes = getSelectedModes(mode);
 
     if (selectedModes.length === 0) return null;
+
 
     return (
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 0 }}>
@@ -36,12 +38,17 @@ const IplvNplvDataField = ({ value, disabled, mode, onChange }: IplvNplvDataFiel
                                         <TextField
                                             autoComplete="off"
                                             variant="standard"
-                                            type="number"
+                                            type="text"
                                             required
                                             value={row.cw_temp_in ?? ""}
-                                            onChange={(event) => onChange(updateModeCell(value, selectedModes, selectedMode, index, "cw_temp_in", event.target.value))}
+                                            onChange={(event) => {
+                                                const normalized = normalizeDecimalInput(event.target.value);
+                                                if (normalized === null) return;
+
+                                                onChange(updateModeCell(value, selectedModes, selectedMode, index, "cw_temp_in", normalized));
+                                            }}
                                             disabled={disabled}
-                                            slotProps={{ htmlInput: { "aria-label": `${selectedMode} ${row.load_ratio} cw_temp_in`, step: "any" } }}
+                                            slotProps={{ htmlInput: { "aria-label": `${selectedMode} ${row.load_ratio} cw_temp_in`, inputMode: "decimal" } }}
                                             fullWidth
                                         />
                                     </TableCell>
@@ -49,12 +56,17 @@ const IplvNplvDataField = ({ value, disabled, mode, onChange }: IplvNplvDataFiel
                                         <TextField
                                             autoComplete="off"
                                             variant="standard"
-                                            type="number"
+                                            type="text"
                                             required
                                             value={row.kw_per_rt ?? ""}
-                                            onChange={(event) => onChange(updateModeCell(value, selectedModes, selectedMode, index, "kw_per_rt", event.target.value))}
+                                            onChange={(event) => {
+                                                const normalized = normalizeDecimalInput(event.target.value);
+                                                if (normalized === null) return;
+
+                                                onChange(updateModeCell(value, selectedModes, selectedMode, index, "kw_per_rt", normalized));
+                                            }}
                                             disabled={disabled}
-                                            slotProps={{ htmlInput: { "aria-label": `${selectedMode} ${row.load_ratio} kw_per_rt`, step: "any" } }}
+                                            slotProps={{ htmlInput: { "aria-label": `${selectedMode} ${row.load_ratio} kw_per_rt`, inputMode: "decimal" } }}
                                             fullWidth
                                         />
                                     </TableCell>

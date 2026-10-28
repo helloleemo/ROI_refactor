@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 const DEFAULT_KEY = "default";
 
 
+
 const useLoading = <K extends string = string>() => {
     const [loadingMap, setLoadingMap] = useState<Record<string, boolean>>({});
     const [error, setError] = useState<boolean>(false);
@@ -33,6 +34,7 @@ const useLoading = <K extends string = string>() => {
         loading,
         anyLoading,
         isLoading,
+        setLoading,
         startLoading,
         stopLoading,
         error,

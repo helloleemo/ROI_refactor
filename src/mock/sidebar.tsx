@@ -107,7 +107,7 @@ export const MenuItem: MenuItemProps[] = [
                 label: "模擬報告",
                 icon: <SidebarStepIcon step={5} />,
                 route: `${PATHS.energySavingOverview}/${PATHS.simulationResultReport}`,
-                disabled: true,
+                // disabled: true,
 
             }
         ],
@@ -116,6 +116,8 @@ export const MenuItem: MenuItemProps[] = [
         key: "sidebarMenu.modelManagement.label",
         label: "模型管理",
         icon: <SiteManagement width={30} height={30} />,
+        disabled: true,
+
         children: [
             {
                 key: "sidebarMenu.modelManagement.csv-list",
