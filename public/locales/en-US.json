@@ -18,6 +18,12 @@
         "duplicate": "Duplicate",
         "duplicating": "Duplicating..."
     },
+    "instruction_info": {
+        "graphic_view": "Click 'Graphic View' to toggle the graphic view",
+        "auto_save": "Automatically saves after editing",
+        "project_csv_info": "This is the project CSV used for energy-saving simulation. Re-uploading will overwrite the existing data.",
+        "reupload": "Re-upload"
+    },
     "project": {
         "edit_project": "Edit Project",
         "create_project": "New Project",
@@ -244,6 +250,8 @@
     "MappingDiagram": {
         "title": "Mapping Diagram",
         "info": "The form has been updated and will take effect after saving.",
+        "description": "Same number = same header; different numbers = separate piping. Enter numbers in the table's \"Node\" column to define piping connections.",
+        "graphic_info": "Click and drag to move the canvas or nodes. Use the scroll wheel to zoom.",
         "invalid-number": "Please enter a valid number",
         "tabs": {
             "chw_table": "Chilled Water Side System Diagram",
@@ -281,6 +289,12 @@
     },
     "projectCsv": {
         "title": "Project CSV",
+        "view_upload_format": "View upload format",
+        "template_title": "CSV Upload Format",
+        "template_image_alt": "Example of project CSV columns and timestamp rows",
+        "template_point_1": "The first row contains column headers. Keep the time column and use one column for each equipment tag.",
+        "template_point_2": "Enter one timestamp per row in the time column, then place each tag's reading in its matching column.",
+        "template_point_3": "Use a consistent time interval and make sure timestamps are valid and ordered from earliest to latest.",
         "tags": "Tags",
         "description": "No file uploaded yet",
         "basic_info": "Basic Info",

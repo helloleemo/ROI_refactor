@@ -18,6 +18,12 @@
         "duplicate": "複製",
         "duplicating": "複製中..."
     },
+    "instruction_info": {
+        "graphic_view": "點擊「圖型檢視」可以開啟/關閉圖形檢視",
+        "auto_save": "編輯後自動儲存",
+        "project_csv_info": "此為節能模擬使用的專案CSV，重新上傳將覆蓋舊有資料。",
+        "reupload": "重新上傳"
+    },
     "project": {
         "edit_project": "編輯專案",
         "create_project": "新增專案",
@@ -242,6 +248,8 @@
     "MappingDiagram": {
         "title": "水路系統圖",
         "info": "表單已更新，儲存後生效",
+        "description": "相同數字 = 同一共管 (Header)；不同數字 = 獨立管路；請直接在表格內的「節點」欄位填寫數字，以定義管路連接關係。",
+        "graphic_info": "滑鼠點擊拖曳可移動畫布或節點，滾輪可以縮放畫布",
         "invalid-number": "請輸入有效數字",
         "tabs": {
             "chw_table": "冰水側系統圖",
@@ -279,6 +287,12 @@
     },
     "projectCsv": {
         "title": "專案CSV",
+        "view_upload_format": "檢視上傳格式",
+        "template_title": "CSV 上傳格式",
+        "template_image_alt": "專案 CSV 欄位與時間資料範例",
+        "template_point_1": "首行為時間欄位，請保留 time 欄，及底下時間格式，其他欄位則各對應一個設備點位。",
+        "template_point_2": "每列填入一個時間；同一列的其他欄位填入該時間點對應的點位數值。",
+        "template_point_3": "請使用一致的時間間隔，並確認時間格式有效且由早到晚排列。",
         "tags": "標籤",
         "description": "尚未上傳檔案",
         "basic_info": "基本資訊",

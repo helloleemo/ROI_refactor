@@ -12,6 +12,7 @@ import { Typography } from "@mui/material";
 import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import NodeEditMode from "./components/NodeEditMode";
 import toasterWording from "@/settings/toasterWording";
+import InstructionInfo from "@/components/InstructionInfo";
 
 const tabs = [{
     value: "chw_table",
@@ -206,7 +207,13 @@ const MappingDiagramPage = () => {
                 alignItems: "center",
                 mb: 2
             }}>
-                <TitleText title={t("MappingDiagram.title")} />
+
+                <Box sx={{ minWidth: 0 }}>
+                    <TitleText title={t("MappingDiagram.title")} />
+                    <Typography sx={{ fontSize: 12, color: "text.secondary" }} noWrap>
+                        {t("MappingDiagram.description")}
+                    </Typography>
+                </Box>
             </Box>
             <Box
                 sx={{
@@ -230,19 +237,23 @@ const MappingDiagramPage = () => {
                         variant="body2" sx={{ color: "grey.400" }}>
                         {notice}
                     </Typography>
-                    <Button
-                        variant="text"
-                        onClick={handleEditDiagram}
-                        startIcon={<AccountTreeOutlinedIcon />}
-                        sx={{
-                            color: isNodeEditMode ? "primary.main" : "grey.300",
-                            backgroundColor: isNodeEditMode ? "grey.100" : "transparent",
-                            padding: "6px 12px"
-                        }}
-                    // disabled={!selectedCategoryData}
-                    >
-                        {t("MappingDiagram.buttons.graph_view")}
-                    </Button>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 0, }}>
+                        <InstructionInfo title={t("instruction_info.graphic_view")} />
+
+                        <Button
+                            variant="text"
+                            onClick={handleEditDiagram}
+                            startIcon={<AccountTreeOutlinedIcon />}
+                            sx={{
+                                color: isNodeEditMode ? "primary.main" : "grey.300",
+                                backgroundColor: isNodeEditMode ? "grey.100" : "transparent",
+                                padding: "6px 12px"
+                            }}
+                        // disabled={!selectedCategoryData}
+                        >
+                            {t("MappingDiagram.buttons.graph_view")}
+                        </Button>
+                    </Box>
 
                     <Button
                         sx={{
@@ -263,10 +274,12 @@ const MappingDiagramPage = () => {
                 {
                     isNodeEditMode
                         ? (
-                            <NodeEditMode
-                                selectedCategory={selectedCategory}
-                                diagram={diagram}
-                            />
+                            <>
+                                <NodeEditMode
+                                    selectedCategory={selectedCategory}
+                                    diagram={diagram}
+                                />
+                            </>
                         )
                         : (
                             <MappingDatgrid

@@ -1,6 +1,7 @@
 
 import type { ReactNode, SyntheticEvent } from "react";
 import { Tab, Tabs as MuiTabs, type TabsProps as MuiTabsProps } from "@mui/material";
+import InstructionInfo from "./InstructionInfo";
 
 export interface TabItem {
     value: string;
@@ -33,7 +34,10 @@ const Tabs = ({
             sx={{ borderBottom: 1, borderColor: "divider", mb: 2, ...sx }}
         >
             {items.map((item) => (
+
                 <Tab key={item.value} value={item.value} label={item.label} />
+
+
             ))}
         </MuiTabs>
     );

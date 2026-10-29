@@ -17,6 +17,7 @@ import EquipmentPowerParametersSection from "./components/EquipmentPowerParamete
 import LoadMappingSection from "./components/LoadMappingSection";
 import useOpenDialog from "@/hooks/useOpenDialog";
 import PhysicalUnitAndSystemBoundarySettingDialog from "./components/PhysicalUnitAndSystemBoundarySettingDialog";
+import InstructionInfo from "@/components/InstructionInfo";
 
 export const DataCleaningPage = () => {
     const { t } = useTranslation();
@@ -134,15 +135,6 @@ export const DataCleaningPage = () => {
 
     return (
         <OneSectionStyled sx={{ height: "100%", boxSizing: "border-box", display: "flex", flexDirection: "column", minHeight: 0, overflow: "hidden" }}>
-            {/* <Box sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                mb: 1
-            }}>
-                <TitleText title={t("dataCleaning.title")} />
-            </Box>
-             */}
             <Box sx={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -198,6 +190,7 @@ export const DataCleaningPage = () => {
                 })}
             >
                 <Box sx={{ display: "flex", alignItems: "center", minHeight: 48 }}>
+
                     <Box
                         // fullWidth
                         onClick={() => handleSectionToggle("environmentAndLoadParameters")}
@@ -216,15 +209,18 @@ export const DataCleaningPage = () => {
                             },
                         }}
                     >
-                        <Typography sx={{
-                            fontSize: 14,
-                            fontWeight: 700,
-                            color: "text.primary",
-                            lineHeight: 1,
-                            cursor: "pointer",
-                        }}>
-                            {t("dataCleaning.environment_and_load_parameters.title")}
-                        </Typography>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                            <Typography sx={{
+                                fontSize: 14,
+                                fontWeight: 700,
+                                color: "text.primary",
+                                lineHeight: 1,
+                                cursor: "pointer",
+                            }}>
+                                {t("dataCleaning.environment_and_load_parameters.title")}
+                            </Typography>
+                            {/* <InstructionInfo title="instruction_info.auto_save" size={16} padding={0} /> */}
+                        </Box>
                         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                             <Typography sx={{ fontSize: 14, color: "error.main", lineHeight: 1, cursor: "pointer" }}>
                                 {contentChanged.environmentAndLoadParameters && t("dataCleaning.remember_to_save")}
@@ -308,9 +304,13 @@ export const DataCleaningPage = () => {
                     sx={{ px: 1, py: 1, minHeight: 40, justifyContent: "space-between", textTransform: "none", borderRadius: 0 }}
                 >
 
-                    <Typography sx={{ fontSize: 14, fontWeight: 700, color: "text.primary", lineHeight: 1, cursor: "pointer" }}>
-                        {t("dataCleaning.chiller_sensor_mapping_and_boundary_conditions.title")}
-                    </Typography>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                        <Typography sx={{ fontSize: 14, fontWeight: 700, color: "text.primary", lineHeight: 1, cursor: "pointer" }}>
+                            {t("dataCleaning.chiller_sensor_mapping_and_boundary_conditions.title")}
+                        </Typography>
+                        <InstructionInfo title="instruction_info.auto_save" size={16} padding={0} />
+                    </Box>
+
                     <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                         <Typography sx={{ fontSize: 14, color: "grey.300", lineHeight: 1 }}>
                             {!isLoading("ChillerMapping") && error && t("dataCleaning.error")}
@@ -372,9 +372,14 @@ export const DataCleaningPage = () => {
                     sx={{ px: 1, py: 1, minHeight: 40, justifyContent: "space-between", textTransform: "none", borderRadius: 0 }}
                 >
 
-                    <Typography sx={{ fontSize: 14, fontWeight: 700, color: "text.primary", lineHeight: 1, cursor: "pointer" }}>
-                        {t("dataCleaning.equipment_power_parameters.title")}
-                    </Typography>
+
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                        <Typography sx={{ fontSize: 14, fontWeight: 700, color: "text.primary", lineHeight: 1, cursor: "pointer" }}>
+                            {t("dataCleaning.equipment_power_parameters.title")}
+                        </Typography>
+                        <InstructionInfo title="instruction_info.auto_save" size={16} padding={0} />
+                    </Box>
+
                     <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                         <Typography sx={{ fontSize: 14, color: "grey.300", lineHeight: 1 }}>
                             {isLoading("EquipmentPowerParameters") && t("dataCleaning.chiller_sensor_mapping_and_boundary_conditions.auto_saving")}
@@ -438,9 +443,16 @@ export const DataCleaningPage = () => {
                     sx={{ px: 1, py: 1, minHeight: 40, justifyContent: "space-between", textTransform: "none", borderRadius: 0 }}
                 >
 
-                    <Typography sx={{ fontSize: 14, fontWeight: 700, color: "text.primary", lineHeight: 1, cursor: "pointer" }}>
-                        {t("dataCleaning.load_side_sensor_mapping.title")}
-                    </Typography>
+
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                        <Typography sx={{ fontSize: 14, fontWeight: 700, color: "text.primary", lineHeight: 1, cursor: "pointer" }}>
+                            {t("dataCleaning.load_side_sensor_mapping.title")}
+                        </Typography>
+                        <InstructionInfo title="instruction_info.auto_save" size={16} padding={0} />
+                    </Box>
+
+
+
                     <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                         <Typography sx={{ fontSize: 14, color: "grey.300", lineHeight: 1 }}>
                             {isLoading("LoadMapping") && t("dataCleaning.chiller_sensor_mapping_and_boundary_conditions.auto_saving")}

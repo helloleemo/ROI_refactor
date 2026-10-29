@@ -11,7 +11,9 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CsvDatagrid from "./components/CsvDatagrid";
 import SummaryItems from "./components/SummaryItems";
 import ProjectCsvUploadDialog from "./components/ProjectCsvUploadDialog";
+import TemplateDialog from "./components/TemplateDialog";
 import { tagMappingService } from "@/api/services/tagMapping";
+import InstructionInfo from "@/components/InstructionInfo";
 
 export const ProjectCsvPage = () => {
 
@@ -25,7 +27,8 @@ export const ProjectCsvPage = () => {
     const { isLoading } = useLoading();
 
     const { open, openDialog, closeDialog } = useOpenDialog({
-        upload: false
+        upload: false,
+        viewTemplate: false
     });
 
 
@@ -89,10 +92,21 @@ export const ProjectCsvPage = () => {
                 <Box sx={{ minWidth: 0 }}>
                     <TitleText title={t("projectCsv.title")} />
                     <Typography sx={{ fontSize: 12, color: "text.secondary" }} noWrap>
-                        {file?.file_name}
+                        {file?.file_name} {t("instruction_info.project_csv_info")}
                     </Typography>
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, flexShrink: 0 }}>
+                    <Typography
+                        onClick={() => openDialog("viewTemplate")}
+                        sx={{
+                            fontSize: 14,
+                            color: "text.secondary",
+                            textDecoration: "underline",
+                            cursor: "pointer"
+                        }} noWrap>
+                        {t("projectCsv.view_upload_format")}
+                    </Typography>
+                    <InstructionInfo title={t("instruction_info.project_csv_info")} />
                     <Button
                         sx={{
                             whiteSpace: "nowrap"
@@ -168,6 +182,11 @@ export const ProjectCsvPage = () => {
                 onClose={() => closeDialog("upload")}
                 onUploaded={getFiles}
             />
+            <TemplateDialog
+                open={open.viewTemplate}
+                onClose={() => closeDialog("viewTemplate")}
+            />
+
         </OneSectionStyled>
     );
 };

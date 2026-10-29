@@ -27,19 +27,6 @@ interface EquipmentDatagridProps {
     onDeleted?: () => void | Promise<void>;
 }
 
-// const renderIplvNplvData = (value: unknown) => {
-//     if (!Array.isArray(value)) return "-";
-
-//     return (
-//         <Box sx={{ py: 0.5, lineHeight: 1.5, whiteSpace: "pre-line" }}>
-//             {(value as IplvNplvRow[]).map((point, index) => (
-//                 <Box key={`${point.load_ratio ?? "point"}-${index}`}>
-//                     {point.load_ratio ?? "-"} | {point.cw_temp_in ?? "-"} °C | {point.kw_per_rt ?? "-"} kW/RT
-//                 </Box>
-//             ))}
-//         </Box>
-//     );
-// };
 
 const EquipmentDatagrid = ({
     selectedCategory,

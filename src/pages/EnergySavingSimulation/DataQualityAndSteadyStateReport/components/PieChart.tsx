@@ -43,11 +43,7 @@ export const PieChart = ({ title, data }: PieChartProps) => {
                     },
 
 
-                }
-
-
-
-                }
+                }}
             />
             <Exporting />
             <Accessibility />

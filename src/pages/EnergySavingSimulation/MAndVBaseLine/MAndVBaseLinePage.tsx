@@ -30,6 +30,8 @@ import { DtChart } from "./components/DtChart";
 import { ApproachVsHeat } from "./components/ApproachVsHeat";
 import { PlrVsApproach } from "./components/PlrVsApproach";
 import { PowerVsApproach } from "./components/PowerVsApproach";
+import XAxisReference from "./components/XAxisReference";
+import ChartSectionLoader from "./components/ChartSectionLoader";
 
 
 
@@ -390,12 +392,7 @@ const MAndVBaseLinePage = () => {
                         (
                             <Box sx={{ mt: 2, minWidth: 0, display: "flex", alignItems: "center", flexWrap: "wrap", gap: 2 }}>
                                 {isLoading(loading.deepDiveLoading) ?
-                                    (
-                                        <Box sx={{ position: "relative", left: "50%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "320px" }}>
-                                            <CircularProgress size={32} color="primary" />
-                                        </Box>
-                                    )
-
+                                    (<ChartSectionLoader />)
                                     : (
                                         <>
                                             {/* // 設備列表 */}
@@ -476,12 +473,7 @@ const MAndVBaseLinePage = () => {
                             <Box sx={{ mt: 2, minWidth: 0, display: "flex", alignItems: "center", flexWrap: "wrap", gap: 2 }}>
 
                                 {isLoading(loading.deepDiveLoading) ?
-                                    (
-                                        <Box sx={{ position: "relative", left: "50%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "320px" }}>
-                                            <CircularProgress size={32} color="primary" />
-                                        </Box>
-                                    )
-
+                                    (<ChartSectionLoader />)
                                     : (
                                         <>
                                             {/* 設備列表 */}
@@ -546,15 +538,7 @@ const MAndVBaseLinePage = () => {
                                                             xTitle={chartInfo.rt_x_title ?? ""}
                                                             yTitle={chartInfo.rt_y_title ?? ""}
                                                         />
-                                                        <Typography variant="subtitle2" sx={{
-                                                            fontSize: 14,
-                                                            color: "text.secondary",
-                                                            position: "relative",
-                                                            top: -30,
-                                                            // left: 50
-                                                        }}>
-                                                            {t("mAndVBaseline.charts.x_rt")}
-                                                        </Typography>
+                                                        <XAxisReference info={t("mAndVBaseline.charts.x_rt")} />
                                                     </Box>
                                                 )}
 
@@ -566,15 +550,7 @@ const MAndVBaseLinePage = () => {
                                                                 xTitle={chartInfo.flow_x_title ?? ""}
                                                                 yTitle={chartInfo.flow_y_title ?? ""}
                                                             />
-                                                            <Typography variant="subtitle2" sx={{
-                                                                fontSize: 14,
-                                                                color: "text.secondary",
-                                                                position: "relative",
-                                                                top: -30,
-                                                                // left: 50
-                                                            }}>
-                                                                {t("mAndVBaseline.charts.x_flow")}
-                                                            </Typography>
+                                                            <XAxisReference info={t("mAndVBaseline.charts.x_flow")} />
                                                         </Box>
                                                     )
                                                 }
@@ -588,15 +564,7 @@ const MAndVBaseLinePage = () => {
                                                                 yTitle={chartInfo.dt_y_title ?? ""}
                                                                 rated_dt={chartInfo.rated_dt}
                                                             />
-                                                            <Typography variant="subtitle2" sx={{
-                                                                fontSize: 14,
-                                                                color: "text.secondary",
-                                                                position: "relative",
-                                                                top: -30,
-                                                                // left: 50
-                                                            }}>
-                                                                {t("mAndVBaseline.charts.x_dt")}
-                                                            </Typography>
+                                                            <XAxisReference info={t("mAndVBaseline.charts.x_dt")} />
                                                         </Box>
                                                     )
                                                 }
@@ -617,12 +585,7 @@ const MAndVBaseLinePage = () => {
                         <Box sx={{ mt: 2, minWidth: 0, display: "flex", alignItems: "center", flexWrap: "wrap", gap: 2 }}>
 
                             {isLoading(loading.deepDiveLoading) ?
-                                (
-                                    <Box sx={{ position: "relative", left: "50%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "320px" }}>
-                                        <CircularProgress size={32} color="primary" />
-                                    </Box>
-                                )
-
+                                (<ChartSectionLoader />)
                                 : (
                                     <>
                                         {/* 總結資料 */}
@@ -662,40 +625,36 @@ const MAndVBaseLinePage = () => {
 
 
                                         {/* 圖表本人 */}
-                                        {isLoading(loading.deepDiveLoading) ? (
-                                            <Box sx={{ height: 360, display: "grid", placeItems: "center" }}>
-                                                <CircularProgress size={24} />
-                                            </Box>
-                                        ) : (
-                                            <Box sx={{
-                                                display: "grid", gap: 2, width: "100%"
-                                            }}>
 
-                                                {visibleCharts.approach_vs_heat && (
-                                                    <ApproachVsHeat
-                                                        points={chartData.approach_vs_heat ?? []}
+                                        <Box sx={{
+                                            display: "grid", gap: 2, width: "100%"
+                                        }}>
+
+                                            {visibleCharts.approach_vs_heat && (
+                                                <ApproachVsHeat
+                                                    points={chartData.approach_vs_heat ?? []}
+                                                    design_approach={chartInfo.design_approach}
+                                                />
+                                            )}
+
+                                            {
+                                                visibleCharts.plr_vs_approach && (
+                                                    <PlrVsApproach
+                                                        points={chartData.plr_vs_approach ?? []}
                                                         design_approach={chartInfo.design_approach}
                                                     />
-                                                )}
+                                                )
+                                            }
+                                            {
+                                                visibleCharts.power_vs_approach && (
+                                                    <PowerVsApproach
+                                                        points={chartData.power_vs_approach ?? []}
+                                                        design_approach={chartInfo.design_approach}
+                                                    />
+                                                )
+                                            }
+                                        </Box>
 
-                                                {
-                                                    visibleCharts.plr_vs_approach && (
-                                                        <PlrVsApproach
-                                                            points={chartData.plr_vs_approach ?? []}
-                                                            design_approach={chartInfo.design_approach}
-                                                        />
-                                                    )
-                                                }
-                                                {
-                                                    visibleCharts.power_vs_approach && (
-                                                        <PowerVsApproach
-                                                            points={chartData.power_vs_approach ?? []}
-                                                            design_approach={chartInfo.design_approach}
-                                                        />
-                                                    )
-                                                }
-                                            </Box>
-                                        )}
                                     </>
                                 )}
                         </Box>

@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     ReactFlow,
     applyNodeChanges,
     applyEdgeChanges,
     addEdge,
     Background,
+    Panel,
     type Edge,
     type Node,
     type OnConnect,
@@ -13,6 +15,8 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { nodeTypes, edgeTypes, defaultEdgeOptions } from './FlowElements';
+import InstructionInfo from './InstructionInfo';
+import { Box } from '@mui/material';
 
 const initialNodes: Node[] = [
     { id: 'n1', position: { x: 0, y: 0 }, data: { label: 'Node 1' } },
@@ -31,6 +35,7 @@ const ReactFlowInit = ({
     edges: initialEdgesProp = initialEdges,
 }: ReactFlowInitProps
 ) => {
+    const { t } = useTranslation();
     const [nodes, setNodes] = useState<Node[]>(initialNodesProp);
     const [edges, setEdges] = useState<Edge[]>(initialEdgesProp);
 
@@ -65,6 +70,11 @@ const ReactFlowInit = ({
             // fitView
             >
                 <Background />
+                <Panel position="top-left" style={{ pointerEvents: 'all' }}>
+                    <Box sx={{ pointerEvents: 'all' }}>
+                        <InstructionInfo title={t("MappingDiagram.graphic_info")} />
+                    </Box>
+                </Panel>
             </ReactFlow>
         </div>
     );
