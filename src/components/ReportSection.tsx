@@ -78,7 +78,15 @@ const ReportSection = ({ title, children, action, sx = [] }: ReportSectionProps)
                 }}
             >
                 <Divider />
-                <Box sx={{ p: 1.5, flex: 1, minHeight: 0, minWidth: 0, overflow: "auto", overscrollBehavior: "contain" }}>
+                <Box sx={{
+                    p: 1.5,
+                    flex: 1,
+                    minHeight: 0,
+                    minWidth: 0,
+                    overflow: "auto",
+                    overscrollBehavior: "contain",
+                    position: "relative",
+                }}>
                     {children}
                 </Box>
             </Collapse>

@@ -70,7 +70,7 @@
     },
     "sidebarMenu": {
         "overview": {
-            "label": "總攬",
+            "label": "總覽",
             "overview-kpi": "KPI總覽",
             "project-settings": "專案設定"
         },
@@ -81,7 +81,7 @@
         },
         "energy-simulation": {
             "label": "節能模擬",
-            "overview-data-cleaning": "總攬",
+            "overview-data-cleaning": "總覽",
             "csv-project": "專案CSV",
             "energy-simulation-settings": "數據清洗",
             "data-quality-and-steady-state-report": "資料品質與穩態篩選報告",
@@ -417,7 +417,17 @@
             "cw_dt_points": "單機冷卻水溫差檢核 (ΔT vs RT)",
             "rt_chart": "即時功率曲線",
             "flow_chart": "流量曲線",
-            "dt_chart": "溫差曲線"
+            "dt_chart": "溫差曲線",
+            "pump_type": "泵類型",
+            "is_total": "是否總計",
+            "rated_dt": "額定冰水溫差",
+            "approach_vs_heat": "進水溫差 vs 熱量",
+            "plr_vs_approach": "負載率 vs 進水溫差",
+            "power_vs_approach": "功率 vs 進水溫差",
+            "design_approach": "設計進水溫差",
+            "x_rt": "X 軸基準: 一次側冰機加總 (EB/HB 驗證後代理二次側)",
+            "x_flow": "X 軸基準: 依據 RT 與系統 ΔT 推估之總流量",
+            "x_dt": "X 軸基準: 一次側系統溫差 (供回水 Header)"
         },
         "rated_rt": "額定冷凍能力",
         "rated_dt": "額定冰水溫差",

@@ -12,7 +12,7 @@ import {
     type OnNodesChange,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { nodeTypes, defaultEdgeOptions } from './FlowElements';
+import { nodeTypes, edgeTypes, defaultEdgeOptions } from './FlowElements';
 
 const initialNodes: Node[] = [
     { id: 'n1', position: { x: 0, y: 0 }, data: { label: 'Node 1' } },
@@ -57,6 +57,7 @@ const ReactFlowInit = ({
                 nodes={nodes}
                 edges={edges}
                 nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
                 defaultEdgeOptions={defaultEdgeOptions}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}

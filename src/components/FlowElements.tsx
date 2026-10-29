@@ -1,5 +1,5 @@
 import { useTheme, type Theme } from "@mui/material/styles";
-import { Handle, MarkerType, Position, type DefaultEdgeOptions, type NodeProps } from "@xyflow/react";
+import { BaseEdge, Handle, MarkerType, Position, useNodes, type DefaultEdgeOptions, type EdgeProps, type NodeProps } from "@xyflow/react";
 import type { CSSProperties } from "react";
 
 const handleStyle: CSSProperties = {
@@ -57,8 +57,26 @@ const JunctionNode = ({ data }: NodeProps) => (
         <Handle type="target" position={Position.Left} style={handleStyle} />
         {String(data.label ?? "")}
         <Handle type="source" position={Position.Right} style={handleStyle} />
+        <Handle id="return-source" type="source" position={Position.Bottom} style={{ ...handleStyle, left: "65%" }} />
+        <Handle id="return-target" type="target" position={Position.Bottom} style={{ ...handleStyle, left: "35%" }} />
     </div>
 );
+
+const ReturnEdge = ({ sourceX, sourceY, targetX, targetY, data, ...props }: EdgeProps) => {
+    const nodes = useNodes();
+    const bottom = nodes.reduce((maximum, node) => Math.max(
+        maximum,
+        node.position.y + (node.measured?.height ?? node.height ?? 40),
+    ), Math.max(sourceY, targetY));
+    const laneY = bottom + 60 + Number(data?.lane ?? 0) * 30;
+    const path = `M ${sourceX} ${sourceY} V ${laneY} H ${targetX} V ${targetY}`;
+
+    return <BaseEdge id={props.id} path={path} style={props.style} markerEnd={props.markerEnd} markerStart={props.markerStart} interactionWidth={props.interactionWidth} />;
+};
+
+export const edgeTypes = {
+    return: ReturnEdge,
+};
 
 export const nodeTypes = {
     equipment: EquipmentNode,

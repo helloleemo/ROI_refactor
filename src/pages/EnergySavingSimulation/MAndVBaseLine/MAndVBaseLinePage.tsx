@@ -4,7 +4,8 @@ import CopDailyTrend from "./components/CopDailyTrend";
 import TemperatureDifferenceChart from "./components/TemperatureDifferenceChart";
 // import CheckIcon from "@mui/icons-material/Check";
 // import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { Box, Chip, CircularProgress, MenuItem, TextField } from "@mui/material";
+import { getChartOptions } from "./helpers/chartOptions";
+import { Box, Chip, CircularProgress } from "@mui/material";
 import MetricCards from "@/components/MetricCards";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -21,6 +22,16 @@ import useLoading from "@/hooks/useLoading";
 import ParamSettingsDialog from "./components/ParamSettingsDialog";
 import ScartterChart from "./components/ScartterChart";
 import { getReportMetrics, type ReportMetric } from "./helpers/reportMetrics";
+import { EquipmentOptions } from "./components/EquipmentOptions";
+import chartInfoTransition from "./helpers/chartInfoTransition";
+import { RealtimePowerChart } from "./components/RealtimePowerChart";
+import { FlowChart } from "./components/FlowChart";
+import { DtChart } from "./components/DtChart";
+import { ApproachVsHeat } from "./components/ApproachVsHeat";
+import { PlrVsApproach } from "./components/PlrVsApproach";
+import { PowerVsApproach } from "./components/PowerVsApproach";
+
+
 
 const MAndVBaseLinePage = () => {
     const { t, i18n } = useTranslation();
@@ -45,21 +56,20 @@ const MAndVBaseLinePage = () => {
         rt_chart: true,
         flow_chart: true,
         dt_chart: true,
+
+        // tower
+        tower_dt_points: true,
+        approach_vs_heat: true,
+        plr_vs_approach: true,
+        power_vs_approach: true,
     });
 
-    // chiller
-    const chartChillerOptions = [
-        { key: "efficiency_points", label: t("mAndVBaseline.charts.efficiency_points") },
-        { key: "cop_daily_trend", label: t("mAndVBaseline.charts.cop_daily_trend") },
-        { key: "chw_dt_points", label: t("mAndVBaseline.charts.chw_dt_points") },
-        { key: "cw_dt_points", label: t("mAndVBaseline.charts.cw_dt_points") },
-    ] as const;
+    const {
+        chartChillerOptions,
+        chartPumpOptions,
+        chartTowerOptions,
+    } = getChartOptions(t);
 
-    const chartPumpOptions = [
-        { key: "rt_chart", label: t("mAndVBaseline.charts.rt_chart") },
-        { key: "flow_chart", label: t("mAndVBaseline.charts.flow_chart") },
-        { key: "dt_chart", label: t("mAndVBaseline.charts.dt_chart") }
-    ] as const;
 
 
 
@@ -155,14 +165,36 @@ const MAndVBaseLinePage = () => {
                                 dt_chart: data.dt_chart.points,
                             });
                             setChartInfo({
-
-                            })
+                                pump_name: selectedEquipmentName,
+                                pump_type: data.pump_type,
+                                is_total: data.is_total,
+                                rated_dt: data.rated_dt,
+                                rt_x_title: data.rt_chart.x_title,
+                                rt_y_title: data.rt_chart.y_title,
+                                flow_x_title: data.flow_chart.x_title,
+                                flow_y_title: data.flow_chart.y_title,
+                                dt_x_title: data.dt_chart.x_title,
+                                dt_y_title: data.dt_chart.y_title,
+                            });
                         }
 
                         break;
-                    case "has_tower_data":
-                        if (hasTowerData) await mAndVBaselineService.deepDiveTower();
+                    case "has_tower_data": {
+                        if (!hasTowerData) {
+                            if (active) setChartData({});
+                            break;
+                        }
+                        const data = await mAndVBaselineService.deepDiveTower();
+                        if (active) {
+                            setChartData({
+                                approach_vs_heat: data.approach_vs_heat ?? [],
+                                plr_vs_approach: data.plr_vs_approach ?? [],
+                                power_vs_approach: data.power_vs_approach ?? [],
+                            });
+                            setChartInfo({ design_approach: data.design_approach });
+                        }
                         break;
+                    }
                 }
             } catch (error) {
                 if (active) console.error(error);
@@ -230,6 +262,7 @@ const MAndVBaseLinePage = () => {
         const value = baseline?.deep_dive_options[category];
         const names: string[] = Array.isArray(value) ? value : [];
 
+        console.log("Selected category:", category, "Value:", value, "Names:", names);
         setSelectedTabValue(category);
         setEquipmentNames(names);
         setSelectedEquipmentName(names[0] ?? "");
@@ -330,21 +363,17 @@ const MAndVBaseLinePage = () => {
 
                         {
                             isLoading(loading.paramsLoading) || isSaving
-                                ? (
-                                    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "320px" }}>
-                                        <CircularProgress size={24} color="primary" />
-                                    </Box>
-                                )
+                                ? (<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "320px" }}>
+                                    <CircularProgress size={24} color="primary" />
+                                </Box>)
                                 : <ScartterChart results={baseline?.model_results} />
                         }
 
                     </Box>
-
                 </ReportSection>
 
 
                 {/* 3 - Deep Dive */}
-
                 <ReportSection title={t("mAndVBaseline.deep_dive")}>
                     <Tabs
                         onChange={(_, newValue) => handleCategoryChange(newValue)}
@@ -354,47 +383,270 @@ const MAndVBaseLinePage = () => {
                             value: tab
                         }))}
                     />
+
+                    {/* -------------- Chillers -------------- */}
+
+                    {selectedTabValue === "chillers" &&
+                        (
+                            <Box sx={{ mt: 2, minWidth: 0, display: "flex", alignItems: "center", flexWrap: "wrap", gap: 2 }}>
+                                {isLoading(loading.deepDiveLoading) ?
+                                    (
+                                        <Box sx={{ position: "relative", left: "50%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "320px" }}>
+                                            <CircularProgress size={32} color="primary" />
+                                        </Box>
+                                    )
+
+                                    : (
+                                        <>
+                                            {/* // 設備列表 */}
+                                            <EquipmentOptions
+                                                selectedEquipmentName={selectedEquipmentName}
+                                                handleEquipmentChange={handleEquipmentChange}
+                                                equipmentNames={equipmentNames}
+                                            />
+                                            {/* // 總結資料 */}
+                                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, minWidth: 0 }}>
+                                                {[
+                                                    { key: "rated_rt", label: t("mAndVBaseline.rated_rt"), unit: "RT" },
+                                                    // { key: "rated_dt", label: t("mAndVBaseline.rated_dt"), unit: "°C" },
+                                                    // { key: "rated_cw_dt", label: t("mAndVBaseline.rated_cw_dt"), unit: "°C" },
+                                                ].map(({ key, label, unit }) => {
+                                                    const value = !isLoading(loading.deepDiveLoading)
+                                                        && chartInfo.chiller_name === selectedEquipmentName
+                                                        ? chartInfo[key as "rated_rt" | "rated_dt" | "rated_cw_dt"]
+                                                        : undefined;
+                                                    return (
+                                                        <Typography key={key} variant="subtitle2" sx={{ overflowWrap: "anywhere" }}>
+                                                            {label}: {value == null ? "-" : `${value.toLocaleString(i18n.resolvedLanguage)} ${unit}`}
+                                                        </Typography>
+                                                    );
+                                                })}
+                                            </Box>
+
+                                            {/* // 圖表選項 */}
+                                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, minWidth: 0 }}>
+                                                {chartChillerOptions.map(({ key, label }) => (
+                                                    <Chip
+                                                        key={key}
+                                                        label={label}
+                                                        // icon={visibleCharts[key] ? <CheckIcon /> : <VisibilityOffIcon />}
+                                                        color={visibleCharts[key] ? "primary" : "default"}
+                                                        variant={visibleCharts[key] ? "filled" : "outlined"}
+                                                        aria-pressed={visibleCharts[key]}
+                                                        onClick={() => setVisibleCharts(current => ({ ...current, [key]: !current[key] }))}
+                                                        sx={{ maxWidth: "100%", cursor: "pointer", height: "auto", minHeight: 32, "& .MuiChip-label": { whiteSpace: "normal", py: 0.5, cursor: "pointer" } }}
+                                                    />
+                                                ))}
+                                            </Box>
+
+                                            {/* // 圖表本人 */}
+                                            <Box sx={{
+                                                display: "grid", gap: 2, width: "100%"
+                                            }}>
+                                                {visibleCharts.efficiency_points &&
+                                                    <EfficiencyPointChart points={chartData.efficiency_points ?? []} />}
+                                                {visibleCharts.cop_daily_trend &&
+                                                    <CopDailyTrend points={chartData.cop_daily_trend ?? []} />}
+                                                {visibleCharts.chw_dt_points && (
+                                                    <TemperatureDifferenceChart
+                                                        points={chartData.chw_dt_points ?? []}
+                                                        title={t("mAndVBaseline.charts.chw_dt_points")}
+                                                        dt={chartInfo.rated_dt}
+                                                    />
+                                                )}
+                                                {visibleCharts.cw_dt_points && (
+                                                    <TemperatureDifferenceChart
+                                                        points={chartData.cw_dt_points ?? []}
+                                                        title={t("mAndVBaseline.charts.cw_dt_points")}
+                                                        dt={chartInfo.rated_cw_dt}
+
+                                                    />
+                                                )}
+                                            </Box>
+
+                                        </>
+                                    )}
+                            </Box>
+                        )
+                    }
+
+                    {/* -------------- Pumps -------------- */}
                     {
-                        selectedTabValue === "has_tower_data"
-                            ? null
-                            : (
-                                <Box sx={{ mt: 2, minWidth: 0, display: "flex", alignItems: "center", flexWrap: "wrap", gap: 2 }}>
+                        selectedTabValue === "pumps" && (
+                            <Box sx={{ mt: 2, minWidth: 0, display: "flex", alignItems: "center", flexWrap: "wrap", gap: 2 }}>
 
-                                    <TextField
-                                        size="small"
-                                        select
-                                        value={selectedEquipmentName}
-                                        onChange={(event) => handleEquipmentChange(event.target.value)}
-                                        disabled={equipmentNames.length === 0}
-                                    >
-                                        {equipmentNames.map((name, key) => (
-                                            <MenuItem key={`${name}-${key}`} value={name}>{name}</MenuItem>
-                                        ))}
+                                {isLoading(loading.deepDiveLoading) ?
+                                    (
+                                        <Box sx={{ position: "relative", left: "50%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "320px" }}>
+                                            <CircularProgress size={32} color="primary" />
+                                        </Box>
+                                    )
 
-                                    </TextField>
+                                    : (
+                                        <>
+                                            {/* 設備列表 */}
+                                            <EquipmentOptions
+                                                selectedEquipmentName={selectedEquipmentName}
+                                                handleEquipmentChange={handleEquipmentChange}
+                                                equipmentNames={equipmentNames}
+                                            />
 
-                                    {selectedTabValue === "chillers" && (
+                                            {/* 總結資料 */}
+                                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, minWidth: 0 }}>
+                                                {[
+                                                    { key: "pump_type", label: t("mAndVBaseline.charts.pump_type") },
+                                                    { key: "is_total", label: t("mAndVBaseline.charts.is_total") },
+                                                    // { key: "rated_dt", label: t("mAndVBaseline.charts.rated_dt"), unit: "°C" },
+                                                ].map(({ key, label }) => {
+                                                    const value = !isLoading(loading.deepDiveLoading)
+                                                        && chartInfo.pump_name === selectedEquipmentName
+                                                        ? chartInfo[key as "pump_type" | "is_total" | "rated_dt"]
+                                                        : undefined;
+                                                    return (
+                                                        <Typography
+                                                            key={key}
+                                                            variant="subtitle2"
+                                                            sx={{ overflowWrap: "anywhere" }}
+                                                        >
+                                                            {label}: {chartInfoTransition(value, undefined, i18n)}
+                                                        </Typography>
+                                                    );
+                                                })}
+                                            </Box>
+
+                                            {/* 圖表選項 */}
+                                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, minWidth: 0 }}>
+                                                {chartPumpOptions.map(({ key, label }) => (
+                                                    <Chip
+                                                        key={key}
+                                                        label={label}
+                                                        // icon={visibleCharts[key] ? <CheckIcon /> : <VisibilityOffIcon />}
+                                                        color={visibleCharts[key] ? "primary" : "default"}
+                                                        variant={visibleCharts[key] ? "filled" : "outlined"}
+                                                        aria-pressed={visibleCharts[key]}
+                                                        onClick={() => setVisibleCharts(current => ({ ...current, [key]: !current[key] }))}
+                                                        sx={{ maxWidth: "100%", cursor: "pointer", height: "auto", minHeight: 32, "& .MuiChip-label": { whiteSpace: "normal", py: 0.5, cursor: "pointer" } }}
+                                                    />
+                                                ))}
+                                            </Box>
+
+                                            {/* 圖表本人 */}
+                                            <Box sx={{
+                                                display: "grid",
+                                                gridTemplateColumns: "minmax(0, 1fr)",
+                                                gap: 2,
+                                                width: "100%",
+                                                minWidth: 0,
+                                            }}>
+
+                                                {visibleCharts.rt_chart && (
+                                                    <Box sx={{ minWidth: 0 }}>
+                                                        <RealtimePowerChart
+                                                            points={chartData.rt_chart ?? []}
+                                                            xTitle={chartInfo.rt_x_title ?? ""}
+                                                            yTitle={chartInfo.rt_y_title ?? ""}
+                                                        />
+                                                        <Typography variant="subtitle2" sx={{
+                                                            fontSize: 14,
+                                                            color: "text.secondary",
+                                                            position: "relative",
+                                                            top: -30,
+                                                            // left: 50
+                                                        }}>
+                                                            {t("mAndVBaseline.charts.x_rt")}
+                                                        </Typography>
+                                                    </Box>
+                                                )}
+
+                                                {
+                                                    visibleCharts.flow_chart && (
+                                                        <Box sx={{ minWidth: 0 }}>
+                                                            <FlowChart
+                                                                points={chartData.flow_chart ?? []}
+                                                                xTitle={chartInfo.flow_x_title ?? ""}
+                                                                yTitle={chartInfo.flow_y_title ?? ""}
+                                                            />
+                                                            <Typography variant="subtitle2" sx={{
+                                                                fontSize: 14,
+                                                                color: "text.secondary",
+                                                                position: "relative",
+                                                                top: -30,
+                                                                // left: 50
+                                                            }}>
+                                                                {t("mAndVBaseline.charts.x_flow")}
+                                                            </Typography>
+                                                        </Box>
+                                                    )
+                                                }
+
+                                                {
+                                                    visibleCharts.dt_chart && (
+                                                        <Box sx={{ minWidth: 0 }}>
+                                                            <DtChart
+                                                                points={chartData.dt_chart ?? []}
+                                                                xTitle={chartInfo.dt_x_title ?? ""}
+                                                                yTitle={chartInfo.dt_y_title ?? ""}
+                                                                rated_dt={chartInfo.rated_dt}
+                                                            />
+                                                            <Typography variant="subtitle2" sx={{
+                                                                fontSize: 14,
+                                                                color: "text.secondary",
+                                                                position: "relative",
+                                                                top: -30,
+                                                                // left: 50
+                                                            }}>
+                                                                {t("mAndVBaseline.charts.x_dt")}
+                                                            </Typography>
+                                                        </Box>
+                                                    )
+                                                }
+
+                                            </Box>
+
+                                        </>
+                                    )
+                                }
+                            </Box>
+                        )
+                    }
+
+
+                    {/* -------------- tower -------------- */}
+
+                    {selectedTabValue === "has_tower_data" && (
+                        <Box sx={{ mt: 2, minWidth: 0, display: "flex", alignItems: "center", flexWrap: "wrap", gap: 2 }}>
+
+                            {isLoading(loading.deepDiveLoading) ?
+                                (
+                                    <Box sx={{ position: "relative", left: "50%", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "320px" }}>
+                                        <CircularProgress size={32} color="primary" />
+                                    </Box>
+                                )
+
+                                : (
+                                    <>
+                                        {/* 總結資料 */}
                                         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, minWidth: 0 }}>
                                             {[
-                                                { key: "rated_rt", label: t("mAndVBaseline.rated_rt"), unit: "RT" },
-                                                { key: "rated_dt", label: t("mAndVBaseline.rated_dt"), unit: "°C" },
-                                                { key: "rated_cw_dt", label: t("mAndVBaseline.rated_cw_dt"), unit: "°C" },
+                                                // { key: "design_approach", label: t("mAndVBaseline.charts.design_approach"), unit: "°C" },
                                             ].map(({ key, label, unit }) => {
                                                 const value = !isLoading(loading.deepDiveLoading)
-                                                    && chartInfo.chiller_name === selectedEquipmentName
-                                                    ? chartInfo[key as "rated_rt" | "rated_dt" | "rated_cw_dt"]
+                                                    ? chartInfo[key as "design_approach"]
                                                     : undefined;
                                                 return (
-                                                    <Typography key={key} variant="subtitle2" sx={{ overflowWrap: "anywhere" }}>
-                                                        {label}: {value == null ? "-" : `${value.toLocaleString(i18n.resolvedLanguage)} ${unit}`}
+                                                    <Typography
+                                                        key={key}
+                                                        variant="subtitle2"
+                                                        sx={{ overflowWrap: "anywhere" }}
+                                                    >
+                                                        {label}: {chartInfoTransition(value, unit, i18n)}
                                                     </Typography>
                                                 );
                                             })}
                                         </Box>
-                                    )}
-                                    {selectedTabValue === "chillers" && (
+                                        {/* 圖表選項 */}
                                         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, minWidth: 0 }}>
-                                            {chartChillerOptions.map(({ key, label }) => (
+                                            {chartTowerOptions.map(({ key, label }) => (
                                                 <Chip
                                                     key={key}
                                                     label={label}
@@ -407,56 +659,53 @@ const MAndVBaseLinePage = () => {
                                                 />
                                             ))}
                                         </Box>
-                                    )}
-                                    {
-                                        selectedTabValue === "pumps" && (
-                                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, minWidth: 0 }}>
-                                                {chartPumpOptions.map(({ key, label }) => (
-                                                    <Chip
-                                                        key={key}
-                                                        label={label}
-                                                        color={visibleCharts[key] ? "primary" : "default"}
-                                                        variant={visibleCharts[key] ? "filled" : "outlined"}
-                                                        aria-pressed={visibleCharts[key]}
-                                                        onClick={() => setVisibleCharts(current => ({ ...current, [key]: !current[key] }))}
-                                                        sx={{ maxWidth: "100%", cursor: "pointer", height: "auto", minHeight: 32, "& .MuiChip-label": { whiteSpace: "normal", py: 0.5, cursor: "pointer" } }}
-                                                    />
-                                                ))}
+
+
+                                        {/* 圖表本人 */}
+                                        {isLoading(loading.deepDiveLoading) ? (
+                                            <Box sx={{ height: 360, display: "grid", placeItems: "center" }}>
+                                                <CircularProgress size={24} />
                                             </Box>
-                                        )
-                                    }
-                                </Box>
-                            )
-                    }
-                    {selectedTabValue === "chillers" && (
-                        <Box sx={{ mt: 2, minWidth: 0 }}>
-                            {isLoading(loading.deepDiveLoading) ? (
-                                <Box sx={{ height: 360, display: "grid", placeItems: "center" }}>
-                                    <CircularProgress size={24} />
-                                </Box>
-                            ) : (
-                                <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr)", xl: "repeat(2, minmax(0, 1fr))" }, gap: 2 }}>
-                                    {visibleCharts.efficiency_points && <EfficiencyPointChart points={chartData.efficiency_points ?? []} />}
-                                    {visibleCharts.cop_daily_trend && <CopDailyTrend points={chartData.cop_daily_trend ?? []} />}
-                                    {visibleCharts.chw_dt_points && (
-                                        <TemperatureDifferenceChart
-                                            points={chartData.chw_dt_points ?? []}
-                                            title={t("mAndVBaseline.charts.chw_dt_points")}
-                                        />
-                                    )}
-                                    {visibleCharts.cw_dt_points && (
-                                        <TemperatureDifferenceChart
-                                            points={chartData.cw_dt_points ?? []}
-                                            title={t("mAndVBaseline.charts.cw_dt_points")}
-                                        />
-                                    )}
-                                </Box>
-                            )}
+                                        ) : (
+                                            <Box sx={{
+                                                display: "grid", gap: 2, width: "100%"
+                                            }}>
+
+                                                {visibleCharts.approach_vs_heat && (
+                                                    <ApproachVsHeat
+                                                        points={chartData.approach_vs_heat ?? []}
+                                                        design_approach={chartInfo.design_approach}
+                                                    />
+                                                )}
+
+                                                {
+                                                    visibleCharts.plr_vs_approach && (
+                                                        <PlrVsApproach
+                                                            points={chartData.plr_vs_approach ?? []}
+                                                            design_approach={chartInfo.design_approach}
+                                                        />
+                                                    )
+                                                }
+                                                {
+                                                    visibleCharts.power_vs_approach && (
+                                                        <PowerVsApproach
+                                                            points={chartData.power_vs_approach ?? []}
+                                                            design_approach={chartInfo.design_approach}
+                                                        />
+                                                    )
+                                                }
+                                            </Box>
+                                        )}
+                                    </>
+                                )}
                         </Box>
-                    )}
+
+
+                    )
+                    }
 
                 </ReportSection>
-            </Box>
+            </Box >
             <BaselineSettingsDialog
                 open={open.setting}
                 baseline={baseline}
@@ -474,7 +723,7 @@ const MAndVBaseLinePage = () => {
                 onSave={handleSaveParams}
                 onClose={() => closeDialog("params")}
             />
-        </SectionLayout>
+        </SectionLayout >
     );
 };
 

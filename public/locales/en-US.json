@@ -419,7 +419,17 @@
             "cw_dt_points": "Cooling Water Temperature Difference Check (ΔT vs RT)",
             "rt_chart": "Real-Time Power Chart",
             "flow_chart": "Flow Chart",
-            "dt_chart": "Temperature Difference Chart"
+            "dt_chart": "Temperature Difference Chart",
+            "pump_type": "Pump Type",
+            "is_total": "Is Total",
+            "rated_dt": "Rated Chilled Water Temperature Difference",
+            "approach_vs_heat": "Approach vs Heat",
+            "plr_vs_approach": "PLR vs Approach",
+            "power_vs_approach": "Power vs Approach",
+            "design_approach": "Design Approach",
+            "x_rt": "X Axis Reference: Primary Chiller Total (EB/HB Verified Proxy for Secondary Side)",
+            "x_flow": "X Axis Reference: Total Flow Estimated Based on RT and System ΔT",
+            "x_dt": "X Axis Reference: Primary Side System Temperature Difference (Supply and Return Header)"
         },
         "rated_rt": "Rated Cooling Capacity",
         "rated_dt": "Rated Chilled Water Temperature Difference",

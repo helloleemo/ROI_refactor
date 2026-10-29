@@ -8,12 +8,19 @@ import { getHighchartsThemeOptions } from "@/pages/Models/components/charts/help
 interface TemperatureDifferenceChartProps {
     points: { rt: number; dt: number }[];
     title: string;
+    dt?: number;
 }
 
-const TemperatureDifferenceChart = ({ points, title }: TemperatureDifferenceChartProps) => {
+const TemperatureDifferenceChart = ({ points, title, dt }: TemperatureDifferenceChartProps) => {
     const theme = useTheme();
     const { t } = useTranslation();
     const themeOptions = getHighchartsThemeOptions(theme);
+
+    const referenceDt =
+        typeof dt === "number" && Number.isFinite(dt)
+            ? dt
+            : undefined;
+
     const xAxis = Array.isArray(themeOptions.xAxis) ? themeOptions.xAxis[0] : themeOptions.xAxis;
     const yAxis = Array.isArray(themeOptions.yAxis) ? themeOptions.yAxis[0] : themeOptions.yAxis;
     const data = points.filter(point => Number.isFinite(point.rt) && Number.isFinite(point.dt))
@@ -25,7 +32,29 @@ const TemperatureDifferenceChart = ({ points, title }: TemperatureDifferenceChar
         credits: { enabled: false },
         legend: { enabled: false },
         xAxis: { ...xAxis, title: { ...xAxis?.title, text: "RT" }, gridLineWidth: 1 },
-        yAxis: { ...yAxis, title: { ...yAxis?.title, text: "\u0394T (\u00b0C)" } },
+        yAxis: {
+            ...yAxis,
+            title: {
+                ...yAxis?.title, text: "\u0394T (\u00b0C)"
+            },
+            softMin: referenceDt,
+            softMax: referenceDt,
+            plotLines: referenceDt !== undefined
+                ? [{
+                    id: "rated-dt",
+                    value: referenceDt,
+                    color: theme.palette.error.main,
+                    width: 2,
+                    dashStyle: "Dash",
+                    zIndex: 5,
+                    label: {
+                        text: `${t("mAndVBaseline.rated_dt")}: ${referenceDt} \u00b0C`,
+                        align: "right",
+                        style: { color: theme.palette.error.main },
+                    },
+                }]
+                : [],
+        },
         tooltip: {
             ...themeOptions.tooltip,
             headerFormat: "",

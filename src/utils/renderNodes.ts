@@ -44,11 +44,21 @@ export const renderNodes = (
     
     const segmentPairs = new Set<string>();
 
-    const addEdge = (source: string, target: string) => {
+    const addEdge = (source: string, target: string, returnLane?: number) => {
         const id = `${source}->${target}`;
         if (edgeIds.has(id)) return;
         edgeIds.add(id);
-        edges.push({ id, source, target });
+        edges.push(returnLane === undefined
+            ? { id, source, target }
+            : {
+                id,
+                source,
+                target,
+                type: "return",
+                sourceHandle: "return-source",
+                targetHandle: "return-target",
+                data: { lane: returnLane },
+            });
     };
 
     const addJunction = (
@@ -111,6 +121,21 @@ export const renderNodes = (
                 segmentPairs.add(`${prevOutKey}=>${segment.inKey}`);
             }
             prevOutKey = segment.outKey;
+        });
+    });
+
+    const junctionEntries = [...junctions.entries()];
+    const firstCol = Math.min(...junctionEntries.map(([, junction]) => junction.col));
+    const lastCol = Math.max(...junctionEntries.map(([, junction]) => junction.col));
+    const firstJunctions = junctionEntries.filter(([, junction]) => junction.col === firstCol);
+    const lastJunctions = junctionEntries.filter(([, junction]) => junction.col === lastCol);
+    let returnLane = 0;
+
+    lastJunctions.forEach(([lastId]) => {
+        firstJunctions.forEach(([firstId]) => {
+            if (firstCol < lastCol) {
+                addEdge(lastId, firstId, returnLane++);
+            }
         });
     });
 

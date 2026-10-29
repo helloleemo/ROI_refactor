@@ -185,7 +185,7 @@ const MappingDiagramPage = () => {
     };
 
     const handleEditDiagram = () => {
-        console.log("Edit diagram clicked");
+        // console.log("Edit diagram clicked");
         setIsNodeEditMode((prev) => !prev);
     }
 
