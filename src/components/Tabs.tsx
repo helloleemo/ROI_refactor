@@ -1,7 +1,6 @@
 
 import type { ReactNode, SyntheticEvent } from "react";
 import { Tab, Tabs as MuiTabs, type TabsProps as MuiTabsProps } from "@mui/material";
-import InstructionInfo from "./InstructionInfo";
 
 export interface TabItem {
     value: string;

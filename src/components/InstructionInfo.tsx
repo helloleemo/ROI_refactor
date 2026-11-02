@@ -1,6 +1,5 @@
 
 import { Tooltip, IconButton } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 

@@ -1,6 +1,7 @@
 import { Chart, type ChartOptions } from "@highcharts/react";
 import { ScatterSeries } from "@highcharts/react/series/Scatter";
 import { Box, Typography } from "@mui/material";
+import XAxisReference from "./XAxisReference";
 import { useTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import { getHighchartsThemeOptions } from "@/pages/Models/components/charts/helpers/highchartsTheme";
@@ -39,14 +40,12 @@ export const RealtimePowerChart = ({ points, xTitle, yTitle }: RealtimePowerChar
     return (
         <Box sx={{ width: "100%", minWidth: 0 }}>
             {data.length ? (
-                <Chart options={options} containerProps={{ style: { width: "100%" } }}>
-                    <ScatterSeries name={yTitle} data={data} color={theme.palette.chart.scatterDot} />
-                    <Typography
-                        variant="subtitle2"
-                    >
-                        X 軸基準: 一次側冰機加總 (EB/HB 驗證後代理二次側)
-                    </Typography>
-                </Chart>
+                <>
+                    <Chart options={options} containerProps={{ style: { width: "100%" } }}>
+                        <ScatterSeries name={yTitle} data={data} color={theme.palette.chart.scatterDot} />
+                    </Chart>
+                    <XAxisReference info={t("mAndVBaseline.charts.x_rt")} />
+                </>
             ) : (
                 <Box sx={{ height: 360, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 1 }}>
                     <Typography variant="subtitle2">{title}</Typography>

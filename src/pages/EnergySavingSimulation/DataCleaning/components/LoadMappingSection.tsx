@@ -9,7 +9,7 @@ import { tagMappingService } from "@/api/services/tagMapping";
 interface LoadMappingSectionProps {
     loadMappings: LoadMapping[];
     tags: string[];
-    // onMappingsChange: (mappings: LoadMapping[]) => void;
+    onMappingChange: (loadName: string, changes: Partial<LoadMapping>) => void;
     onLoading: (loading: boolean) => void;
     onError: (error: Error) => void;
 }
@@ -19,7 +19,7 @@ type LoadTagField = "st_tag" | "rt_tag" | "flow_tag" | "dp_tag";
 
 const tagFields: LoadTagField[] = ["st_tag", "rt_tag", "flow_tag", "dp_tag"];
 
-const LoadMappingSection = ({ loadMappings, tags, /* onMappingsChange, */ onLoading, onError }: LoadMappingSectionProps) => {
+const LoadMappingSection = ({ loadMappings, tags, onMappingChange, onLoading, onError }: LoadMappingSectionProps) => {
     const { t } = useTranslation();
     const apiRef = useGridApiRef();
     const [openTagCell, setOpenTagCell] = useState<string | null>(null);
@@ -38,10 +38,8 @@ const LoadMappingSection = ({ loadMappings, tags, /* onMappingsChange, */ onLoad
                 field,
                 value,
             });
-            // onMappingsChange(loadMappings.map((mapping) => mapping.load_name === row.load_name
-            //     ? { ...mapping, [field]: value }
-            //     : mapping));
             apiRef.current?.stopCellEditMode({ id: row.id, field });
+            onMappingChange(row.load_name, { [field]: value });
         } catch (error) {
             onError(error instanceof Error ? error : new Error("Unable to save load mapping"));
         } finally {
@@ -81,7 +79,7 @@ const LoadMappingSection = ({ loadMappings, tags, /* onMappingsChange, */ onLoad
                     }}
                     sx={{ cursor: "pointer" }}
                 >
-                    <MenuItem value="" disabled>
+                    <MenuItem value="">
                         {t("dataCleaning.load_side_sensor_mapping.columns.unselected")}
                     </MenuItem>
                     {tags.filter((tag) => tag !== "").map((tag) => (
@@ -97,7 +95,7 @@ const LoadMappingSection = ({ loadMappings, tags, /* onMappingsChange, */ onLoad
                 )
                 : params.value,
         })),
-    ], [t, tags, openTagCell, loadMappings]);
+    ], [t, tags, openTagCell, loadMappings, onMappingChange]);
 
     return (
         <Box sx={{ width: "100%", minHeight: 0 }}>

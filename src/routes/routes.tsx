@@ -16,7 +16,7 @@ import MappingDiagramPage from "@/pages/EquipmentManagement/MappingDiagram/Mappi
 import ProjectSettingsPage from "@/pages/overview/ProjectSettings/ProjectSettingsPage";
 import { DataCleaningPage } from "@/pages/EnergySavingSimulation/DataCleaning/DataCleaningPage";
 import DataQualityAndSteadyStateReportPage from "@/pages/EnergySavingSimulation/DataQualityAndSteadyStateReport/DataQualityAndSteadyStateReportPage";
-import { SimulationResultReport } from "@/pages/EnergySavingSimulation/SimulationResultReport/SimulationResultReport";
+import { SimulationResultReportPage } from "@/pages/EnergySavingSimulation/SimulationResultReport/SimulationResultReportPage";
 
 const PlaceholderPage = ({ title }: { title: string }) => (
   <Box sx={{ p: 3 }}>
@@ -78,7 +78,7 @@ export const router = createBrowserRouter([
       },
       {
         path: `${PATHS.energySavingOverview}/${PATHS.simulationResultReport}`,
-        element: <SimulationResultReport />
+        element: <SimulationResultReportPage />
       },
 
       // 模型管理

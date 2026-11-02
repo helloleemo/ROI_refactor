@@ -125,6 +125,16 @@ export const API_ENDPOINTS = {
         DEEP_DIVE_TOWER: "baseline/deep-dive/tower",
         EXPORT_CSV: "baseline/export-csv"
 
+    },
+
+    // Simulation & Diagnostics
+    SIMULATION_AND_DIAGNOSTICS: {
+        EXPORT_DIAGNOSTICS: "simulation/expert-diagnostics",
+        MODULE_A: "simulation/module-a",
+        MODULE_B: "simulation/module-b",
+        MODULE_C: "simulation/module-c",
+        MODULE_D: "simulation/module-d",
+        FULL_PLANT: "simulation/full-plant"
     }
 
 }

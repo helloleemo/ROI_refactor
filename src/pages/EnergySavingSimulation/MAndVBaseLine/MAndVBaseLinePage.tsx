@@ -30,7 +30,6 @@ import { DtChart } from "./components/DtChart";
 import { ApproachVsHeat } from "./components/ApproachVsHeat";
 import { PlrVsApproach } from "./components/PlrVsApproach";
 import { PowerVsApproach } from "./components/PowerVsApproach";
-import XAxisReference from "./components/XAxisReference";
 import ChartSectionLoader from "./components/ChartSectionLoader";
 
 
@@ -438,7 +437,12 @@ const MAndVBaseLinePage = () => {
 
                                             {/* // 圖表本人 */}
                                             <Box sx={{
-                                                display: "grid", gap: 2, width: "100%"
+                                                display: "grid", gap: 2, width: "100%",
+                                                gridTemplateColumns: {
+                                                    md: "minmax(0, 1fr)",
+                                                    lg: "repeat(2, minmax(0, 1fr))",
+                                                },
+
                                             }}>
                                                 {visibleCharts.efficiency_points &&
                                                     <EfficiencyPointChart points={chartData.efficiency_points ?? []} />}
@@ -507,7 +511,10 @@ const MAndVBaseLinePage = () => {
                                             </Box>
 
                                             {/* 圖表選項 */}
-                                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, minWidth: 0 }}>
+                                            <Box sx={{
+                                                display: "flex", flexWrap: "wrap", gap: 1, minWidth: 0
+
+                                            }}>
                                                 {chartPumpOptions.map(({ key, label }) => (
                                                     <Chip
                                                         key={key}
@@ -525,10 +532,14 @@ const MAndVBaseLinePage = () => {
                                             {/* 圖表本人 */}
                                             <Box sx={{
                                                 display: "grid",
-                                                gridTemplateColumns: "minmax(0, 1fr)",
+                                                gridTemplateColumns: {
+                                                    md: "minmax(0, 1fr)",
+                                                    lg: "repeat(2, minmax(0, 1fr))",
+                                                },
                                                 gap: 2,
                                                 width: "100%",
                                                 minWidth: 0,
+
                                             }}>
 
                                                 {visibleCharts.rt_chart && (
@@ -538,7 +549,6 @@ const MAndVBaseLinePage = () => {
                                                             xTitle={chartInfo.rt_x_title ?? ""}
                                                             yTitle={chartInfo.rt_y_title ?? ""}
                                                         />
-                                                        <XAxisReference info={t("mAndVBaseline.charts.x_rt")} />
                                                     </Box>
                                                 )}
 
@@ -550,7 +560,6 @@ const MAndVBaseLinePage = () => {
                                                                 xTitle={chartInfo.flow_x_title ?? ""}
                                                                 yTitle={chartInfo.flow_y_title ?? ""}
                                                             />
-                                                            <XAxisReference info={t("mAndVBaseline.charts.x_flow")} />
                                                         </Box>
                                                     )
                                                 }
@@ -564,7 +573,6 @@ const MAndVBaseLinePage = () => {
                                                                 yTitle={chartInfo.dt_y_title ?? ""}
                                                                 rated_dt={chartInfo.rated_dt}
                                                             />
-                                                            <XAxisReference info={t("mAndVBaseline.charts.x_dt")} />
                                                         </Box>
                                                     )
                                                 }
@@ -627,7 +635,11 @@ const MAndVBaseLinePage = () => {
                                         {/* 圖表本人 */}
 
                                         <Box sx={{
-                                            display: "grid", gap: 2, width: "100%"
+                                            display: "grid", gap: 2, width: "100%",
+                                            gridTemplateColumns: {
+                                                md: "minmax(0, 1fr)",
+                                                lg: "repeat(2, minmax(0, 1fr))",
+                                            },
                                         }}>
 
                                             {visibleCharts.approach_vs_heat && (

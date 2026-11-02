@@ -7,7 +7,7 @@ import { t } from "i18next";
 
 
 
-export const SimulationResultReport = () => {
+export const SimulationResultReportPage = () => {
     return (
         <OneSectionStyled sx={{ height: "100%", boxSizing: "border-box", display: "flex", flexDirection: "column", minHeight: 0, overflow: "hidden" }}>
             <Box sx={{
@@ -25,7 +25,7 @@ export const SimulationResultReport = () => {
                     </Typography>
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, flexShrink: 0 }}>
-                    <Button
+                    {/* <Button
                         sx={{
                             whiteSpace: "nowrap"
                         }}
@@ -34,7 +34,7 @@ export const SimulationResultReport = () => {
                     // disabled={!tagMappingData || isSaving}
                     >
                         + {t("dataCleaning.physical_unit_and_system_boundary")}
-                    </Button>
+                    </Button> */}
                 </Box>
             </Box>
         </OneSectionStyled>

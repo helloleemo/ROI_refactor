@@ -119,7 +119,6 @@ export const DataCleaningPage = () => {
         try {
             const data = await tagMappingService.get();
             setTagMappingData(data);
-
             console.log("data", data);
         }
         catch (error) {
@@ -219,7 +218,7 @@ export const DataCleaningPage = () => {
                             }}>
                                 {t("dataCleaning.environment_and_load_parameters.title")}
                             </Typography>
-                            {/* <InstructionInfo title="instruction_info.auto_save" size={16} padding={0} /> */}
+                            {/* <InstructionInfo title={t("instruction_info.auto_save")} size={16} padding={0} /> */}
                         </Box>
                         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                             <Typography sx={{ fontSize: 14, color: "error.main", lineHeight: 1, cursor: "pointer" }}>
@@ -308,7 +307,7 @@ export const DataCleaningPage = () => {
                         <Typography sx={{ fontSize: 14, fontWeight: 700, color: "text.primary", lineHeight: 1, cursor: "pointer" }}>
                             {t("dataCleaning.chiller_sensor_mapping_and_boundary_conditions.title")}
                         </Typography>
-                        <InstructionInfo title="instruction_info.auto_save" size={16} padding={0} />
+                        <InstructionInfo title={t("instruction_info.auto_save")} size={16} padding={0} />
                     </Box>
 
                     <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -337,7 +336,15 @@ export const DataCleaningPage = () => {
                         <ChillerMappingSection
                             chillerMappings={tagMappingData?.chiller_mappings ?? []}
                             tags={tagMappingData?.available_tags ?? []}
-                            // onMappingsChange={handleChillerMappingsChange}
+                            onMappingChange={(equipmentName, changes) => {
+                                setTagMappingData((previous) => previous
+                                    ? {
+                                        ...previous,
+                                        chiller_mappings: previous.chiller_mappings.map((mapping) =>
+                                            mapping.equipment_name === equipmentName ? { ...mapping, ...changes } : mapping),
+                                    }
+                                    : previous);
+                            }}
                             onLoading={(loading) => {
                                 loading ? startLoading("ChillerMapping") : stopLoading("ChillerMapping");
                             }}
@@ -377,7 +384,7 @@ export const DataCleaningPage = () => {
                         <Typography sx={{ fontSize: 14, fontWeight: 700, color: "text.primary", lineHeight: 1, cursor: "pointer" }}>
                             {t("dataCleaning.equipment_power_parameters.title")}
                         </Typography>
-                        <InstructionInfo title="instruction_info.auto_save" size={16} padding={0} />
+                        <InstructionInfo title={t("instruction_info.auto_save")} size={16} padding={0} />
                     </Box>
 
                     <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -448,7 +455,7 @@ export const DataCleaningPage = () => {
                         <Typography sx={{ fontSize: 14, fontWeight: 700, color: "text.primary", lineHeight: 1, cursor: "pointer" }}>
                             {t("dataCleaning.load_side_sensor_mapping.title")}
                         </Typography>
-                        <InstructionInfo title="instruction_info.auto_save" size={16} padding={0} />
+                        <InstructionInfo title={t("instruction_info.auto_save")} size={16} padding={0} />
                     </Box>
 
 
@@ -478,11 +485,15 @@ export const DataCleaningPage = () => {
                         <LoadMappingSection
                             loadMappings={tagMappingData?.load_mappings ?? []}
                             tags={tagMappingData?.available_tags ?? []}
-                            // onMappingsChange={(loadMappings) => {
-                            //     setTagMappingData((previous) => previous
-                            //         ? { ...previous, load_mappings: loadMappings }
-                            //         : previous);
-                            // }}
+                            onMappingChange={(loadName, changes) => {
+                                setTagMappingData((previous) => previous
+                                    ? {
+                                        ...previous,
+                                        load_mappings: previous.load_mappings.map((mapping) =>
+                                            mapping.load_name === loadName ? { ...mapping, ...changes } : mapping),
+                                    }
+                                    : previous);
+                            }}
                             onLoading={(loading) => {
                                 loading ? startLoading("LoadMapping") : stopLoading("LoadMapping");
                             }}

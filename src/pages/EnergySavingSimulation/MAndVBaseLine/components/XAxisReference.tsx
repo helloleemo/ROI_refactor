@@ -6,7 +6,7 @@ const XAxisReference = ({ info }: { info: string }) => {
             fontSize: 12,
             color: "text.secondary",
             position: "relative",
-            top: -30,
+            top: -15,
         }}>
             {info}
         </Typography>

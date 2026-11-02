@@ -10,14 +10,14 @@ import { tagMappingService } from "@/api/services/tagMapping";
 interface ChillerMappingSectionProps {
     chillerMappings: ChillerMapping[];
     tags: string[];
-    // onMappingsChange: (mappings: ChillerMapping[]) => void;
+    onMappingChange: (equipmentName: string, changes: Partial<ChillerMapping>) => void;
     onLoading: (loading: boolean) => void;
     onError: (error: Error) => void;
 }
 
 type ChillerMappingRow = ChillerMapping & { id: number };
 
-const ChillerMappingSection = ({ chillerMappings, tags, // onMappingsChange, 
+const ChillerMappingSection = ({ chillerMappings, tags, onMappingChange,
     onLoading, onError }: ChillerMappingSectionProps) => {
 
     // console.log("chillerMappings", chillerMappings)
@@ -35,17 +35,14 @@ const ChillerMappingSection = ({ chillerMappings, tags, // onMappingsChange,
     );
 
 
-
     const handleTagChange = async (name: string, id: number, field: typeof tagFields[number], value: string) => {
         await apiRef.current?.setEditCellValue({ id, field, value });
         // onLoading(true);
         onLoading(true);
         try {
             await handleSaveChillerMappings(name, field, value);
-            // onMappingsChange(chillerMappings.map((mapping, index) =>
-            //     index === id ? { ...mapping, [field]: value } : mapping,
-            // ));
             apiRef.current?.stopCellEditMode({ id, field });
+            onMappingChange(name, { [field]: value });
         } catch (error) {
             onError(error as Error);
         } finally {
@@ -106,10 +103,7 @@ const ChillerMappingSection = ({ chillerMappings, tags, // onMappingsChange,
                     }}
 
                 >
-                    <MenuItem value="" disabled
-                        sx={{
-                            cursor: "not-allowed",
-                        }}>
+                    <MenuItem value="">
                         {t("dataCleaning.chiller_sensor_mapping_and_boundary_conditions.columns.unselected")}
                     </MenuItem>
                     {tags.filter((tag) => tag !== "").map((tag) => (
@@ -139,7 +133,7 @@ const ChillerMappingSection = ({ chillerMappings, tags, // onMappingsChange,
             disableColumnMenu: true,
 
         })),
-    ], [t, tags, openTagCell]);
+    ], [t, tags, openTagCell, chillerMappings, onMappingChange]);
 
     return (
         <Box sx={{ width: "100%", minWidth: 0, minHeight: 0 }}>
@@ -158,7 +152,7 @@ const ChillerMappingSection = ({ chillerMappings, tags, // onMappingsChange,
                     }
                 }}
                 processRowUpdate={async (updatedRow, originalRow) => {
-                    const { id, ...updatedMapping } = updatedRow;
+                    const updatedMapping = updatedRow;
                     const validPercentages = percentageFields.every((field) => {
                         const value = updatedMapping[field];
                         return Number.isFinite(value);
@@ -170,11 +164,7 @@ const ChillerMappingSection = ({ chillerMappings, tags, // onMappingsChange,
                     );
                     for (const field of changedPercentageFields) {
                         await handleSaveChillerMappings(updatedMapping.equipment_name, field, String(updatedMapping[field]));
-                    }
-                    if (changedPercentageFields.length > 0) {
-                        // onMappingsChange(chillerMappings.map((mapping, index) =>
-                        //     index === id ? updatedMapping as ChillerMapping : mapping,
-                        // ));
+                        onMappingChange(updatedMapping.equipment_name, { [field]: updatedMapping[field] });
                     }
                     return updatedRow;
                 }}

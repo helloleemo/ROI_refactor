@@ -4,6 +4,7 @@ import { Box, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import { getHighchartsThemeOptions } from "@/pages/Models/components/charts/helpers/highchartsTheme";
+import XAxisReference from "./XAxisReference";
 
 interface DtChartProps {
     points: { x: number; y: number }[];
@@ -78,9 +79,12 @@ export const DtChart = ({ points, xTitle, yTitle, rated_dt }: DtChartProps) => {
     return (
         <Box sx={{ width: "100%", minWidth: 0 }}>
             {data.length ? (
-                <Chart options={options} containerProps={{ style: { width: "100%" } }}>
-                    <ScatterSeries name={yTitle} data={data} color={theme.palette.chart.scatterDot} />
-                </Chart>
+                <>
+                    <Chart options={options} containerProps={{ style: { width: "100%" } }}>
+                        <ScatterSeries name={yTitle} data={data} color={theme.palette.chart.scatterDot} />
+                    </Chart>
+                    <XAxisReference info={t("mAndVBaseline.charts.x_dt")} />
+                </>
             ) : (
                 <Box sx={{ height: 360, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 1 }}>
                     <Typography variant="subtitle2">{title}</Typography>
